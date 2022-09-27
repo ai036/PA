@@ -58,10 +58,10 @@ static int cmd_help(char *args);
 //my function
 static int cmd_si(char *args){
   char *arg=strtok(NULL, " ");
-  int i=1;
+  int n=1;
   if(arg!=NULL)
-    i=atoi(arg);
-  cpu_exec(i);
+    n=atoi(arg);
+  cpu_exec(n);
   return 0;
 }
 
