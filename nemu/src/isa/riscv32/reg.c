@@ -33,6 +33,7 @@ void isa_reg_display() {
      if((i+1)%2==0)
         printf("\n");
     }
+  printf("\n");
   printf("The state of PC:\n");
   printf("pc   %p   %d\n",&cpu.pc,cpu.pc);
 
