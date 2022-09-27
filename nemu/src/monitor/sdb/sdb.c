@@ -83,7 +83,13 @@ static int cmd_x(char *args){
   for(int i=0;i<n;i++)
   {
     u_int32_t num=vaddr_read(addr,4);//读1个32位数
-    printf("%08x    0x%08x\n",addr,num);
+    for (int j = 0; j < 4; j++) {
+
+      printf("0x%02x	" , num & 0xff);
+
+      num = num >> 8;
+
+		}
     addr=addr+4;
   }
   return 0;
