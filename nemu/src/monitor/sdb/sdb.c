@@ -79,10 +79,11 @@ static int cmd_x(char *args){
   int n=atoi(arg);
   arg=strtok(NULL, " ");
   vaddr_t addr=strtol(arg,NULL,16);
+
   for(int i=0;i<n;i++)
   {
     u_int32_t num=vaddr_read(addr,4);//读1个32位数
-    printf("%08x    0x%02x\n",addr,num);
+    printf("%08x    0x%08x\n",addr,num);
     addr=addr+4;
   }
   return 0;
