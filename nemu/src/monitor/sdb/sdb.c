@@ -78,7 +78,7 @@ static int cmd_x(char *args){
   char *arg=strtok(NULL, " ");
   int n=atoi(arg);
   arg=strtok(NULL, " ");
-  vaddr_t addr=atoi(arg);
+  vaddr_t addr=strtol(arg,NULL,16);
   for(int i=0;i<n;i++)
   {
     u_int32_t num=vaddr_read(addr+4*i,4);//读1个32位数
