@@ -26,7 +26,7 @@ const char *regs[] = {
 void isa_reg_display() {
   printf("The states of all registers:\n");
   for(int i = 0; i <32; i++)
-    {if(i==27||i==28)
+    {if(i==26||i==27)
        printf("%s  %p   %d     ",regs[i],&cpu.gpr[i],cpu.gpr[i]);
      else
        printf("%s   %p   %d     ",regs[i],&cpu.gpr[i],cpu.gpr[i]);
