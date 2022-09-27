@@ -24,7 +24,7 @@ const char *regs[] = {
 };
 
 void isa_reg_display() {
-  printf("The states of all registers:\n");
+  printf("The states of all General Purpose Registers:\n");
   for(int i = 0; i <32; i++)
     {if(i==26||i==27)
        printf("%s  %p   %d     ",regs[i],&cpu.gpr[i],cpu.gpr[i]);
@@ -33,6 +33,9 @@ void isa_reg_display() {
      if((i+1)%2==0)
         printf("\n");
     }
+  printf("The state of PC:\n");
+  printf("pc   %p   %d\n",&cpu.pc,cpu.pc);
+
 }
 
 word_t isa_reg_str2val(const char *s, bool *success) {
