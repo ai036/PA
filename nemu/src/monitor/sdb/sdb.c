@@ -18,6 +18,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "sdb.h"
+#include <memory/vaddr.h>
 
 static int is_batch_mode = false;
 
@@ -73,6 +74,20 @@ static int cmd_info(char *args){
   return 0;
 }
 
+static int cmd_x(char *args){
+  char *arg=strtok(NULL, " ");
+  int n=atoi(arg);
+  arg=strtok(NULL, " ");
+  vaddr_t addr=atoi(arg);
+  for(int i=0;i<n;i++)
+  {
+    u_int32_t num=vaddr_read(addr+4*i,4);//读1个32位数
+    printf("%08x    %d\n",addr,num);
+    
+  }
+  return 0;
+}
+
 static struct {
   const char *name;
   const char *description;
@@ -83,7 +98,7 @@ static struct {
   { "q", "Exit NEMU", cmd_q },
   {"si", "execute a command", cmd_si },
   {"info", "Display information of all registers", cmd_info},
-
+  {"x", "check the memory", cmd_x }
   /* TODO: Add more commands */
 
 };
