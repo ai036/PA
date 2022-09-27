@@ -65,6 +65,14 @@ static int cmd_si(char *args){
   return 0;
 }
 
+static int info(char *args){
+  char *arg=strtok(NULL, " ");
+  if(arg!=NULL)
+    if(arg=='r')
+      isa_reg_display();
+  return 0;
+}
+
 static struct {
   const char *name;
   const char *description;
