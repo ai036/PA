@@ -65,10 +65,10 @@ static int cmd_si(char *args){
   return 0;
 }
 
-static int info(char *args){
+static int cmd_info(char *args){
   char *arg=strtok(NULL, " ");
   if(arg!=NULL)
-    if(arg=='r')
+    if(strcmp(arg,"r")==0)
       isa_reg_display();
   return 0;
 }
@@ -82,6 +82,7 @@ static struct {
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
   {"si", "execute a command", cmd_si },
+  {"info", "Display information of all registers", cmd_info},
 
   /* TODO: Add more commands */
 
