@@ -138,6 +138,6 @@ word_t expr(char *e, bool *success) {
 
   /* TODO: Insert codes to evaluate the expression. */
   //TODO();
-  printf("%s",tokens[0].str);
+  printf("%d",tokens[0].type);
   return 0;
 }
