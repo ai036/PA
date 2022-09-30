@@ -139,6 +139,6 @@ word_t expr(char *e, bool *success) {
   /* TODO: Insert codes to evaluate the expression. */
   //TODO();
   for(int i=0;i<nr_token;i++) 
-    printf("%d  ",tokens[i].type);
+    printf("%d\n",tokens[i].type);
   return 0;
 }
