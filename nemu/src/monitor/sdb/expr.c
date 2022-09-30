@@ -112,6 +112,7 @@ static bool make_token(char *e) {
             break;
           case TK_LEFT: tokens[nr_token].type=TK_LEFT;break;
           case TK_RIGHT: tokens[nr_token].type=TK_RIGHT;break;
+          case TK_NOTYPE: break;
 
           default: TODO();
         }
