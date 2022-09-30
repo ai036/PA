@@ -137,7 +137,7 @@ word_t expr(char *e, bool *success) {
   }
 
   /* TODO: Insert codes to evaluate the expression. */
-  TODO();
-
+  //TODO();
+  printf("%s",tokens[0].str);
   return 0;
 }
