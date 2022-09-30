@@ -101,6 +101,8 @@ static bool make_token(char *e) {
          */
 
         switch (rules[i].token_type) {
+          case '+': tokens[nr_token].type='+';break;
+          
           default: TODO();
         }
 
