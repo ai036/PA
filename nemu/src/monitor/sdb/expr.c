@@ -115,7 +115,7 @@ static bool make_token(char *e) {
 
           default: TODO();
         }
-
+        nr_token++;
         break;
       }
     }
