@@ -182,7 +182,9 @@ int eval(int p, int q) {
     return eval(p + 1, q - 1);
   }
   else {
+    
     int op = p;           //the position of 主运算符 in the token expression;
+      printf("%d",op);
     int index=p;
     int flag=0;
     while(index<=q)
@@ -203,7 +205,7 @@ int eval(int p, int q) {
     }
     int val1 = eval(p, op - 1);
     int val2 = eval(op + 1, q);
-    printf("%d",op);
+  
     switch (tokens[op].type) {
       case '+': printf("add");return val1 + val2;
       case '-': return val1 - val2;
