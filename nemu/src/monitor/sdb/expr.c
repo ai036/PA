@@ -141,7 +141,7 @@ word_t expr(char *e, bool *success) {
   /* TODO: Insert codes to evaluate the expression. */
   //TODO();
   for(int i=0;i<nr_token;i++) 
-    printf("%s\n",tokens[i].str);
+    printf("%d\n",tokens[i].type);
   return 0;
 }
 
@@ -188,7 +188,8 @@ int eval(int p, int q) {
     while(index<=q)
     {
       if(tokens[index].type==TK_NUM)
-        continue;
+      { index++;
+        continue;}
       else if(tokens[index].type==TK_LEFT)
         flag=1;
       else if(tokens[index].type==TK_RIGHT)
