@@ -19,5 +19,6 @@
 #include <common.h>
 
 word_t expr(char *e, bool *success);
-
+int eval(int p,int q);
+extern int nr_token;
 #endif
