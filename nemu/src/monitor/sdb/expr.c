@@ -185,7 +185,7 @@ int eval(int p, int q) {
     int op = p;           //the position of 主运算符 in the token expression;
     int index=p;
     int flag=0;
-    while(op<=q)
+    while(index<=q)
     {
       if(tokens[index].type==TK_NUM)
         continue;
@@ -199,6 +199,7 @@ int eval(int p, int q) {
       else if(tokens[index].type=='*'||tokens[index].type=='/')
         {if(tokens[op].type!='+'&&tokens[op].type!='-'&&flag==0)
           op=index;}  
+      index++;
     }
     int val1 = eval(p, op - 1);
     int val2 = eval(op + 1, q);
