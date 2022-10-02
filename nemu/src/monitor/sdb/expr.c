@@ -199,14 +199,14 @@ int eval(int p, int q) {
           op=index;}
       else if(tokens[index].type=='*'||tokens[index].type=='/')
         {if(tokens[op].type!='+'&&tokens[op].type!='-'&&flag==0)
-          op=index;}  
+          op=index;}
       index++;
     }
     int val1 = eval(p, op - 1);
     int val2 = eval(op + 1, q);
 
     switch (tokens[op].type) {
-      case '+': return val1 + val2;
+      case '+': printf("add");return val1 + val2;
       case '-': return val1 - val2;
       case '*': return val1 * val2;
       case '/': return val1 / val2;
