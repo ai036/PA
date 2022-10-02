@@ -94,6 +94,7 @@ static int cmd_x(char *args){
 static int cmd_p(char *args){
   bool a;
   expr(args,&a);
+  printf("%d\n",eval(0,2));
   return eval(0,2);
 }
 
