@@ -94,7 +94,7 @@ static int cmd_x(char *args){
 static int cmd_p(char *args){
   bool a;
   expr(args,&a);
-  return eval(0,nr_token);
+  return 0;
 }
 
 static struct {
