@@ -94,8 +94,8 @@ static int cmd_x(char *args){
 static int cmd_p(char *args){
   bool a;
   expr(args,&a);
-  printf("%d\n",eval(0,2));
-  return eval(0,2);
+  printf("%d\n",eval(0,nr_token));
+  return eval(0,nr_token);
 }
 
 static struct {
