@@ -188,13 +188,13 @@ int eval(int p, int q) {
     while(index<=q)
     {
       if(tokens[index].type==TK_NUM);
-
+      
       else if(tokens[index].type==TK_LEFT)
         flag=1;
       else if(tokens[index].type==TK_RIGHT)
         flag=0;
       else if(tokens[index].type=='+'||tokens[index].type=='-')
-        {
+        {if(flag==0)
           op=index;}
       else if(tokens[index].type=='*'||tokens[index].type=='/')
         {if(tokens[op].type!='+'&&tokens[op].type!='-'&&flag==0)
@@ -203,7 +203,7 @@ int eval(int p, int q) {
     }
     int val1 = eval(p, op - 1);
     int val2 = eval(op + 1, q);
-
+    printf("%d",op);
     switch (tokens[op].type) {
       case '+': printf("add");return val1 + val2;
       case '-': return val1 - val2;
