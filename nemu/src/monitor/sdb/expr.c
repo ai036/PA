@@ -209,9 +209,9 @@ int eval(int p, int q) {
   
     switch (tokens[op].type) {
       case '+': printf("add");return val1 + val2;
-      case '-': return val1 - val2;
-      case '*': return val1 * val2;
-      case '/': return val1 / val2;
+      case '-': printf("sub");return val1 - val2;
+      case '*': printf("mul");return val1 * val2;
+      case '/': printf("div");return val1 / val2;
       default: assert(0);
     }
   }
