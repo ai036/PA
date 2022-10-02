@@ -158,7 +158,7 @@ bool check_parentheses(int p, int q)
     }
   if(count!=0)
     return false;
-  return true;
+  return false;
 }
 
 
@@ -184,7 +184,6 @@ int eval(int p, int q) {
   else {
     
     int op = p;           //the position of 主运算符 in the token expression;
-      printf("%d",op);
     int index=p;
     int flag=0;
     while(index<=q)
