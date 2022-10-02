@@ -144,12 +144,6 @@ word_t expr(char *e, bool *success) {
     printf("%d\n",tokens[i].type);
   return 0;
 }
-struct STACK
-{
-  char data[50];
-};
-int top=0;
-
 
 bool check_parentheses(int p, int q)
 { int count=0;
