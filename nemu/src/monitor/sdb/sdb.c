@@ -20,12 +20,12 @@
 #include "sdb.h"
 #include <memory/vaddr.h>
 
-
+extern int nr_token;
 static int is_batch_mode = false;
 
 void init_regex();
 void init_wp_pool();
-extern int nr_token;
+
 
 /* We use the `readline' library to provide more flexibility to read from stdin. */
 static char* rl_gets() {
