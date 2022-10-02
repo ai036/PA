@@ -147,6 +147,8 @@ word_t expr(char *e, bool *success) {
 
 bool check_parentheses(int p, int q)
 { int count=0;
+  if(tokens[p].type!=TK_LEFT)
+    return false;
   for(int i=p;i<=q;i++)
     {
       if(tokens[p].type==TK_LEFT)
@@ -158,7 +160,7 @@ bool check_parentheses(int p, int q)
     }
   if(count!=0)
     return false;
-  return false;
+  return true;
 }
 
 
