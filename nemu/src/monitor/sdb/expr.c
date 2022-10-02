@@ -187,9 +187,8 @@ int eval(int p, int q) {
     int flag=0;
     while(index<=q)
     {
-      if(tokens[index].type==TK_NUM)
-      { index++;
-        continue;}
+      if(tokens[index].type==TK_NUM);
+      
       else if(tokens[index].type==TK_LEFT)
         flag=1;
       else if(tokens[index].type==TK_RIGHT)
