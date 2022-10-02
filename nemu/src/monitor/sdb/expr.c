@@ -166,6 +166,7 @@ bool check_parentheses(int p, int q)
     }
   if(count!=0)
     return false;
+  printf("yes");
   return true;
 }
 
