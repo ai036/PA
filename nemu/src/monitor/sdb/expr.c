@@ -158,7 +158,7 @@ bool check_parentheses(int p, int q)
   for(int i=p;i<=q;i++)
     {
       if(tokens[p].type==TK_LEFT)
-        count++;
+        {count++;printf("YES left");}
       else if(tokens[p].type==TK_RIGHT)
         count--;
       if(count<0)
