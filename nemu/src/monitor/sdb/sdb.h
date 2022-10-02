@@ -20,5 +20,5 @@
 
 word_t expr(char *e, bool *success);
 int eval(int p,int q);
-int nr_token;
+
 #endif
