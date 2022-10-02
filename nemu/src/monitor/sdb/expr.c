@@ -144,3 +144,77 @@ word_t expr(char *e, bool *success) {
     printf("%d\n",tokens[i].type);
   return 0;
 }
+struct STACK
+{
+  char data[50];
+};
+int top=0;
+
+
+bool check_parentheses(int p, int q)
+{ int count=0;
+  for(int i=p;i<=q;i++)
+    {
+      if(tokens[p].type==TK_LEFT)
+        count++;
+      else if(tokens[p].type==TK_RIGHT)
+        count--;
+      if(count<0)
+        return false;      
+    }
+  if(count!=0)
+    return false;
+  return true;
+}
+
+
+int eval(int p, int q) {
+  if (p > q) {
+    /* Bad expression */
+    printf("Wrong expression.");
+    return -1;
+  }
+  else if (p == q) {
+    /* Single token.
+     * For now this token should be a number.
+     * Return the value of the number.
+     */
+    return atoi(tokens[p].str);
+  }
+  else if (check_parentheses(p, q) == true) {
+    /* The expression is surrounded by a matched pair of parentheses.
+     * If that is the case, just throw away the parentheses.
+     */
+    return eval(p + 1, q - 1);
+  }
+  else {
+    int op = p;           //the position of 主运算符 in the token expression;
+    int index=p;
+    int flag=0;
+    while(op<=q)
+    {
+      if(tokens[index].type==TK_NUM)
+        continue;
+      else if(tokens[index].type==TK_LEFT)
+        flag=1;
+      else if(tokens[index].type==TK_RIGHT)
+        flag=0;
+      else if(tokens[index].type=='+'||tokens[index].type=='-')
+        {if(flag==0)
+          op=index;}
+      else if(tokens[index].type=='*'||tokens[index].type=='/')
+        {if(tokens[op].type!='+'&&tokens[op].type!='-'&&flag==0)
+          op=index;}  
+    }
+    int val1 = eval(p, op - 1);
+    int val2 = eval(op + 1, q);
+
+    switch (tokens[op].type) {
+      case '+': return val1 + val2;
+      case '-': return val1 - val2;
+      case '*': return val1 * val2;
+      case '/': return val1 / val2;
+      default: assert(0);
+    }
+  }
+}

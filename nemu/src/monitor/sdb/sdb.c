@@ -19,6 +19,7 @@
 #include <readline/history.h>
 #include "sdb.h"
 #include <memory/vaddr.h>
+#include "expr.c"
 
 static int is_batch_mode = false;
 
@@ -92,7 +93,7 @@ static int cmd_x(char *args){
 static int cmd_p(char *args){
   bool a;
   expr(args,&a);
-  return 0;
+  return eval(0,nr_token);
 }
 
 static struct {
