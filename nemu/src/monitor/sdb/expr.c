@@ -76,6 +76,12 @@ typedef struct token {
 static Token tokens[32] __attribute__((used)) = {};
 static int nr_token __attribute__((used))  = 0;
 
+int re_nr_token()//这是一个奇怪的函数,因为不知道怎样调用nr_token
+{
+  return nr_token;
+}
+
+
 static bool make_token(char *e) {
   int position = 0;
   int i;
