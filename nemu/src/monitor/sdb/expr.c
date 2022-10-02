@@ -154,14 +154,13 @@ word_t expr(char *e, bool *success) {
 bool check_parentheses(int p, int q)
 { int count=0;
   if(tokens[p].type!=TK_LEFT)
-    {printf("NO");
-      return false;
-    }
+    return false;
+    
   for(int i=p;i<=q;i++)
     {
-      if(tokens[p].type==TK_LEFT)
+      if(tokens[i].type==TK_LEFT)
         count++;
-      else if(tokens[p].type==TK_RIGHT)
+      else if(tokens[i].type==TK_RIGHT)
         count--;
       if(count<0)
         return false;      
