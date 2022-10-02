@@ -151,9 +151,9 @@ word_t expr(char *e, bool *success) {
   return 0;
 }
 
-/*bool check_parentheses(int p, int q)
+bool check_parentheses(int p, int q)
 { int count=0;
-  if(tokens[p].type!=TK_LEFT)
+  if(tokens[p].type!=TK_LEFT||tokens[q].type!=TK_RIGHT)
     return false;
     
   for(int i=p;i<=q;i++)
@@ -168,14 +168,14 @@ word_t expr(char *e, bool *success) {
   if(count!=0)
     return false;
   return true;
-}*/
+}
 
-bool check_parentheses(int p, int q)
+/*bool check_parentheses(int p, int q)
 {
   if(tokens[p].type==TK_LEFT&&tokens[q].type==TK_RIGHT)
     return true;
   return false;
-}
+}*/
 
 
 int eval(int p, int q) {
