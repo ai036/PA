@@ -227,6 +227,7 @@ int eval(int p, int q) {
           op=index;}
       index++;
     }
+    printf("type:%d\n",tokens[op].type);
     int val1=0; 
     if(tokens[op].type!=TK_MINUS)
       val1= eval(p, op - 1);
