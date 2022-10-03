@@ -213,9 +213,9 @@ int eval(int p, int q) {
       if(tokens[index].type==TK_NUM);
       
       else if(tokens[index].type==TK_LEFT)
-        flag=1;
+        flag++;
       else if(tokens[index].type==TK_RIGHT)
-        flag=0;
+        flag--;
       else if(tokens[index].type=='+'||tokens[index].type=='-')
         {if(flag==0)
           op=index;}
