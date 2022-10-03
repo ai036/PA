@@ -235,7 +235,7 @@ int eval(int p, int q) {
       case '-': printf("sub");return val1 - val2;
       case '*': printf("mul");return val1 * val2;
       case '/': printf("div");return val1 / val2;
-      case TK_MINUS: printf("minus");return -1*val2;
+      case TK_MINUS: printf("minus");return -val2;
       default: assert(0);
     }
   }
