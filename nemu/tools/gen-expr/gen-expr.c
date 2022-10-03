@@ -59,10 +59,12 @@ void gen(char c)
 }
 
 static void gen_rand_expr() {
-  switch (choose(3)) {
+
+  switch (choose(4)) {
     case 0: gen_num(); break;
     case 1: gen('('); gen_rand_expr(); gen(')'); break;
-    default: gen_rand_expr(); gen_rand_op(); gen_rand_expr(); break;
+    case 2: gen_rand_expr(); gen_rand_op(); gen_rand_expr(); break;
+    case 3: gen(' ');gen_rand_expr();break;
   }
   buf[expr_index] = '\0';
 }
@@ -76,6 +78,7 @@ int main(int argc, char *argv[]) {
   }
   int i;
   for (i = 0; i < loop; i ++) {
+    expr_index=0;
     gen_rand_expr();
 
     sprintf(code_buf, code_format, buf);
@@ -83,6 +86,7 @@ int main(int argc, char *argv[]) {
     FILE *fp = fopen("/tmp/.code.c", "w");
     assert(fp != NULL);
     fputs(code_buf, fp);
+
     fclose(fp);
 
     int ret = system("gcc /tmp/.code.c -o /tmp/.expr");
@@ -93,7 +97,10 @@ int main(int argc, char *argv[]) {
 
     int result;
     fscanf(fp, "%d", &result);
-    pclose(fp);
+    if(result<0)
+      continue;
+    pclose(fp)!=0;
+    
 
     printf("%u %s\n", result, buf);
   }
