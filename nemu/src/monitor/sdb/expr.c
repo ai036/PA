@@ -167,8 +167,7 @@ bool check_parentheses(int p, int q)          //(1+2)*(3+4)这里会出现问题
         count--;
       if(count<0)
         return false;
-      if(i!=q&&count==0)
-        return false;      
+
     }
   if(count!=0)
     return false;
