@@ -184,7 +184,7 @@ bool check_parentheses(int p, int q)
 int eval(int p, int q) {
   if (p > q) {
     /* Bad expression */
-    printf("Wrong expression.");
+    printf("Wrong expression.\n");
     return -1;
   }
   else if (p == q) {
