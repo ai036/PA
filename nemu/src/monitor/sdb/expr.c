@@ -165,7 +165,7 @@ bool check_parentheses(int p, int q)          //(1+2)*(3+4)这里会出现问题
         count++;
       else if(tokens[i].type==TK_RIGHT)
         count--;
-      if(count<0)
+      if(count<=0)
         return false;      
     }
   if(count!=0)
