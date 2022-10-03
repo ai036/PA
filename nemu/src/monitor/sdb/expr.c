@@ -225,7 +225,9 @@ int eval(int p, int q) {
           op=index;}
       index++;
     }
-    int val1 = eval(p, op - 1);
+    int val1=0; 
+    if(tokens[op].type!=TK_MINUS)
+      val1= eval(p, op - 1);
     int val2 = eval(op + 1, q);
   
     switch (tokens[op].type) {
