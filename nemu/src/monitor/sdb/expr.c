@@ -108,7 +108,10 @@ static bool make_token(char *e) {
 
         switch (rules[i].token_type) {
           case '+': tokens[nr_token].type='+';break;
-          case '-': tokens[nr_token].type='-';break;
+          case '-': tokens[nr_token].type='-';
+                    if(nr_token==0||(tokens[nr_token-1].type!=TK_NUM&&tokens[nr_token-1].type!=TK_RIGHT))
+                      tokens[nr_token].type=TK_MINUS;//判断为负号
+                    break;
           case '*': tokens[nr_token].type='*';break;
           case '/': tokens[nr_token].type='/';break;
           case TK_EQ: tokens[nr_token].type=TK_EQ;break;
@@ -217,6 +220,9 @@ int eval(int p, int q) {
       else if(tokens[index].type=='*'||tokens[index].type=='/')
         {if(tokens[op].type!='+'&&tokens[op].type!='-'&&flag==0)
           op=index;}
+      else if(tokens[index].type==TK_MINUS)
+        {if(tokens[op].type!='+'&&tokens[op].type!='-'&&tokens[op].type!='*'&&tokens[op].type!='/'&&flag==0)
+          op=index;}
       index++;
     }
     int val1 = eval(p, op - 1);
@@ -227,6 +233,7 @@ int eval(int p, int q) {
       case '-': printf("sub");return val1 - val2;
       case '*': printf("mul");return val1 * val2;
       case '/': printf("div");return val1 / val2;
+      case TK_MINUS: printf("minus");return -val2;
       default: assert(0);
     }
   }
