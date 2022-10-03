@@ -30,6 +30,33 @@ static char *code_format =
 "  printf(\"%%u\", result); "
 "  return 0; "
 "}";
+int expr_index=0;
+int choose(int n)
+{
+  return rand()%n;
+}
+
+void gen_num()
+{
+  int x=choose(10);
+  char dict[10]={'0','1','2','3','4','5','6','7','8','9'};
+  buf[expr_index]=dict[x];
+  expr_index++;
+}
+
+void gen_rand_op()
+{
+  int x=choose(4);
+  char op[4]={'+','-','*','/'};
+  buf[expr_index]=op[x]; 
+  expr_index++;
+}
+
+void gen(char c)
+{
+  buf[expr_index]=c;
+  expr_index++;
+}
 
 static void gen_rand_expr() {
   switch (choose(3)) {
@@ -37,7 +64,7 @@ static void gen_rand_expr() {
     case 1: gen('('); gen_rand_expr(); gen(')'); break;
     default: gen_rand_expr(); gen_rand_op(); gen_rand_expr(); break;
   }
-  buf[0] = '\0';
+  buf[expr_index] = '\0';
 }
 
 int main(int argc, char *argv[]) {
