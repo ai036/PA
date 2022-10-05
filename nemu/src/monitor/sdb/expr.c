@@ -30,19 +30,20 @@ enum {
 static struct rule {
   const char *regex;
   int token_type;
+  int priority;
 } rules[] = {
 
   /* TODO: Add more rules.
    * Pay attention to the precedence level of different rules.
    */
 
-  {" +", TK_NOTYPE},    // spaces
+  {" +", TK_NOTYPE,3},    // spaces
   {"\\+", '+'},         // plus
-  {"\\-", '-'},         // 减  
+  {"\\-", '-'},         // 减
   {"\\*", '*'},         // 乘
   {"\\/", '/'},         // 除
   {"==", TK_EQ},        // equal
-  {"[0-9]+" , TK_NUM},       // 数字
+  {"[0-9]+" , TK_NUM},       // 十进制数字
   {"[(]", TK_LEFT},      // 左括号
   {"[)]", TK_RIGHT}     // 右括号
 };
