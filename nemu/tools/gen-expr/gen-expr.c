@@ -37,11 +37,15 @@ int choose(int n)
 }
 
 void gen_num()
-{
+{ int n=choose(2)+1;
+  for(int i=0; i<n; i++){
   int x=choose(10);
+  if(x==0&&i==0&&n!=1)
+    continue;
   char dict[10]={'0','1','2','3','4','5','6','7','8','9'};
   buf[expr_index]=dict[x];
   expr_index++;
+}
 }
 
 void gen_rand_op()
