@@ -139,6 +139,7 @@ static bool make_token(char *e) {
           case TK_REG: tokens[nr_token].type=TK_REG;
             for(int k=0;k<substr_len;k++)
               tokens[nr_token].str[k]=substr_start[k];
+            tokens[nr_token].str[substr_len]='\0';
             break;
 
           default: TODO();
