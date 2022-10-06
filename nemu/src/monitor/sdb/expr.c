@@ -125,7 +125,7 @@ static bool make_token(char *e) {
             for(int k=0;k<substr_len;k++)
               tokens[nr_token].str[k]=substr_start[k];
             tokens[nr_token].str[substr_len]='\0';
-            printf("%s",substr_start);
+            printf("%s",tokens[nr_token].str);
             break;
           case TK_NUM: tokens[nr_token].type=TK_NUM;
             for(int k=0;k<substr_len;k++)
