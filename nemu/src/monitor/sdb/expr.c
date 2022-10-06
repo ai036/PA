@@ -19,7 +19,7 @@
  * Type 'man regex' for more information about POSIX regex functions.
  */
 #include <regex.h>
-
+#include <memory/vaddr.h>
 enum {
   TK_NOTYPE = 256, TK_NUM=10,TK_HEX=16,TK_REG=32,TK_EQ,TK_NEQ,TK_LEFT,TK_RIGHT,TK_MINUS,TK_AND,DEREF
 
@@ -78,7 +78,7 @@ typedef struct token {
   int priority;
 } Token;
 
-static Token tokens[1000] __attribute__((used)) = {};
+static Token tokens[10000] __attribute__((used)) = {};
 static int nr_token __attribute__((used))  = 0;
 
 int re_nr_token()//这是一个奇怪的函数,因为不知道怎样调用nr_token
@@ -287,6 +287,10 @@ int eval(int p, int q) {
       case TK_EQ: return val1 == val2;
       case TK_NEQ: return val1 != val2;
       case TK_AND: return val1 && val2;
+      case DEREF: if(tokens[op+1].type==TK_LEFT&&tokens[q].type==TK_RIGHT)
+                {int addr=eval(op+2,q-1);
+                 return vaddr_read(addr,4);
+                 } 
       default: assert(0);
     }
   }
