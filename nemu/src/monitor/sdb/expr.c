@@ -112,37 +112,37 @@ static bool make_token(char *e) {
          */
 
         switch (rules[i].token_type) {
-          case '+': tokens[nr_token].type='+';break;
-          case '-': tokens[nr_token].type='-';
+          case '+': tokens[nr_token].type='+';tokens[nr_token].priority=4;break;
+          case '-': tokens[nr_token].type='-';tokens[nr_token].priority=4;
                     if(nr_token==0||(tokens[nr_token-1].type!=TK_NUM&&tokens[nr_token-1].type!=TK_HEX \
                     &&tokens[nr_token-1].type!=TK_REG&&tokens[nr_token-1].type!=TK_RIGHT))
-                      tokens[nr_token].type=TK_MINUS;//判断为负号
+                      {tokens[nr_token].type=TK_MINUS;//判断为负号
+                       tokens[nr_token].priority=2;}
                     break;
-          case '*': tokens[nr_token].type='*';
+          case '*': tokens[nr_token].type='*';tokens[nr_token].priority=3;
                     if(nr_token==0||(tokens[nr_token-1].type!=TK_NUM&&tokens[nr_token-1].type!=TK_HEX \
                     &&tokens[nr_token-1].type!=TK_REG&&tokens[nr_token-1].type!=TK_RIGHT))
                       {tokens[nr_token].type=DEREF;
-                       printf("zhizhen\n");}
+                       tokens[nr_token].priority=2;}
                     break;
-          case '/': tokens[nr_token].type='/';break;
-          case TK_EQ: tokens[nr_token].type=TK_EQ;break;
-          case TK_NEQ: tokens[nr_token].type=TK_NEQ;break;
-          case TK_HEX: tokens[nr_token].type=TK_HEX;
-            for(int k=0;k<substr_len;k++)
-              tokens[nr_token].str[k]=substr_start[k];
-            tokens[nr_token].str[substr_len]='\0';
-            printf("%s",tokens[nr_token].str);
-            break;
-          case TK_NUM: tokens[nr_token].type=TK_NUM;
+          case '/': tokens[nr_token].type='/';tokens[nr_token].priority=3;break;
+          case TK_EQ: tokens[nr_token].type=TK_EQ;tokens[nr_token].priority=7;break;
+          case TK_NEQ: tokens[nr_token].type=TK_NEQ;tokens[nr_token].priority=7;break;
+          case TK_HEX: tokens[nr_token].type=TK_HEX;tokens[nr_token].priority=0;
             for(int k=0;k<substr_len;k++)
               tokens[nr_token].str[k]=substr_start[k];
             tokens[nr_token].str[substr_len]='\0';
             break;
-          case TK_LEFT: tokens[nr_token].type=TK_LEFT;break;
-          case TK_RIGHT: tokens[nr_token].type=TK_RIGHT;break;
+          case TK_NUM: tokens[nr_token].type=TK_NUM;tokens[nr_token].priority=0;
+            for(int k=0;k<substr_len;k++)
+              tokens[nr_token].str[k]=substr_start[k];
+            tokens[nr_token].str[substr_len]='\0';
+            break;
+          case TK_LEFT: tokens[nr_token].type=TK_LEFT;tokens[nr_token].priority=1;break;
+          case TK_RIGHT: tokens[nr_token].type=TK_RIGHT;tokens[nr_token].priority=1;break;
           case TK_NOTYPE: break;
-          case TK_AND: tokens[nr_token].type=TK_AND;break;
-          case TK_REG: tokens[nr_token].type=TK_REG;
+          case TK_AND: tokens[nr_token].type=TK_AND;tokens[nr_token].priority=11;break;
+          case TK_REG: tokens[nr_token].type=TK_REG;tokens[nr_token].priority=0;
             for(int k=0;k<substr_len;k++)
               tokens[nr_token].str[k]=substr_start[k];
             tokens[nr_token].str[substr_len]='\0';
