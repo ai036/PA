@@ -238,6 +238,7 @@ int eval(int p, int q) {
     int op = p;           //the position of 主运算符 in the token expression;
     int index=p;
     int flag=0;
+    int priority=0;
     while(index<=q)
     {
       if(tokens[index].type==TK_NUM);
@@ -246,22 +247,36 @@ int eval(int p, int q) {
         flag++;
       else if(tokens[index].type==TK_RIGHT)
         flag--;
-      else if(tokens[index].type=='+'||tokens[index].type=='-')
-        {if(flag==0)
-          op=index;}
-      else if(tokens[index].type=='*'||tokens[index].type=='/')
-        {if(tokens[op].type!='+'&&tokens[op].type!='-'&&flag==0)
-          op=index;}
-      else if(tokens[index].type==TK_MINUS)
-        {if(tokens[op].type!='+'&&tokens[op].type!='-'&&tokens[op].type!='*'&&tokens[op].type!='/'&&flag==0)
-          op=index;}
+      else if(tokens[index].priority>=2)
+        if(flag==0&&tokens[index].priority>=priority)
+          {op=index;
+          priority=tokens[index].priority;
+          }
+
       index++;
+    }
+    if(priority==2)
+    { index=q;
+      flag=0;
+      while(index>=p)
+        {
+          if(tokens[index].type==TK_NUM);
+          else if(tokens[index].type==TK_RIGHT)
+            flag++;
+          else if(tokens[index].type==TK_LEFT)
+            flag--;
+          else if(tokens[index].priority==2)
+            {if(flag==0)
+              op=index;}
+          index--;
+        }
+    
     }
     int val1=0; 
     if(tokens[op].type!=TK_MINUS)
       val1= eval(p, op - 1);
     int val2 = eval(op + 1, q);
-  
+
     switch (tokens[op].type) {
       case '+': printf("add");return val1 + val2;
       case '-': printf("sub");return val1 - val2;
