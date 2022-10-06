@@ -166,6 +166,7 @@ static bool make_token(char *e) {
 }
 
 int eval(int p, int q);
+
 word_t expr(char *e, bool *success) {
   if (!make_token(e)) {
     *success = false;
@@ -230,7 +231,7 @@ int eval(int p, int q) {
     /* The expression is surrounded by a matched pair of parentheses.
      * If that is the case, just throw away the parentheses.
      */
-    printf("YES");
+    //printf("YES");
     return eval(p + 1, q - 1);
   }
   else {
@@ -278,14 +279,14 @@ int eval(int p, int q) {
     int val2 = eval(op + 1, q);
 
     switch (tokens[op].type) {
-      case '+': printf("add");return val1 + val2;
-      case '-': printf("sub");return val1 - val2;
-      case '*': printf("mul");return val1 * val2;
-      case '/': printf("div");return val1 / val2;
-      case TK_MINUS: printf("minus");return -val2;
-      case TK_EQ: printf("==");return val1 == val2;
-      case TK_NEQ: printf("!=");return val1 != val2;
-      case TK_AND: printf("and");return val1 && val2;
+      case '+': return val1 + val2;
+      case '-': return val1 - val2;
+      case '*': return val1 * val2;
+      case '/': return val1 / val2;
+      case TK_MINUS: return -val2;
+      case TK_EQ: return val1 == val2;
+      case TK_NEQ: return val1 != val2;
+      case TK_AND: return val1 && val2;
       default: assert(0);
     }
   }
