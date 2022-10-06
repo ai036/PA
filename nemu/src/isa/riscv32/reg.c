@@ -44,6 +44,7 @@ word_t isa_reg_str2val(const char *s, bool *success) {
     if(strcmp(regs[i],s)==0)
         { if(success!=NULL)
             *success=true;
+          printf("%s\n",regs[i]);
           return cpu.gpr[i];
           }
   assert(0);
