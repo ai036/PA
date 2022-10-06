@@ -277,7 +277,7 @@ int eval(int p, int q) {
     int val1=0; 
     if(tokens[op].type!=TK_MINUS)
       val1= eval(p, op - 1);
-    int val2 = eval(op + 1, q);
+    int val2 = 0;
 
     switch (tokens[op].type) {
       case '+': return val1 + val2;
@@ -290,7 +290,7 @@ int eval(int p, int q) {
       case TK_AND: return val1 && val2;
       case DEREF: if(tokens[op+1].type==TK_LEFT&&tokens[q].type==TK_RIGHT)
                 {printf("%d %d %d\n",op,op+2,q-1);
-                int addr=eval(op+1,q);
+                 int addr=eval(op+1,q);
                  
                  return vaddr_read(addr,4);
                  }
