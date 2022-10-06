@@ -44,6 +44,7 @@ word_t isa_reg_str2val(const char *s, bool *success) {
     return cpu.gpr[0];
   int i=1;
   char str[5];
+    printf("%s\n",s);
   while(s[i]!='\0')
     {str[i-1]=s[i];
      i++;
