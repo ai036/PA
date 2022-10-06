@@ -93,8 +93,8 @@ static int cmd_x(char *args){
 
 static int cmd_p(char *args){
   bool a;
-  expr(args,&a);
-  printf("  %d\n",eval(0,re_nr_token()-1));
+  
+  printf("  %d\n",expr(args,&a));
   //return eval(0,re_nr_token()-1);
   return 0;
 }

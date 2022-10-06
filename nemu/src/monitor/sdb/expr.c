@@ -165,7 +165,7 @@ static bool make_token(char *e) {
   return true;
 }
 
-
+int eval(int p, int q);
 word_t expr(char *e, bool *success) {
   if (!make_token(e)) {
     *success = false;
@@ -174,9 +174,9 @@ word_t expr(char *e, bool *success) {
 
   /* TODO: Insert codes to evaluate the expression. */
   //TODO();
-  for(int i=0;i<nr_token;i++) 
-    printf("%d\n",tokens[i].type);
-  return 0;
+//  for(int i=0;i<nr_token;i++) 
+//    printf("%d\n",tokens[i].type);
+  return eval(0,nr_token-1);
 }
 
 bool check_parentheses(int p, int q)          //(1+2)*(3+4)这里会出现问题(已经解决)
