@@ -124,6 +124,7 @@ static bool make_token(char *e) {
           case TK_HEX: tokens[nr_token].type=TK_HEX;
             for(int k=0;k<substr_len;k++)
               tokens[nr_token].str[k]=substr_start[k];
+            printf("%s",substr_start);
             break;
           case TK_NUM: tokens[nr_token].type=TK_NUM;
             for(int k=0;k<substr_len;k++)
