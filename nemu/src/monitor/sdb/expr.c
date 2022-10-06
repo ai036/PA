@@ -215,8 +215,10 @@ int eval(int p, int q) {
      */
     if(tokens[p].type==TK_NUM)
       return atoi(tokens[p].str);
-    else
+    else if(tokens[p].type==TK_HEX)
       return strtol(tokens[p].str,NULL,16);
+    else
+      return isa_reg_str2val(tokens[p].str,NULL);
   }
   else if (check_parentheses(p, q) == true) {
     /* The expression is surrounded by a matched pair of parentheses.
