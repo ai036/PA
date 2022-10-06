@@ -48,8 +48,9 @@ word_t isa_reg_str2val(const char *s, bool *success) {
     {str[i-1]=s[i];
      i++;
      }
-  if(s[3]=='1'||s[3]=='2')
-    str[2]=s[3];
+  str[2]= '\0';
+ // if(s[3]=='1'||s[3]=='2')
+   // str[2]=s[3];
   for(int i = 0; i <32; i++)
     {if(strcmp(regs[i],str)==0)
         { if(success!=NULL)
