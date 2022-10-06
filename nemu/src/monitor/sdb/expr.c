@@ -226,7 +226,7 @@ int eval(int p, int q) {
       return atoi(tokens[p].str);
     else if(tokens[p].type==TK_HEX)
       return strtol(tokens[p].str,NULL,16);
-    else
+    printf("%s\n",tokens[p].str);
       return isa_reg_str2val(tokens[p].str,NULL);
   }
   else if (check_parentheses(p, q) == true) {
