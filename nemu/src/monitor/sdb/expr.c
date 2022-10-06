@@ -130,6 +130,7 @@ static bool make_token(char *e) {
           case TK_NUM: tokens[nr_token].type=TK_NUM;
             for(int k=0;k<substr_len;k++)
               tokens[nr_token].str[k]=substr_start[k];
+            tokens[nr_token].str[substr_len]='\0';
             break;
           case TK_LEFT: tokens[nr_token].type=TK_LEFT;break;
           case TK_RIGHT: tokens[nr_token].type=TK_RIGHT;break;
