@@ -41,11 +41,13 @@ void isa_reg_display() {
 
 word_t isa_reg_str2val(const char *s, bool *success) {
   for(int i = 0; i <32; i++)
-    if(strcmp(regs[i],s)==0)
+    {if(strcmp(regs[i],s)==0)
         { if(success!=NULL)
             *success=true;
           return cpu.gpr[i];
-          }
+          }}
+    if(strcmp("pc",s)==0)
+      return cpu.pc;
   printf("Wrong register name!");
   assert(0);
 }
