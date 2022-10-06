@@ -146,7 +146,6 @@ static bool make_token(char *e) {
             for(int k=0;k<substr_len;k++)
               tokens[nr_token].str[k]=substr_start[k];
             tokens[nr_token].str[substr_len]='\0';
-            printf("%s\n",tokens[nr_token].str);
             break;
 
           default: TODO();
