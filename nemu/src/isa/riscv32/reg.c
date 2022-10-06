@@ -47,5 +47,6 @@ word_t isa_reg_str2val(const char *s, bool *success) {
           printf("%s\n",regs[i]);
           return cpu.gpr[i];
           }
+  printf("Wrong register name!");
   assert(0);
 }

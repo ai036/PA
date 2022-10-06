@@ -21,7 +21,7 @@
 #include <regex.h>
 
 enum {
-  TK_NOTYPE = 256, TK_NUM=10,TK_HEX=16,TK_REG=32,TK_EQ,TK_NEQ,TK_LEFT,TK_RIGHT,TK_MINUS,TK_AND,TK_REF
+  TK_NOTYPE = 256, TK_NUM=10,TK_HEX=16,TK_REG=32,TK_EQ,TK_NEQ,TK_LEFT,TK_RIGHT,TK_MINUS,TK_AND,DEREF
 
   /* TODO: Add more token types */
 
@@ -114,10 +114,16 @@ static bool make_token(char *e) {
         switch (rules[i].token_type) {
           case '+': tokens[nr_token].type='+';break;
           case '-': tokens[nr_token].type='-';
-                    if(nr_token==0||(tokens[nr_token-1].type!=TK_NUM&&tokens[nr_token-1].type!=TK_RIGHT))
+                    if(nr_token==0||(tokens[nr_token-1].type!=TK_NUM&&tokens[nr_token-1].type!=TK_HEX \
+                    &&tokens[nr_token-1].type!=TK_RIGHT))
                       tokens[nr_token].type=TK_MINUS;//判断为负号
                     break;
-          case '*': tokens[nr_token].type='*';break;
+          case '*': tokens[nr_token].type='*';
+                    if(nr_token==0||(tokens[nr_token-1].type!=TK_NUM&&tokens[nr_token-1].type!=TK_HEX \
+                    &&tokens[nr_token-1].type!=TK_RIGHT))
+                      {tokens[nr_token].type=DEREF;
+                       printf("zhizhen\n");}
+                    break;
           case '/': tokens[nr_token].type='/';break;
           case TK_EQ: tokens[nr_token].type=TK_EQ;break;
           case TK_NEQ: tokens[nr_token].type=TK_NEQ;break;
