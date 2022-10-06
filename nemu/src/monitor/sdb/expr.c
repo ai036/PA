@@ -21,7 +21,7 @@
 #include <regex.h>
 
 enum {
-  TK_NOTYPE = 256, TK_EQ,TK_NUM,TK_LEFT,TK_RIGHT,TK_MINUS
+  TK_NOTYPE = 256, TK_NUM=10,TK_HEX=16,TK_EQ,TK_LEFT,TK_RIGHT,TK_MINUS,
 
   /* TODO: Add more token types */
 
@@ -30,20 +30,22 @@ enum {
 static struct rule {
   const char *regex;
   int token_type;
-  int priority;
 } rules[] = {
 
   /* TODO: Add more rules.
    * Pay attention to the precedence level of different rules.
    */
 
-  {" +", TK_NOTYPE,3},    // spaces
+  {" +", TK_NOTYPE},    // spaces
+  {"[0-9]+" , TK_NUM},       // 十进制数字
+  {"0[xX][0-9a-fA-F]+" , TK_HEX},//十六进制数字
+  
   {"\\+", '+'},         // plus
   {"\\-", '-'},         // 减
   {"\\*", '*'},         // 乘
   {"\\/", '/'},         // 除
   {"==", TK_EQ},        // equal
-  {"[0-9]+" , TK_NUM},       // 十进制数字
+  
   {"[(]", TK_LEFT},      // 左括号
   {"[)]", TK_RIGHT}     // 右括号
 };
@@ -72,6 +74,7 @@ void init_regex() {
 typedef struct token {
   int type;
   char str[32];
+  int priority;
 } Token;
 
 static Token tokens[1000] __attribute__((used)) = {};
