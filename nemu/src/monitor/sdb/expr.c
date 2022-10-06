@@ -122,7 +122,7 @@ static bool make_token(char *e) {
           case TK_EQ: tokens[nr_token].type=TK_EQ;break;
           case TK_NEQ: tokens[nr_token].type=TK_NEQ;break;
           case TK_HEX: tokens[nr_token].type=TK_HEX;
-            
+            printf("substr");
           break;
           case TK_NUM: tokens[nr_token].type=TK_NUM;
             for(int k=0;k<substr_len;k++)
