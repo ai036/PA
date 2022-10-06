@@ -233,7 +233,6 @@ int eval(int p, int q) {
      * If that is the case, just throw away the parentheses.
      */
     //printf("YES");
-    printf("234");
     return eval(p + 1, q - 1);
   }
   else {
@@ -276,7 +275,7 @@ int eval(int p, int q) {
     
     }
     int val1=0; 
-    if(tokens[op].type!=TK_MINUS)
+    if(tokens[op].type!=TK_MINUS&&tokens[op].type!=DEREF)
       val1= eval(p, op - 1);
     int val2 = eval(op + 1, q);
 
