@@ -289,8 +289,8 @@ int eval(int p, int q) {
       case TK_NEQ: return val1 != val2;
       case TK_AND: return val1 && val2;
       case DEREF: if(tokens[op+1].type==TK_LEFT&&tokens[q].type==TK_RIGHT)
-                {printf("%d %d %d\n",op,op+1,q);
-                int addr=eval(op+2,q-1);
+                {printf("%d %d %d\n",op,op+2,q-1);
+                int addr=eval(op+1,q);
                  
                  return vaddr_read(addr,4);
                  }
