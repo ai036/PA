@@ -134,8 +134,9 @@ static bool make_token(char *e) {
           case TK_NOTYPE: break;
           case TK_AND: tokens[nr_token].type=TK_AND;break;
           case TK_REG: tokens[nr_token].type=TK_REG;
-            
-          break;
+            for(int k=0;k<substr_len;k++)
+              tokens[nr_token].str[k]=substr_start[k];
+            break;
 
           default: TODO();
         }
