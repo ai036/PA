@@ -21,7 +21,7 @@
 #include <regex.h>
 
 enum {
-  TK_NOTYPE = 256, TK_NUM=10,TK_HEX=16,TK_EQ,TK_LEFT,TK_RIGHT,TK_MINUS,
+  TK_NOTYPE = 256, TK_NUM=10,TK_HEX=16,TK_REG=32,TK_EQ,TK_NEQ,TK_LEFT,TK_RIGHT,TK_MINUS,TK_AND,TK_REF
 
   /* TODO: Add more token types */
 
@@ -39,15 +39,16 @@ static struct rule {
   {" +", TK_NOTYPE},    // spaces
   {"[0-9]+" , TK_NUM},       // 十进制数字
   {"0[xX][0-9a-fA-F]+" , TK_HEX},//十六进制数字
-  
+  {"(\\$0)|([a-z]+)|([a-z][0-9]+)",TK_REG}, //寄存器(可能有点问题)
   {"\\+", '+'},         // plus
   {"\\-", '-'},         // 减
   {"\\*", '*'},         // 乘
   {"\\/", '/'},         // 除
   {"==", TK_EQ},        // equal
-  
+  {"!=", TK_NEQ},       // not equal
   {"[(]", TK_LEFT},      // 左括号
-  {"[)]", TK_RIGHT}     // 右括号
+  {"[)]", TK_RIGHT},     // 右括号
+  {"&&", TK_AND}        // and
 };
 
 #define NR_REGEX ARRLEN(rules)
@@ -119,13 +120,20 @@ static bool make_token(char *e) {
           case '*': tokens[nr_token].type='*';break;
           case '/': tokens[nr_token].type='/';break;
           case TK_EQ: tokens[nr_token].type=TK_EQ;break;
+          case TK_NEQ: tokens[nr_token].type=TK_NEQ;break;
           case TK_NUM: tokens[nr_token].type=TK_NUM;
             for(int k=0;k<substr_len;k++)
               tokens[nr_token].str[k]=substr_start[k];
             break;
+          case TK_HEX: tokens[nr_token].type=TK_HEX;
+            
+          break;
           case TK_LEFT: tokens[nr_token].type=TK_LEFT;break;
           case TK_RIGHT: tokens[nr_token].type=TK_RIGHT;break;
           case TK_NOTYPE: break;
+          case TK_AND: tokens[nr_token].type=TK_AND;break;
+          case TK_REG: tokens[nr_token].type=TK_REG;
+          break;
 
           default: TODO();
         }
