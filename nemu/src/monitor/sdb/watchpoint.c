@@ -84,7 +84,6 @@ void free_wp(int num)
     assert(0);
   WP* wp=head;
   WP* pre=head;
-  printf("%s\n",head->expr);
   if(head->NO==num)
   { find=true;
     head=head->next;}
