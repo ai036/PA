@@ -108,7 +108,6 @@ static int cmd_w(char *args){
 static int cmd_d(char *args)
 {
   int index=atoi(args);
-  printf("%d",index);
   free_wp(index);
   return 0;
 }
