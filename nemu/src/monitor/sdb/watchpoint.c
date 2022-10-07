@@ -53,14 +53,14 @@ int new_wp(char *str)
   else
     p=free_;
   //p->NO=num;
-  if(head==NULL)
+  if(head==NULL)               //从链表尾插入
     head=p;
      
   else 
-    { WP *q=head;
-      while(q->next!=NULL)
-        q=q->next;
-      q->next=p;
+    { WP *tail=head;
+      while(tail->next!=NULL)
+        tail=tail->next;
+      tail->next=p;
     }
  // num++;
   p->expr=str;
