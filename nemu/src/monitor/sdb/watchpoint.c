@@ -68,6 +68,7 @@ int new_wp(char *str)
   p->expr=str;
   p->value=expr(str,&a);
   printf("Hardware watchpoint %d: %s\n",p->NO,str);
+  p->next=NULL;
   return 0;
     
 };
