@@ -19,7 +19,7 @@
 #include <common.h>
 
 word_t expr(char *e, bool *success);
-int eval(int p,int q);
-int re_nr_token();
+int new_wp(char* args);
+
 
 #endif

@@ -20,6 +20,7 @@
 #include "sdb.h"
 #include <memory/vaddr.h>
 
+
 extern int nr_token;
 static int is_batch_mode = false;
 
@@ -99,6 +100,11 @@ static int cmd_p(char *args){
   return 0;
 }
 
+static int cmd_w(char *args){
+  new_wp(args);
+  return 0;
+}
+
 static struct {
   const char *name;
   const char *description;
@@ -111,6 +117,7 @@ static struct {
   {"info", "Display information of all registers", cmd_info},
   {"x", "check the memory", cmd_x },
   {"p", "compute the expression", cmd_p },
+  {"w", "Create a new watchpoint", cmd_w },
   /* TODO: Add more commands */
 
 };

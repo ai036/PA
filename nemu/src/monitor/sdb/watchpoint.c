@@ -21,6 +21,7 @@ typedef struct watchpoint {
   int NO;
   struct watchpoint *next;
   char *expr;
+  int value;
   /* TODO: Add more members if necessary */
 
 } WP;
@@ -41,8 +42,9 @@ void init_wp_pool() {
   free_ = wp_pool;
 }
 
-WP* new_wp()
-{ if(free_==NULL)
+int new_wp(char *str)
+{ bool a;
+  if(free_==NULL)
     assert(0);
 
   WP *p=NULL;
@@ -52,7 +54,7 @@ WP* new_wp()
     }
   else
     p=free_;
-  p->NO=num;
+  //p->NO=num;
   if(head==NULL)
     head=p;
      
@@ -62,14 +64,20 @@ WP* new_wp()
         q=q->next;
       q->next=p;
     }
-  num++;
-  return p;
+ // num++;
+  p->expr=str;
+  p->value=expr(str,&a);
+  printf("Hardware watchpoint %d: %s\n",p->NO,str);
+  return 0;
     
 };
 /* TODO: Implement the functionality of watchpoint */
 
 void free_wp(WP *wp)
 {
+  if (free_==NULL)
+    {free_=wp;
+     return ;}
   WP *p=free_;
   while(p->next != NULL)
     p=p->next;
