@@ -80,7 +80,8 @@ void free_wp(int num)
   WP* wp=head;
   WP* pre=head;
   if(head->NO==num)
-    head=head->next;    
+  { find=true;
+    head=head->next;}   
   else if(head->next!=NULL)
   {
     wp=head->next;
