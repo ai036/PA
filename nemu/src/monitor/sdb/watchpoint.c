@@ -95,6 +95,7 @@ void free_wp(int num)
   }
   if(!find)
     assert(0);
+  printf("%s\n",wp->expr);
   pre->next=wp->next;
   if (free_==NULL)
     {free_=wp;
