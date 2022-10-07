@@ -64,7 +64,7 @@ int new_wp(char *str)
  // num++;
   p->expr=str;
   p->value=expr(str,&a);
-  printf("Hardware watchpoint %d: %s\n",p->NO,head->expr);
+  printf("Hardware watchpoint!!! %d: %s\n",p->NO,head->expr);
   p->next=NULL;
   return 0;
     
