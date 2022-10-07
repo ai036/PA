@@ -58,8 +58,9 @@ int new_wp(char *str)
   else 
     { WP *tail=head;
       while(tail->next!=NULL)
+      { printf("head::%s\n",head->expr);
         tail=tail->next;
-      tail->next=p;                  //从链表尾插入
+      }tail->next=p;                  //从链表尾插入
     }
  // num++;
   p->expr=str;
