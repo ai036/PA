@@ -34,7 +34,7 @@ config MEM_RANDOM
 config WATCHPOINT
   depends on TARGET_NATIVE_ELF
   bool "Enable watchpoint"
-  defauly n
+  default n
   help
     Enable watchpoint check in every exec.
 endmenu #MEMORY
