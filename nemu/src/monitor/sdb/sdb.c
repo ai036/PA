@@ -72,8 +72,12 @@ static int cmd_si(char *args){
 static int cmd_info(char *args){
   char *arg=strtok(NULL, " ");
   if(arg!=NULL)
+  {
     if(strcmp(arg,"r")==0)
       isa_reg_display();
+    else if(strcmp(arg,"w")==0)
+      print_wp();
+  }  
   return 0;
 }
 

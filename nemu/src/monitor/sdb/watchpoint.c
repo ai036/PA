@@ -61,7 +61,6 @@ int new_wp(char *str)
       { printf("head::%s\n",head->expr);
         tail=tail->next;
       }tail->next=p;                  //从链表尾插入
-      printf("head::%d  %s\n",head->NO,head->expr);
     }
  // num++;
   int i=0;
@@ -116,7 +115,7 @@ void free_wp(int num)
     wp->expr[i]='\0';
 }
 
-bool diff()
+bool diff()   //还没有检验
 { bool success=false,dif=false;
   WP *wp=head;
   while(wp!=NULL)
@@ -132,3 +131,14 @@ bool diff()
       }
   return dif;
 }
+
+void print_wp()
+{
+  WP *wp=head;
+  while(wp!=NULL)
+    { printf("Hardware watchpoint %d: %s\n\n",wp->NO,wp->expr);
+      wp=wp->next;
+      }
+}
+
+
