@@ -76,12 +76,12 @@ void free_wp(int num)
 {
   bool find=false;
   if(num>31||num<0)
-    assert(0);  
+    assert(0);
   WP* wp=head;
   WP* pre=head;
   if(head->NO==num)
   { find=true;
-    head=head->next;}   
+    head=head->next;}
   else if(head->next!=NULL)
   {
     wp=head->next;
