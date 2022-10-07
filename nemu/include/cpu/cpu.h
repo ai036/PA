@@ -27,3 +27,5 @@ void invalid_inst(vaddr_t thispc);
 #define INV(thispc) invalid_inst(thispc)
 
 #endif
+
+bool diff();

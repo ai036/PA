@@ -114,7 +114,21 @@ void free_wp(int num)
   printf("free watchpoint %d: %s\n", wp->NO,wp->expr);
   for(int i=0;i<strlen(wp->expr);i++)
     wp->expr[i]='\0';
-  
-
 }
 
+bool diff()
+{ bool success=false,dif=false;
+  WP *wp=head;
+  while(wp!=NULL)
+    {int val=expr(wp->expr,&success);
+     if(val!=wp->value)
+       { dif=true;
+         printf("Hardware watchpoint %d: %s\n\n",wp->NO,wp->expr);
+         printf("Old value = %d\n",wp->value);
+         printf("New value = %d\n",val);
+         wp->value=val;
+       }
+      wp=wp->next;
+      }
+  return dif;
+}
