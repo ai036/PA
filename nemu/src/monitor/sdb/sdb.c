@@ -105,6 +105,12 @@ static int cmd_w(char *args){
   return 0;
 }
 
+static int cmd_d(char *args)
+{
+  int index=atoi(args);
+  free_wp(index);
+  return 0;
+}
 static struct {
   const char *name;
   const char *description;
@@ -118,6 +124,7 @@ static struct {
   {"x", "check the memory", cmd_x },
   {"p", "compute the expression", cmd_p },
   {"w", "Create a new watchpoint", cmd_w },
+  {"d", "delete the watchpoint of NO.", cmd_d },
   /* TODO: Add more commands */
 
 };

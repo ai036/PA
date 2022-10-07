@@ -74,15 +74,38 @@ int new_wp(char *str)
 };
 /* TODO: Implement the functionality of watchpoint */
 
-void free_wp(WP *wp)
+void free_wp(int num)
 {
+  bool find=false;
+  if(num>31||num<0)
+    assert(0);  
+  WP* wp=head;
+  WP* pre=head;
+  if(head->NO==num)
+    head=head->next;    
+  else if(head->next!=NULL)
+  {
+    wp=head->next;
+    while(wp!=NULL)
+    { if(wp->NO==num)       //找到num号监视点
+      { find=true;
+        break;}
+      wp=wp->next;               
+      pre=pre->next;
+    }
+  }
+  if(!find)
+    assert(0);
+  pre->next=wp->next;
   if (free_==NULL)
     {free_=wp;
      return ;}
-  WP *p=free_;
-  while(p->next != NULL)
-    p=p->next;
-  p->next=wp;
-  wp->NO=0;
+  WP *tail=free_;
+  while(tail->next != NULL)
+    tail=tail->next;
+  tail->next=wp;
+  printf("free watchpoint %d: %s\n", wp->NO,wp->expr);
+  wp->expr=NULL;
+  
 }
 
