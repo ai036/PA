@@ -20,7 +20,7 @@
 typedef struct watchpoint {
   int NO;
   struct watchpoint *next;
-  char expr[1000];
+  char *expr;
   int value;
   /* TODO: Add more members if necessary */
 
@@ -64,11 +64,8 @@ int new_wp(char *str)
       printf("head::%d  %s\n",head->NO,head->expr);
     }
  // num++;
-  int i=0;
-  while(str[i]!='\0')
-    {p->expr[i]=str[i];
-     i++;
-    }
+
+  strcpy(p->expr,str);
   p->value=expr(str,&a);
   printf("Hardware watchpoint!!! %d: %s\n",p->NO,head->expr);
   p->next=NULL;
