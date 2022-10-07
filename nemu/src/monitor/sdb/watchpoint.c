@@ -54,8 +54,9 @@ int new_wp(char *str)
     p=free_;
   //p->NO=num;
   if(head==NULL)               //从链表尾插入
+    { printf("INSERT\n");
     head=p;
-     
+    }
   else 
     { WP *tail=head;
       while(tail->next!=NULL)
