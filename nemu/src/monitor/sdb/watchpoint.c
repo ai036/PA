@@ -98,6 +98,7 @@ void free_wp(int num)
   pre->next=wp->next;
   if (free_==NULL)
     {free_=wp;
+     free_->next=NULL;
      return ;}
   WP *tail=free_;
   while(tail->next != NULL)
