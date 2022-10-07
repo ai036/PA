@@ -61,7 +61,7 @@ int new_wp(char *str)
       { printf("head::%s\n",head->expr);
         tail=tail->next;
       }tail->next=p;                  //从链表尾插入
-      printf("head::%s\n",head->expr);
+      printf("head::%d  %s\n",head->NO,head->expr);
     }
  // num++;
   p->expr=str;
