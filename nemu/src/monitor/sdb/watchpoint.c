@@ -53,15 +53,13 @@ int new_wp(char *str)
   else
     p=free_;
   //p->NO=num;
-  if(head==NULL)               //从链表尾插入
-    { printf("INSERT\n");
+  if(head==NULL)               
     head=p;
-    }
   else 
     { WP *tail=head;
       while(tail->next!=NULL)
         tail=tail->next;
-      tail->next=p;
+      tail->next=p;                  //从链表尾插入
     }
  // num++;
   p->expr=str;
