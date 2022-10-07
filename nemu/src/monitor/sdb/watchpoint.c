@@ -103,6 +103,7 @@ void free_wp(int num)
   while(tail->next != NULL)
     tail=tail->next;
   tail->next=wp;
+  wp->next=NULL;
   printf("free watchpoint %d: %s\n", wp->NO,wp->expr);
   wp->expr=NULL;
 
