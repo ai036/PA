@@ -70,7 +70,7 @@ int new_wp(char *str)
      i++;
     }
   p->value=expr(str,&a);
-  printf("Hardware watchpoint!!! %d: %s\n",p->NO,head->expr);
+  printf("Hardware watchpoint %d: %s\n",p->NO,p->expr);
   p->next=NULL;
   return 0;
     
