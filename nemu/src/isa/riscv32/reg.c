@@ -43,13 +43,13 @@ word_t isa_reg_str2val(const char *s, bool *success) {
   if(strcmp("$0",s)==0)
     return cpu.gpr[0];
   int i=1;
-  char str[5];
+  char str[5];//去掉$
   while(i<=2)
     {str[i-1]=s[i];
      i++;
      }
   str[2]= '\0';
-  if(s[3]=='1'||s[3]=='2')
+  if(s[3]=='1'||s[3]=='2')//识别s10和s11
     {str[2]=s[3];
      str[3]='\0';}
   for(int i = 0; i <32; i++)
