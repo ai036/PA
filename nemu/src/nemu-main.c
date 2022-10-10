@@ -27,7 +27,7 @@ int main(int argc, char *argv[]) {
 #else
   init_monitor(argc, argv);
 #endif
-  FILE *fp= fopen("input.txt", "r");
+  FILE *fp= fopen("input", "r");
   int a;
   if(fp== NULL)
   printf("Error: Could not open input.txt file.\n");
