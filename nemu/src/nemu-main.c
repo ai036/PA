@@ -42,7 +42,7 @@ int main(int argc, char *argv[]) {
  {
  int len = strlen(a);
  a[len-1] = '\0';  /*去掉换行符*/
- printf("%s %d \n",a,len - 1);
+ printf("%s\n",a);
  }
 
   /* Start engine. */
