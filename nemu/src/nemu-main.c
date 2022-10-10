@@ -29,13 +29,13 @@ int main(int argc, char *argv[]) {
 #endif
 
   FILE *fp= fopen("input.txt", "r");
-  int result;
+  char result;
   
-  for(int i=0;i<11;i++){
-  int a=fscanf(fp, "%d", &result);
+  for(int i=0;i<1;i++){
+  result=fgetc(fp);
 
-  printf("%d", result);
-  printf("%d",a);
+  printf("%c", result);
+  
   }
   /* Start engine. */
   engine_start();
