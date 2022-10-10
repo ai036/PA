@@ -38,7 +38,8 @@ void test()
       {r[i]=a[i];
       a[i]=' ';}
     else if(a[i]==' ')
-      break;
+    { r[i]='\0';
+      break;}
     }
   int res=atoi(r);
   if(res!=expr(a,NULL))
