@@ -30,6 +30,7 @@ void test()
     printf("Error: Could not open input.txt file.\n");
   while(fgets(a,100,fp) != NULL)
  {
+  fseek(fp, 2L, SEEK_CUR); 
   int len = strlen(a);
   a[len] = '\0';  /*去掉换行符*/
   printf("%s\n",a);
