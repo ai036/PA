@@ -103,7 +103,7 @@ int main(int argc, char *argv[]) {
     fscanf(fp, "%d", &result);
     if(result<0)
       continue;
-    pclose(fp)!=0;
+    pclose(fp);
     
 
     printf("%u %s\n", result, buf);

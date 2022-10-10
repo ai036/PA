@@ -180,7 +180,7 @@ word_t expr(char *e, bool *success) {
   return eval(0,nr_token-1);
 }
 
-bool check_parentheses(int p, int q)          //(1+2)*(3+4)这里会出现问题(已经解决)
+bool check_parentheses(int p, int q)                    
 { int count=0;
   if(tokens[p].type!=TK_LEFT||tokens[q].type!=TK_RIGHT)
     return false;

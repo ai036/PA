@@ -28,8 +28,17 @@ int main(int argc, char *argv[]) {
   init_monitor(argc, argv);
 #endif
 
+  FILE *fp= fopen("input.txt", "r");
+  int result;
+  
+  for(int i=0;i<11;i++){
+  int a=fscanf(fp, "%d", &result);
+
+  printf("%d", result);
+  printf("%d",a);
+  }
   /* Start engine. */
   engine_start();
-
+  
   return is_exit_status_bad();
 }
