@@ -31,7 +31,7 @@ void test()
   while(fgets(a,100,fp) != NULL)
  {
   int len = strlen(a);
-  a[len] = '\0';  /*去掉换行符*/
+  a[len-1] = '\0';  /*去掉换行符*/
   printf("%s\n",a);
   for(int i=0;i<len;i++)
   { if(a[i] != ' ')
