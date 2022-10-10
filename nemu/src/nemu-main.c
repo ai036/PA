@@ -19,6 +19,7 @@ void init_monitor(int, char *[]);
 void am_init_monitor();
 void engine_start();
 int is_exit_status_bad();
+word_t expr(char *e, bool *success);
 
 int main(int argc, char *argv[]) {
   /* Initialize the monitor. */
@@ -30,6 +31,7 @@ int main(int argc, char *argv[]) {
   FILE *fp= fopen("input", "r");
   char a[100];
   char r[10];
+  int count=0;
   if(fp== NULL)
     printf("Error: Could not open input.txt file.\n");
 /*  for(int i=0;i<10;i++){
@@ -51,8 +53,9 @@ int main(int argc, char *argv[]) {
     break;
     }
   int res=atoi(r);
-  printf("%d\n",res);
-  printf("%s",a);
+  if(res!=expr(a,NULL))
+    count++;
+  printf("number of error: %d\n",count);
  }
 
   /* Start engine. */
