@@ -20,6 +20,32 @@ void am_init_monitor();
 void engine_start();
 int is_exit_status_bad();
 word_t expr(char *e, bool *success);
+void test()
+{
+  FILE *fp= fopen("input", "r");
+  char a[100];
+  char r[10];
+  int count=0;
+  if(fp== NULL)
+    printf("Error: Could not open input.txt file.\n");
+  while(fgets(a,100,fp) != NULL)
+ {
+  int len = strlen(a);
+  a[len] = '\0';  /*去掉换行符*/
+  printf("%s\n",a);
+  for(int i=0;i<len;i++)
+  { if(a[i] != ' ')
+      {r[i]=a[i];
+      a[i]=' ';}
+    else if(a[i]==' ')
+      break;
+    }
+  int res=atoi(r);
+  if(res!=expr(a,NULL))
+    count++;
+  printf("number of error: %d\n",count);
+ }
+}
 
 int main(int argc, char *argv[]) {
   /* Initialize the monitor. */
@@ -28,36 +54,7 @@ int main(int argc, char *argv[]) {
 #else
   init_monitor(argc, argv);
 #endif
-  FILE *fp= fopen("input", "r");
-  char a[100];
-  char r[10];
-  int count=0;
-  if(fp== NULL)
-    printf("Error: Could not open input.txt file.\n");
-/*  for(int i=0;i<10;i++){
-  int q=fscanf(fp,"%d %s",&res,a);
-  if(q)
-    printf("%d %s\n",res,a);
-
-  }*/
-  while(fgets(a,100,fp) != NULL)
- {
- int len = strlen(a);
- a[len] = '\0';  /*去掉换行符*/
- printf("%s\n",a);
- for(int i=0;i<len;i++)
- { if(a[i] != ' ')
-    {r[i]=a[i];
-     a[i]=' ';}
-   else if(a[i]==' ')
-    break;
-    }
-  int res=atoi(r);
-  if(res!=expr(a,NULL))
-    count++;
-  printf("number of error: %d\n",count);
- }
-
+  test();
   /* Start engine. */
   engine_start();
   
