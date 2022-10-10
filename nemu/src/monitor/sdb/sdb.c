@@ -166,12 +166,13 @@ void sdb_set_batch_mode() {
 
 void sdb_mainloop() {
   FILE *fp= fopen("input.txt", "r");
-  char result;
+  int a;
   
   for(int i=0;i<1;i++){
-  result=fgetc(fp);
 
-  printf("%c", result);
+  int re=fscanf(fp,"%d",&a);
+  printf("%d", a);
+  printf("%d",re);
   
   }
   if (is_batch_mode) {
