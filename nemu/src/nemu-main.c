@@ -28,7 +28,7 @@ void test()
   int count=0;
   if(fp== NULL)
     printf("Error: Could not open input.txt file.\n");
-  while(fgets(a,10,fp) != NULL)
+  while(fgets(a,100,fp) != NULL)
  {
   int len = strlen(a);
   a[len] = '\0';  /*去掉换行符*/
@@ -42,8 +42,7 @@ void test()
       break;}
     }
   int res=atoi(r);
-  if(res!=expr(a,NULL))
-    count++;
+  printf("%d\n",res);
   printf("number of error: %d\n",count);
  }
 }
