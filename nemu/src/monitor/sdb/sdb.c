@@ -165,16 +165,6 @@ void sdb_set_batch_mode() {
 }
 
 void sdb_mainloop() {
-  FILE *fp= fopen("input.txt", "r");
-  int a;
-  
-  for(int i=0;i<1;i++){
-
-  int re=fscanf(fp,"%d",&a);
-  printf("%d", a);
-  printf("%d",re);
-  
-  }
   if (is_batch_mode) {
     cmd_c(NULL);
     return;
@@ -218,4 +208,14 @@ void init_sdb() {
 
   /* Initialize the watchpoint pool. */
   init_wp_pool();
+    FILE *fp= fopen("input.txt", "r");
+  int a;
+  
+  for(int i=0;i<1;i++){
+
+  int re=fscanf(fp,"%d",&a);
+  printf("%d", a);
+  printf("%d",re);
+  
+  }
 }
