@@ -23,7 +23,7 @@ word_t expr(char *e, bool *success);
 void test()
 {
   FILE *fp= fopen("input", "r");
-  char a[100];
+  char a[1000];
   char r[10];
   int count=0;
   if(fp== NULL)
