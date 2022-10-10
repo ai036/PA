@@ -29,15 +29,21 @@ int main(int argc, char *argv[]) {
 #endif
   FILE *fp= fopen("input", "r");
   char a[100];
-  int res;
+
   if(fp== NULL)
     printf("Error: Could not open input.txt file.\n");
-  for(int i=0;i<10;i++){
+/*  for(int i=0;i<10;i++){
   int q=fscanf(fp,"%d %s",&res,a);
   if(q)
-  printf("%d %s\n",res,a);
+    printf("%d %s\n",res,a);
 
-  }
+  }*/
+  while(fgets(a,100,fp) != NULL)
+ {
+ int len = strlen(a);
+ a[len-1] = '\0';  /*去掉换行符*/
+ printf("%s %d \n",a,len - 1);
+ }
 
   /* Start engine. */
   engine_start();
