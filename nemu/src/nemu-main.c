@@ -28,12 +28,14 @@ int main(int argc, char *argv[]) {
   init_monitor(argc, argv);
 #endif
   FILE *fp= fopen("input", "r");
-  
+  char a[100];
+  int res;
   if(fp== NULL)
     printf("Error: Could not open input.txt file.\n");
   for(int i=0;i<10;i++){
-  char a=fgetc(fp);
-  printf("%c",a);
+  int q=fscanf(fp,"%d %s",&res,a);
+  printf("%d %s\n",res,a);
+  printf("%d",q);
   }
 
   /* Start engine. */
