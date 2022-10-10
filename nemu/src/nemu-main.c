@@ -27,7 +27,16 @@ int main(int argc, char *argv[]) {
 #else
   init_monitor(argc, argv);
 #endif
+  FILE *fp= fopen("input.txt", "r");
+  int a;
+  
+  for(int i=0;i<1;i++){
 
+  int re=fscanf(fp,"%d",&a);
+  printf("%d", a);
+  printf("%d",re);
+  
+  }
 
   /* Start engine. */
   engine_start();

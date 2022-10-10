@@ -208,14 +208,5 @@ void init_sdb() {
 
   /* Initialize the watchpoint pool. */
   init_wp_pool();
-    FILE *fp= fopen("input.txt", "r");
-  int a;
-  
-  for(int i=0;i<1;i++){
 
-  int re=fscanf(fp,"%d",&a);
-  printf("%d", a);
-  printf("%d",re);
-  
-  }
 }
