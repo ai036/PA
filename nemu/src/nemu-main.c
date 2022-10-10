@@ -22,7 +22,7 @@ int is_exit_status_bad();
 word_t expr(char *e, bool *success);
 void test()
 {
-  FILE *fp= fopen("input", "r");
+  FILE *fp= fopen("input.txt", "r");
   char a[100];
   char r[10];
   int count=0;
@@ -30,7 +30,7 @@ void test()
     printf("Error: Could not open input.txt file.\n");
   while(fgets(a,100,fp) != NULL)
  {
-  fseek(fp, 2L, SEEK_CUR); 
+  fseek(fp, 2L, SEEK_CUR);
   int len = strlen(a);
   a[len] = '\0';  /*去掉换行符*/
   printf("%s\n",a);
