@@ -47,11 +47,11 @@ int main(int argc, char *argv[]) {
  { if(a[i] != ' ')
     {r[i]=a[i];
      a[i]=' ';}
-   if(a[i]==' ')
+   else if(a[i]==' ')
     break;
     }
   int res=atoi(r);
-  printf("%d",res);
+  printf("%d\n",res);
   printf("%s",a);
  }
 
