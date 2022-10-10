@@ -34,8 +34,9 @@ int main(int argc, char *argv[]) {
     printf("Error: Could not open input.txt file.\n");
   for(int i=0;i<10;i++){
   int q=fscanf(fp,"%d %s",&res,a);
+  if(q)
   printf("%d %s\n",res,a);
-  printf("%d",q);
+
   }
 
   /* Start engine. */
