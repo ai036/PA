@@ -28,7 +28,7 @@ void test()
   int count=0;
   if(fp== NULL)
     printf("Error: Could not open input.txt file.\n");
-  while(fscanf(fp,"%s",a)==0 )
+  while(fscanf(fp,"%s",a))
  {
   int len = strlen(a);
   a[len] = '\0';  /*去掉换行符*/
