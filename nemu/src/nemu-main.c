@@ -29,7 +29,7 @@ int main(int argc, char *argv[]) {
 #endif
   FILE *fp= fopen("input", "r");
   char a[100];
-
+  char r[10],e[100];
   if(fp== NULL)
     printf("Error: Could not open input.txt file.\n");
 /*  for(int i=0;i<10;i++){
@@ -43,6 +43,13 @@ int main(int argc, char *argv[]) {
  int len = strlen(a);
  a[len-1] = '\0';  /*去掉换行符*/
  printf("%s\n",a);
+ for(int i=0;i<len;i++)
+ { if(a[i] != ' ')
+    r[i]=a[i];}
+  int res=atoi(r);
+  printf("%d\n",res);
+  e[0]='1';
+  printf("%s",e);
  }
 
   /* Start engine. */
