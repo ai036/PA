@@ -34,7 +34,7 @@ int main(int argc, char *argv[]) {
   for(int i=0;i<1;i++){
 
   int re=fscanf(fp,"%d",&a);
-  printf("%d", a);
+  printf("%d\n", a);
   printf("%d",re);
   
   }
