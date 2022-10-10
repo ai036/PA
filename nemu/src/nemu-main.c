@@ -29,7 +29,7 @@ int main(int argc, char *argv[]) {
 #endif
   FILE *fp= fopen("input.txt", "r");
   int a;
-  
+  if(fp!= NULL)
   for(int i=0;i<1;i++){
 
   int re=fscanf(fp,"%d",&a);
