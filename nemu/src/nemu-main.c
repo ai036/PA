@@ -42,7 +42,8 @@ void test()
       break;}
     }
   int res=atoi(r);
-  printf("%d\n",res);
+  if(res!=expr(a,NULL))
+    count++;
   printf("number of error: %d\n",count);
  }
 }
