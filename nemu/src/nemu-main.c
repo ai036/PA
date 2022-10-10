@@ -51,7 +51,7 @@ int main(int argc, char *argv[]) {
     break;
     }
   int res=atoi(r);
-  printf("%d\n",res);
+  printf("%d",res);
   printf("%s",a);
  }
 
