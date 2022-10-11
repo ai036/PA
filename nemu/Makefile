@@ -59,3 +59,7 @@ else
 # Include rules to build NEMU
 include $(NEMU_HOME)/scripts/native.mk
 endif
+
+COUNT_L := $(shell  find . -name "*.h" -or -name "*.c" | xargs grep -ve "^$$" | wc -l)
+count:
+	@echo There are $(COUNT_L) lines of code in nemu
