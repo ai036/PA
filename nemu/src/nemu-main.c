@@ -20,7 +20,7 @@ void am_init_monitor();
 void engine_start();
 int is_exit_status_bad();
 word_t expr(char *e, bool *success);
-void test()
+void test()//测试表达式
 {
   FILE *fp= fopen("input.txt", "r");
   char a[100];
@@ -56,7 +56,7 @@ int main(int argc, char *argv[]) {
 #else
   init_monitor(argc, argv);
 #endif
-  test();
+ // test();  测试表达式用
   /* Start engine. */
   engine_start();
   

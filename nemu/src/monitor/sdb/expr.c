@@ -291,7 +291,6 @@ int eval(int p, int q) {
       case DEREF: if(tokens[op+1].type==TK_LEFT&&tokens[q].type==TK_RIGHT)
                 {
                  int addr=eval(op+1,q);
-                 
                  return vaddr_read(addr,4);
                  }
       default: assert(0);
