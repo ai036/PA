@@ -19,6 +19,35 @@ void init_monitor(int, char *[]);
 void am_init_monitor();
 void engine_start();
 int is_exit_status_bad();
+word_t expr(char *e, bool *success);
+void test()//测试表达式
+{
+  FILE *fp= fopen("input.txt", "r");
+  char a[100];
+  char r[10];
+  int count=0;
+  if(fp== NULL)
+    printf("Error: Could not open input.txt file.\n");
+  while(fgets(a,100,fp) != NULL)
+ {
+  int len = strlen(a);
+  a[len-1] = '\0';  /*去掉换行符*/
+  printf("%s\n",a);
+  for(int i=0;i<len;i++)
+  { if(a[i] != ' ')
+      {r[i]=a[i];
+      a[i]=' ';}
+    else if(a[i]==' ')
+    { r[i]='\0';
+      break;}
+    }
+  int res=atoi(r);
+  bool success;
+  if(res!=expr(a,&success))
+    count++;
+  printf("number of error: %d\n",count);
+ }
+}
 
 int main(int argc, char *argv[]) {
   /* Initialize the monitor. */
@@ -27,9 +56,9 @@ int main(int argc, char *argv[]) {
 #else
   init_monitor(argc, argv);
 #endif
-
+ // test();  测试表达式用
   /* Start engine. */
   engine_start();
-
+  
   return is_exit_status_bad();
 }

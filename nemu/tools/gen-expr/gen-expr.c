@@ -30,9 +30,47 @@ static char *code_format =
 "  printf(\"%%u\", result); "
 "  return 0; "
 "}";
+int expr_index=0;
+int choose(int n)
+{
+  return rand()%n;
+}
+
+void gen_num()
+{ int n=choose(2)+1;
+  for(int i=0; i<n; i++){
+  int x=choose(10);
+  if(x==0&&i==0&&n!=1)
+    continue;
+  char dict[10]={'0','1','2','3','4','5','6','7','8','9'};
+  buf[expr_index]=dict[x];
+  expr_index++;
+}
+}
+
+void gen_rand_op()
+{
+  int x=choose(4);
+  char op[4]={'+','-','*','/'};
+  buf[expr_index]=op[x]; 
+  expr_index++;
+}
+
+void gen(char c)
+{
+  buf[expr_index]=c;
+  expr_index++;
+}
 
 static void gen_rand_expr() {
-  buf[0] = '\0';
+
+  switch (choose(4)) {
+    case 0: gen_num(); break;
+    case 1: gen('('); gen_rand_expr(); gen(')'); break;
+    case 2: gen_rand_expr(); gen_rand_op(); gen_rand_expr(); break;
+    case 3: gen(' ');gen_rand_expr();break;
+  }
+  buf[expr_index] = '\0';
 }
 
 int main(int argc, char *argv[]) {
@@ -44,6 +82,7 @@ int main(int argc, char *argv[]) {
   }
   int i;
   for (i = 0; i < loop; i ++) {
+    expr_index=0;
     gen_rand_expr();
 
     sprintf(code_buf, code_format, buf);
@@ -51,6 +90,7 @@ int main(int argc, char *argv[]) {
     FILE *fp = fopen("/tmp/.code.c", "w");
     assert(fp != NULL);
     fputs(code_buf, fp);
+
     fclose(fp);
 
     int ret = system("gcc /tmp/.code.c -o /tmp/.expr");
@@ -61,7 +101,10 @@ int main(int argc, char *argv[]) {
 
     int result;
     fscanf(fp, "%d", &result);
+    if(result<0)
+      continue;
     pclose(fp);
+    
 
     printf("%u %s\n", result, buf);
   }
