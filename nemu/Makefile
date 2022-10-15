@@ -63,3 +63,7 @@ endif
 COUNT_L := $(shell  find . -name "*.h" -or -name "*.c" | xargs grep -ve "^$$" | wc -l)
 count:
 	@echo There are $(COUNT_L) lines of code in nemu
+
+$(OBJ_DIR)/%.o:src/%.c
+	@$(CC)$(CFLAGS)$(SO_CFLAGS)-c -o $@$<
+	@$(CC)$(CFLAGS)$(SO_CFLAGS)-E -MF /dev/null $< | \grep -ve'^#'| \clang-format -> $(basename$@).i
