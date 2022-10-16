@@ -28,6 +28,11 @@ LDFLAGS := -O2 $(LDFLAGS)
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o) $(CXXSRC:%.cc=$(OBJ_DIR)/%.o)
 
 # Compilation patterns
+$(OBJ_DIR)/%.o: src/%.c
+	@$(CC) $(CFLAGS) $(SO_CFLAGS) -c -o $@ $<
+	@$(CC) $(CFLAGS) $(SO_CFLAGS) -E -MF /dev/null $< | \
+		grep -ve '^#' | \
+		clang-format - > $(basename $@).i
 $(OBJ_DIR)/%.o: %.c
 	@echo + CC $<
 	@mkdir -p $(dir $@)
@@ -43,11 +48,7 @@ $(OBJ_DIR)/%.o: %.cc
 	@$(CXX) $(CFLAGS) $(CXXFLAGS) -c -o $@ $<
 	$(call call_fixdep, $(@:.o=.d), $@)
 
-$(OBJ_DIR)/%.o: src/%.c
-	@$(CC) $(CFLAGS) $(SO_CFLAGS) -c -o $@ $<
-	@$(CC) $(CFLAGS) $(SO_CFLAGS) -E -MF /dev/null $< | \
-		grep -ve '^#' | \
-		clang-format - > $(basename $@).i
+
 
 # Depencies
 -include $(OBJS:.o=.d)
