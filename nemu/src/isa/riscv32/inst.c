@@ -32,7 +32,7 @@ enum {
 #define immI() do { *imm = SEXT(BITS(i, 31, 20), 12); } while(0)
 #define immU() do { *imm = SEXT(BITS(i, 31, 12), 20) << 12; } while(0)
 #define immS() do { *imm = (SEXT(BITS(i, 31, 25), 7) << 5) | BITS(i, 11, 7); } while(0)
-#define immJ() do { *imm = (SEXT(BITS(i, 31, 31), 1) << 19) | (SEXT(BITS(i, 19, 12),8) << 11) | (SEXT(BITS(i, 20, 20),1) << 10) | BITS(i, 30,21); } while(0)
+#define immJ() do { *imm = (SEXT(BITS(i, 31, 31), 1) << 19) | BITS(i, 19, 12)| (SEXT(BITS(i, 20, 20),1) << 10) | BITS(i, 30,21); } while(0)
 #define immB() do { *imm = (SEXT(BITS(i, 31, 31), 1) << 11) | (SEXT(BITS(i, 30, 25),6) << 4) | BITS(i, 11, 8) | (SEXT(BITS(i, 7, 7), 1) << 10); } while(0) 
 static void decode_operand(Decode *s, int *dest, word_t *src1, word_t *src2, word_t *imm, int type) {
   uint32_t i = s->isa.inst.val;
@@ -81,7 +81,7 @@ static int decode_exec(Decode *s) {
   INSTPAT("??????? ????? ????? 101 ????? 00000 11", lhu    , I, R(dest) = Mr(src1 + imm, 2));//无符号半字加载
   INSTPAT("0000000 ????? ????? 001 ????? 00100 11", slli   , I, R(dest) = src1 << (imm & 0x01f));//默认shamt[5]=0，立即数逻辑左移
   INSTPAT("0000000 ????? ????? 101 ????? 00100 11", srli   , I, R(dest) = src1 >> (imm & 0x01f));//默认shamt[5]=0，立即数逻辑右移
-
+  
   
   //U
   INSTPAT("??????? ????? ????? ??? ????? 00101 11", auipc  , U, R(dest) = s->pc + imm);//PC 加立即数
@@ -94,7 +94,7 @@ static int decode_exec(Decode *s) {
   INSTPAT("??????? ????? ????? ??? ????? 11011 11", jal    , J, R(dest)=s->pc+4; s->dnpc= s->pc + imm*2 );
 
   //B
-  INSTPAT("??????? ????? ????? 000 ????? 11000 11", beq    , B, if(src1==src2) s->dnpc= s->pc + imm * 2);//刚实现的 没测试
+  INSTPAT("??????? ????? ????? 000 ????? 11000 11", beq    , B, if(src1==src2) s->dnpc= s->pc + imm * 2);//相等时分支
   INSTPAT("??????? ????? ????? 001 ????? 11000 11", bne    , B, if(src1!=src2) s->dnpc= s->pc + imm * 2);//注意是更新pc，偏移量需要*2
   INSTPAT("??????? ????? ????? 101 ????? 11000 11", bge    , B, if((int)src1>=(int)src2) s->dnpc= s->pc + imm * 2);//注意是有符号比较
   INSTPAT("??????? ????? ????? 100 ????? 11000 11", blt    , B, if ((int)src1<(int)src2) s->dnpc= s->pc + imm * 2);//注意是有符号比较
