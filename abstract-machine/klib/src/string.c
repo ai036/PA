@@ -43,7 +43,7 @@ char *strcat(char *dst, const char *src) {
 }
 
 int strcmp(const char *s1, const char *s2) {
-//  panic("Not implemented");
+  panic("Not implemented");
   assert(s1!=NULL&&s2!=NULL);
   while(*s1 && (*s1 == *s2))
     {
@@ -137,3 +137,4 @@ int memcmp(const void *s1, const void *s2, size_t n) {
 }
 
 #endif
+//经测试通过了string测试，但可能还存在bug
