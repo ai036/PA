@@ -66,6 +66,7 @@ int sprintf(char *out, const char *fmt, ...) {
           case 's':
           arg_str=va_arg(args,char*);
           end=cat(out,arg_str,end);
+          i++;
           break;
           
      /*     case 'd':
