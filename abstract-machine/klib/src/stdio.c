@@ -13,9 +13,72 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
   panic("Not implemented");
 }
 
+//将十进制数num转换为base进制的字符串
+int convert(char *out,int end,int num,int base)
+{ 
+  char dict[16]={'0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f'};
+  char output[50];
+  int index=0;
+  if(num==0)
+    output[index++]='0';
+  else if(num<0)
+    {
+      out[end++]='-';
+      num=-num;
+    }
+  while(num>0)
+    {
+      int bit=num%base;
+      output[index++]=dict[bit];
+      num/=base;
+    }
+  for(int i=index-1;i>=0;i--)
+  { 
+    out[end++]=output[i];
+  }
+  return end;
+}
+
+int cat(char *out, char *src,int end)
+{
+  while(*src!='\0')
+    out[end++]=*src++;
+  out[end]='\0';
+  return end;
+}
+
 int sprintf(char *out, const char *fmt, ...) {
 //  panic("Not implemented");
-  
+  va_list args;
+  va_start(args, fmt);
+  size_t len=strlen(fmt);
+  int end=0;
+  int arg_int=0;
+  char *arg_str=NULL;
+  for(int i=0;i<len;i++)
+    {
+      if(fmt[i]!='%')
+        out[end++]=fmt[i];
+      else if(i+1<len)//后面是需要格式化输出的内容
+      {
+        switch(fmt[i+1])
+        { 
+          case 's':
+          arg_str=va_arg(args,char*);
+          end=cat(out,arg_str,end);
+          break;
+          
+          case 'd':
+          arg_int=va_arg(args,int);
+          end=convert(out,end,arg_int,10);
+          break;
+        }
+      }
+      else
+        out[end++]=fmt[i];
+    }
+  out[end]='\0';
+  return end;
 }
 
 int snprintf(char *out, size_t n, const char *fmt, ...) {
