@@ -53,7 +53,7 @@ int sprintf(char *out, const char *fmt, ...) {
   va_start(args, fmt);
   size_t len=strlen(fmt);
   int end=0;
-  int arg_int=0;
+ // int arg_int=0;
   char *arg_str=NULL;
   for(int i=0;i<len;i++)
     {
@@ -68,10 +68,10 @@ int sprintf(char *out, const char *fmt, ...) {
           end=cat(out,arg_str,end);
           break;
           
-          case 'd':
+     /*     case 'd':
           arg_int=va_arg(args,int);
           end=convert(out,end,arg_int,10);
-          break;
+          break;    */
         }
       }
       else
