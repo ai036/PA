@@ -32,10 +32,10 @@ static uint64_t g_timer = 0; // unit: us
 static bool g_print_step = false;
 
 //iringbuf
-struct iringbuf{
+struct Iringbuf{
   char* instruction[20];
-};
-
+  int no;
+} iringbuf;
 
 
 void device_update();
@@ -63,6 +63,7 @@ static void exec_once(Decode *s, vaddr_t pc) {
 #ifdef CONFIG_ITRACE
   char *p = s->logbuf;
   char *q=p;
+
   p += snprintf(p, sizeof(s->logbuf), FMT_WORD ":", s->pc);
   int ilen = s->snpc - s->pc;
   int i;
@@ -79,7 +80,12 @@ static void exec_once(Decode *s, vaddr_t pc) {
 
   void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
   disassemble(p, s->logbuf + sizeof(s->logbuf) - p,
-      MUXDEF(CONFIG_ISA_x86, s->snpc, s->pc), (uint8_t *)&s->isa.inst.val, ilen);  printf("%s hhhhhhh  ",q);
+      MUXDEF(CONFIG_ISA_x86, s->snpc, s->pc), (uint8_t *)&s->isa.inst.val, ilen);  
+  
+  printf("%s hhhhhhh  ",q);
+  iringbuf.instruction[iringbuf.no]=q;
+  iringbuf.no=(iringbuf.no+1)%20;
+
 #endif
 }
 
