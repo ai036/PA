@@ -55,7 +55,6 @@ int main(int argc, char *argv[]) {
   am_init_monitor();
 #else
   init_monitor(argc, argv);
-  printf("init");
 #endif
  // test();  测试表达式用
   /* Start engine. */
