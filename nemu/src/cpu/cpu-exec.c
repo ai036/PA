@@ -33,7 +33,7 @@ static bool g_print_step = false;
 
 //iringbuf   我的环形缓冲区
 struct Iringbuf{
-  char instruction[20][40];
+  char instruction[20][100];
   int no;
 } iringbuf;
 
