@@ -31,7 +31,7 @@ uint64_t g_nr_guest_inst = 0;
 static uint64_t g_timer = 0; // unit: us
 static bool g_print_step = false;
 
-//iringbuf
+//iringbuf   我的环形缓冲区
 struct Iringbuf{
   char instruction[20][40];
   int no;
@@ -84,8 +84,8 @@ static void exec_once(Decode *s, vaddr_t pc) {
   
   strcpy(iringbuf.instruction[iringbuf.no],q);
   iringbuf.no=(iringbuf.no+1)%20;
-  for(int i=0; i<iringbuf.no;i++)
-    printf("the %dth instruction %s\n",i,iringbuf.instruction[i]);
+//  for(int i=0; i<iringbuf.no;i++)    
+//    printf("the %dth instruction %s\n",i,iringbuf.instruction[i]);  
 
 #endif
 }
