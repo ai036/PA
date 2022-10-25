@@ -85,7 +85,7 @@ static void exec_once(Decode *s, vaddr_t pc) {
   iringbuf.instruction[iringbuf.no]=q;
   iringbuf.no=(iringbuf.no+1)%20;
   for(int i=0; i<iringbuf.no;i++)
-    printf("the ith instruction %s\n",iringbuf.instruction[i]);
+    printf("the %dth instruction %s\n",i,iringbuf.instruction[i]);
 
 #endif
 }
