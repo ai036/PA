@@ -33,7 +33,7 @@ static bool g_print_step = false;
 
 //iringbuf
 struct Iringbuf{
-  char* instruction[20];
+  char instruction[20][40];
   int no;
 } iringbuf;
 
@@ -82,7 +82,7 @@ static void exec_once(Decode *s, vaddr_t pc) {
   disassemble(p, s->logbuf + sizeof(s->logbuf) - p,
       MUXDEF(CONFIG_ISA_x86, s->snpc, s->pc), (uint8_t *)&s->isa.inst.val, ilen);  
   
-  iringbuf.instruction[iringbuf.no]=q;
+  strcpy(iringbuf.instruction[iringbuf.no],q);
   iringbuf.no=(iringbuf.no+1)%20;
   for(int i=0; i<iringbuf.no;i++)
     printf("the %dth instruction %s\n",i,iringbuf.instruction[i]);
