@@ -110,10 +110,10 @@ void load_elf_tables(char *exec_file)
 	// Assert(fp, "file '%s' not exist!", exec_file);
 	assert(fp);
   int ret=0;
-	uint8_t buf[4096];
+	uint8_t buf[10000];
 	/* Read the first 4096 bytes from the exec_file.
 	 * They should contain the ELF header and program headers. */
-	ret=fread(buf, 4096, 1, fp);
+	ret=fread(buf, 10000, 1, fp);
 
 	/* The first several bytes contain the ELF header. */
 	Elf32_Ehdr *elf = (void *)buf;
