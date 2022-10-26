@@ -180,7 +180,7 @@ void init_monitor(int argc, char *argv[]) {
 	{
 		temp = shstrtab;
 		temp = temp + shdr[i].sh_name;
-        if (strcmp(temp, ".dynsym") != 0) continue;//该section名称
+        if (strcmp(temp, ".strtab") != 0) continue;//该section名称
 		printf("节的名称: %s\n", temp);
 		printf("节首的偏移: %lx\n", shdr[i].sh_offset);
 		printf("节的大小: %lx\n", shdr[i].sh_size);
