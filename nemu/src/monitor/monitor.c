@@ -143,12 +143,7 @@ void init_monitor(int argc, char *argv[]) {
 	}
 
 	// 设置fp偏移量 offset，e_shoff含义
-	a = fseek(elf, elf_head.e_shoff, SEEK_SET); //fseek调整指针的位置，采用参考位置+偏移量
-	if (0 != a)
-	{
-		printf("\nfaile to fseek\n");
-		exit(0);
-	}
+
 
 	// 读取section 到 shdr, 大小为shdr * 数量
 	a = fread(shdr, sizeof(Elf64_Shdr) * elf_head.e_shnum, 1, elf);
@@ -180,7 +175,7 @@ void init_monitor(int argc, char *argv[]) {
 	{
 		temp = shstrtab;
 		temp = temp + shdr[i].sh_name;
-        if (strcmp(temp, ".text") != 0) continue;//该section名称
+        if (strcmp(temp, ".strtab") != 0) continue;//该section名称
 		printf("节的名称: %s\n", temp);
 		printf("节首的偏移: %lx\n", shdr[i].sh_offset);
 		printf("节的大小: %lx\n", shdr[i].sh_size);
