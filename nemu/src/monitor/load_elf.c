@@ -34,28 +34,29 @@ void load_elf(char* filename)
     ret=fread(shstrtab,shdr[elf_head.e_shstrndx].sh_size,1,elfp);   //读取内容
     assert(ret!=0);
     
-    int strtab_index=0,symtab_index=0,i=0;
-    while(i<elf_head.e_shnum)         //循环查找strtab和symtab
-    {   
-        temp=shstrtab;
-        temp=temp+shdr[i].sh_name;
-        if(strcmp(temp,".strtab")==0)
-            strtab_index=i;
-        else if(strcmp(temp,".symtab")==0)
-            symtab_index=i;
-        i++;
-    }
-    char* strtab=(char*)malloc(sizeof(char)*shdr[strtab_index].sh_size);
-    fseek(elfp,shdr[strtab_index].sh_offset,SEEK_SET);
-    ret=fread(strtab,sizeof(char)*shdr[strtab_index].sh_size,1,elfp);//读取strtab
+    for (int i = 0; i < elf_head.e_shnum; i++)
+	{
+		temp = shstrtab;
+		temp = temp + shdr[i].sh_name;
+        if (strcmp(temp, ".dynsym") != 0) continue;//该section名称
+		printf("节的名称: %s\n", temp);
+		printf("节首的偏移: %x\n", shdr[i].sh_offset);
+		printf("节的大小: %x\n", shdr[i].sh_size);
+        uint8_t *sign_data=(uint8_t*)malloc(sizeof(uint8_t)*shdr[i].sh_size);
+		// 依据此段在文件中的偏移读取出
+		ret=fseek(elfp, shdr[i].sh_offset, SEEK_SET);
+		ret=fread(sign_data, sizeof(uint8_t)*shdr[i].sh_size, 1, elfp);
+		// 显示读取的内容
+		uint8_t *p = sign_data;
+		int j = 0;
+		for (j=0; j<shdr[i].sh_size; j++)
+		{
+		    printf("%x", *p);
+            p++;
+		}
+	 }
 
-    char* symtab=(char*)malloc(sizeof(char)*shdr[symtab_index].sh_size);
-    fseek(elfp,shdr[symtab_index].sh_offset,SEEK_SET);
-    ret=fread(symtab,sizeof(char)*shdr[symtab_index].sh_size,1,elfp);//读取symtab
-    
-    printf("%s111",strtab);
-    free(strtab);
-    free(symtab);
+
     free(shdr);
 
 }
