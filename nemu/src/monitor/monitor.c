@@ -105,7 +105,7 @@ void init_monitor(int argc, char *argv[]) {
 
   /* Parse arguments. */
   parse_args(argc, argv);
-  elf = fopen("add-riscv32-nemu.elf","r");
+  elf = fopen("add-riscv32-nemu","r");
   if (NULL == elf)
 	{
 		printf("fail to open the file");
