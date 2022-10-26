@@ -100,12 +100,78 @@ static int parse_args(int argc, char *argv[]) {
   return 0;
 }
 
+static char *strtab = NULL;
+static Elf32_Sym *symtab = NULL;
+static int nr_symtab_entry;
+
+void load_elf_tables(char *exec_file)
+{
+	FILE *fp = fopen(exec_file, "rb");
+	// Assert(fp, "file '%s' not exist!", exec_file);
+	assert(fp);
+  int ret=0;
+	uint8_t buf[4096];
+	/* Read the first 4096 bytes from the exec_file.
+	 * They should contain the ELF header and program headers. */
+	ret=fread(buf, 4096, 1, fp);
+
+	/* The first several bytes contain the ELF header. */
+	Elf32_Ehdr *elf = (void *)buf;
+
+
+	/* Load symbol table and string table for future use */
+
+	/* Load section header table */
+	uint32_t sh_size = elf->e_shentsize * elf->e_shnum;
+	Elf32_Shdr *sh = malloc(sh_size);
+	ret=fseek(fp, elf->e_shoff, SEEK_SET);
+	ret=fread(sh, sh_size, 1, fp);
+
+	/* Load section header string table */
+	char *shstrtab = malloc(sh[elf->e_shstrndx].sh_size);
+	ret=fseek(fp, sh[elf->e_shstrndx].sh_offset, SEEK_SET);
+	ret=fread(shstrtab, sh[elf->e_shstrndx].sh_size, 1, fp);
+
+	int i;
+	for (i = 0; i < elf->e_shnum; i++)
+	{
+		if (sh[i].sh_type == SHT_SYMTAB &&
+			strcmp(shstrtab + sh[i].sh_name, ".symtab") == 0)
+		{
+			/* Load symbol table from exec_file */
+			symtab = malloc(sh[i].sh_size);
+			ret=fseek(fp, sh[i].sh_offset, SEEK_SET);
+			ret=fread(symtab, sh[i].sh_size, 1, fp);
+			nr_symtab_entry = sh[i].sh_size / sizeof(symtab[0]);
+		}
+		else if (sh[i].sh_type == SHT_STRTAB &&
+				 strcmp(shstrtab + sh[i].sh_name, ".strtab") == 0)
+		{
+			/* Load string table from exec_file */
+			strtab = malloc(sh[i].sh_size);
+			ret=fseek(fp, sh[i].sh_offset, SEEK_SET);
+			ret=fread(strtab, sh[i].sh_size, 1, fp);
+		}
+	}
+
+	free(sh);
+	free(shstrtab);
+
+	assert(strtab != NULL && symtab != NULL);
+
+	fclose(fp);
+  printf("%d",ret);
+}
+
 void init_monitor(int argc, char *argv[]) {
   /* Perform some global initialization. */
 
   /* Parse arguments. */
   parse_args(argc, argv);
-  elf = fopen("bit-riscv32-nemu.elf","r");
+
+  load_elf_tables("hello-world");
+  printf("%s\n",strtab);
+/*  elf = fopen("bit-riscv32-nemu.elf","r");
   if (NULL == elf)
 	{
 		printf("fail to open the file");
@@ -196,7 +262,7 @@ void init_monitor(int argc, char *argv[]) {
 		    printf("%x", *p);
             p++;
 		}
-	 }
+	 }  */
 
   /* Set random seed. */
   init_rand();
