@@ -61,12 +61,12 @@ void load_elf(char* filename)
             p++;
 		}
     Elf32_Sym *symtab=NULL;
-    symtab = malloc(shdr[strtab_index].sh_size);
-	fseek(elfp, shdr[strtab_index].sh_offset, SEEK_SET);
-	ret = fread(symtab, shdr[strtab_index].sh_size, 1, elfp);
+    symtab = malloc(shdr[symtab_index].sh_size);
+	fseek(elfp, shdr[symtab_index].sh_offset, SEEK_SET);
+	ret = fread(symtab, shdr[symtab_index].sh_size, 1, elfp);
 	assert(ret == 1);
 
-    printf("%d",shdr[strtab_index].sh_size);
+    printf("%d",symtab[16].st_name);
 /*
     uint8_t *symtab=(uint8_t*)malloc(sizeof(uint8_t)*shdr[symtab_index].sh_size);
     ret=fseek(elfp,shdr[symtab_index].sh_offset,SEEK_SET);
