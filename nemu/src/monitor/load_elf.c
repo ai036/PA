@@ -87,10 +87,7 @@ void load_elf(char* filename)
              elf_func[func_count].size=symtab[i].st_size;
 		}
 	}
-    
+
     free(shdr);
     fclose(elfp);
 }
-
-
-
