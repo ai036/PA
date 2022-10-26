@@ -174,7 +174,7 @@ void init_monitor(int argc, char *argv[]) {
   parse_args(argc, argv);
   
   load_elf_tables(argc, argv);
-  printf("%s",strtab);
+  printf("%s111",strtab);
   /*
   elf = fopen("hello-world","r");
   if (NULL == elf)
