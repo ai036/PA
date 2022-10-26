@@ -113,11 +113,11 @@ void init_monitor(int argc, char *argv[]) {
 	}
 
 	// 解析head
-	Elf64_Ehdr elf_head;
+	Elf32_Ehdr elf_head;
 	int  a;
 
 	// 读取 head 到elf_head
-	a = fread(&elf_head, sizeof(Elf64_Ehdr), 1, elf);   //fread参数1：读取内容存储地址，参数2：读取内容大小，参数3：读取次数，参数4：文件读取引擎
+	a = fread(&elf_head, sizeof(Elf32_Ehdr), 1, elf);   //fread参数1：读取内容存储地址，参数2：读取内容大小，参数3：读取次数，参数4：文件读取引擎
 	if (0 == a)
 	{
 		printf("fail to read head\n");
@@ -135,7 +135,7 @@ void init_monitor(int argc, char *argv[]) {
 	}
 
 	// 解析section 分配内存 section * 数量
-	Elf64_Shdr *shdr = (Elf64_Shdr*)malloc(sizeof(Elf64_Shdr) * elf_head.e_shnum);
+	Elf32_Shdr *shdr = (Elf32_Shdr*)malloc(sizeof(Elf32_Shdr) * elf_head.e_shnum);
 	if (NULL == shdr)
 	{
 		printf("shdr malloc failed\n");
@@ -143,10 +143,15 @@ void init_monitor(int argc, char *argv[]) {
 	}
 
 	// 设置fp偏移量 offset，e_shoff含义
-
+	a = fseek(elf, elf_head.e_shoff, SEEK_SET); //fseek调整指针的位置，采用参考位置+偏移量
+	if (0 != a)
+	{
+		printf("\nfaile to fseek\n");
+		exit(0);
+	}
 
 	// 读取section 到 shdr, 大小为shdr * 数量
-	a = fread(shdr, sizeof(Elf64_Shdr) * elf_head.e_shnum, 1, elf);
+	a = fread(shdr, sizeof(Elf32_Shdr) * elf_head.e_shnum, 1, elf);
 	if (0 == a)
 	{
 		printf("\nfail to read section\n");
@@ -177,8 +182,8 @@ void init_monitor(int argc, char *argv[]) {
 		temp = temp + shdr[i].sh_name;
         if (strcmp(temp, ".strtab") != 0) continue;//该section名称
 		printf("节的名称: %s\n", temp);
-		printf("节首的偏移: %lx\n", shdr[i].sh_offset);
-		printf("节的大小: %lx\n", shdr[i].sh_size);
+		printf("节首的偏移: %x\n", shdr[i].sh_offset);
+		printf("节的大小: %x\n", shdr[i].sh_size);
         uint8_t *sign_data=(uint8_t*)malloc(sizeof(uint8_t)*shdr[i].sh_size);
 		// 依据此段在文件中的偏移读取出
 		fseek(elf, shdr[i].sh_offset, SEEK_SET);
