@@ -66,7 +66,7 @@ void load_elf(char* filename)
 	ret = fread(symtab, shdr[symtab_index].sh_size, 1, elfp);
 	assert(ret == 1);
 
-    printf("%d",symtab[16].st_name);
+    printf("%d",symtab[16].st_size);
 /*
     uint8_t *symtab=(uint8_t*)malloc(sizeof(uint8_t)*shdr[symtab_index].sh_size);
     ret=fseek(elfp,shdr[symtab_index].sh_offset,SEEK_SET);
