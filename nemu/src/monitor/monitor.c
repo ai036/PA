@@ -108,7 +108,7 @@ static int nr_symtab_entry;
 
 void load_elf_tables(int argc, char *argv[]) {
 	int ret;
-	Assert(argc == 2, "run NEMU with format 'nemu [program]'");
+
 	//exec_file = argv[1];
 exec_file ="add-riscv32-nemu.elf";
 	FILE *fp = fopen(exec_file, "rb");
@@ -174,7 +174,7 @@ void init_monitor(int argc, char *argv[]) {
   parse_args(argc, argv);
   
   load_elf_tables(argc, argv);
-  printf("%s111",strtab);
+  printf("%s",strtab);
   /*
   elf = fopen("hello-world","r");
   if (NULL == elf)
