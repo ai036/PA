@@ -61,7 +61,7 @@ void load_elf(char* filename)
             p++;
 		}
 
-
+    printf("\n");
     symtab = malloc(shdr[symtab_index].sh_size);
 	fseek(elfp, shdr[symtab_index].sh_offset, SEEK_SET);
 	ret = fread(symtab, shdr[symtab_index].sh_size, 1, elfp);
