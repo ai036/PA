@@ -100,7 +100,7 @@ static int parse_args(int argc, char *argv[]) {
   return 0;
 }
 
-char *exec_file = NULL;
+
 
 static char *strtab = NULL;
 static Elf32_Sym *symtab = NULL;
@@ -110,9 +110,9 @@ void load_elf_tables(int argc, char *argv[]) {
 	int ret;
 
 	//exec_file = argv[1];
-exec_file ="add-riscv32-nemu.elf";
-	FILE *fp = fopen(exec_file, "rb");
-	Assert(fp, "Can not open '%s'", exec_file);
+
+	FILE *fp = fopen("add-riscv32-nemu.elf", "rb");
+
 
 	uint8_t buf[sizeof(Elf32_Ehdr)];
 	ret = fread(buf, sizeof(Elf32_Ehdr), 1, fp);
