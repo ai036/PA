@@ -46,7 +46,8 @@ void load_elf(char* filename)
         i++;
     }
     printf("%d %d \n",strtab_index,symtab_index);
-
+    printf("size: %d \n",shdr[strtab_index].sh_size);
+    
     uint8_t *strtab=(uint8_t*)malloc(sizeof(uint8_t)*shdr[strtab_index].sh_size);
     ret=fseek(elfp,shdr[strtab_index].sh_offset,SEEK_SET);
     ret=fread(strtab,sizeof(char)*shdr[strtab_index].sh_size,1,elfp);//读取strtab
