@@ -51,12 +51,26 @@ void load_elf(char* filename)
     ret=fread(strtab,sizeof(char)*shdr[strtab_index].sh_size,1,elfp);//读取strtab
 
 		// 显示读取的内容
-	printf("%s",strtab);
+	uint8_t *p = strtab;
+	int j = 0;
+	for (j=0; j<shdr[strtab_index].sh_size; j++)
+		{
+		    printf("%c", *p);
+            p++;
+		}
 
-    char* symtab=(char*)malloc(sizeof(char)*shdr[symtab_index].sh_size);
+    uint8_t *symtab=(uint8_t*)malloc(sizeof(uint8_t)*shdr[strtab_index].sh_size);
     ret=fseek(elfp,shdr[symtab_index].sh_offset,SEEK_SET);
     ret=fread(symtab,sizeof(char)*shdr[symtab_index].sh_size,1,elfp);//读取symtab
     
+    uint8_t *q = symtab;
+
+	for (j=0; j<shdr[symtab_index].sh_size; j++)
+		{
+		    printf("%c", *q);
+            q++;
+		}
+
     free(strtab);
     free(symtab);
     free(shdr);
