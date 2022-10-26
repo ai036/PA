@@ -111,7 +111,7 @@ void load_elf_tables(int argc, char *argv[]) {
 
 	//exec_file = argv[1];
 
-	FILE *fp = fopen("add-riscv32-nemu.elf", "rb");
+	FILE *fp = fopen("hello-world", "rb");
 
 
 	uint8_t buf[sizeof(Elf32_Ehdr)];
