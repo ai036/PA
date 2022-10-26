@@ -46,17 +46,12 @@ void load_elf(char* filename)
         i++;
     }
 
-
-    char* strtab=(char*)malloc(sizeof(char)*shdr[strtab_index].sh_size);
-    fseek(elfp,shdr[strtab_index].sh_offset,SEEK_SET);
+    uint8_t *strtab=(uint8_t*)malloc(sizeof(uint8_t)*shdr[strtab_index].sh_size);
+    ret=fseek(elfp,shdr[strtab_index].sh_offset,SEEK_SET);
     ret=fread(strtab,sizeof(char)*shdr[strtab_index].sh_size,1,elfp);//读取strtab
 
-    uint8_t *sign_data=(uint8_t*)malloc(sizeof(uint8_t)*shdr[strtab_index].sh_size);
-		// 依据此段在文件中的偏移读取出
-		ret=fseek(elfp, shdr[strtab_index].sh_offset, SEEK_SET);
-		ret=fread(sign_data, sizeof(uint8_t)*shdr[strtab_index].sh_size, 1, elfp);
 		// 显示读取的内容
-		uint8_t *p = sign_data;
+		uint8_t *p = strtab;
 		int j = 0;
 		for (j=0; j<shdr[strtab_index].sh_size; j++)
 		{
@@ -65,7 +60,7 @@ void load_elf(char* filename)
 		}
 
     char* symtab=(char*)malloc(sizeof(char)*shdr[symtab_index].sh_size);
-    fseek(elfp,shdr[symtab_index].sh_offset,SEEK_SET);
+    ret=fseek(elfp,shdr[symtab_index].sh_offset,SEEK_SET);
     ret=fread(symtab,sizeof(char)*shdr[symtab_index].sh_size,1,elfp);//读取symtab
     
 
