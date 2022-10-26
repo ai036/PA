@@ -53,13 +53,8 @@ void load_elf(char* filename)
     ret=fread(strtab,sizeof(char)*shdr[strtab_index].sh_size,1,elfp);//读取strtab
 
 		// 显示读取的内容
-	uint8_t *p = strtab;
-	int j = 0;
-	for (j=0; j<shdr[strtab_index].sh_size; j++)
-		{
-		    printf("%c", *p);
-            p++;
-		}
+
+
     Elf32_Sym *symtab=NULL;
     symtab = malloc(shdr[i].sh_size);
 	fseek(elfp, shdr[i].sh_offset, SEEK_SET);
