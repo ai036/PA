@@ -1,5 +1,5 @@
 #include "load_elf.h"
-
+extern FILE *elfp;
 void load_elf(char* filename)
 {
    elfp = fopen(filename,"r");
