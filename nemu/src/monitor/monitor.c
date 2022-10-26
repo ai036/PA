@@ -110,7 +110,7 @@ void load_elf_tables(int argc, char *argv[]) {
 	int ret;
 	Assert(argc == 2, "run NEMU with format 'nemu [program]'");
 	//exec_file = argv[1];
-exec_file ="add-riscv32-nemu.elf";
+exec_file ="hello-world";
 	FILE *fp = fopen(exec_file, "rb");
 	Assert(fp, "Can not open '%s'", exec_file);
 
