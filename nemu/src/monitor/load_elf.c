@@ -53,19 +53,20 @@ void load_elf(char* filename)
     ret=fread(strtab,sizeof(char)*shdr[strtab_index].sh_size,1,elfp);//读取strtab
 
 		// 显示读取的内容
-
+	uint8_t *p = strtab;
+	int j = 0;
+	for (j=0; j<shdr[strtab_index].sh_size; j++)
+		{
+		    printf("%c", *p);
+            p++;
+		}
     Elf32_Sym *symtab=NULL;
     symtab = malloc(shdr[strtab_index].sh_size);
 	fseek(elfp, shdr[strtab_index].sh_offset, SEEK_SET);
 	ret = fread(symtab, shdr[strtab_index].sh_size, 1, elfp);
 	assert(ret == 1);
-	int nr_symtab_entry = shdr[strtab_index].sh_size / sizeof(symtab[0]);
-    for (i = 0; i < nr_symtab_entry; i++){
-		if ((symtab[i].st_info & 0xf) == STT_FUNC){
-			 printf("0x%08x\n",symtab[i].st_value);
 
-		}
-	}
+    printf("%d",symtab[0].st_name);
 /*
     uint8_t *symtab=(uint8_t*)malloc(sizeof(uint8_t)*shdr[symtab_index].sh_size);
     ret=fseek(elfp,shdr[symtab_index].sh_offset,SEEK_SET);
