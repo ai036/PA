@@ -197,7 +197,8 @@ void init_monitor(int argc, char *argv[]) {
             p++;
 		}
 	 }  
-
+  free(shdr);
+  
   /* Set random seed. */
   init_rand();
 
