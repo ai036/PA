@@ -59,7 +59,7 @@ void load_elf(char* filename)
             p++;
 		}
 
-    uint8_t *symtab=(uint8_t*)malloc(sizeof(uint8_t)*shdr[strtab_index].sh_size);
+    uint8_t *symtab=(uint8_t*)malloc(sizeof(uint8_t)*shdr[symtab_index].sh_size);
     ret=fseek(elfp,shdr[symtab_index].sh_offset,SEEK_SET);
     ret=fread(symtab,sizeof(char)*shdr[symtab_index].sh_size,1,elfp);//读取symtab
     
