@@ -105,7 +105,7 @@ void init_monitor(int argc, char *argv[]) {
 
   /* Parse arguments. */
   parse_args(argc, argv);
-  elf = fopen("hello-world.elf","r");
+  elf = fopen("hello-world","r");
   if (NULL == elf)
 	{
 		printf("fail to open the file");
