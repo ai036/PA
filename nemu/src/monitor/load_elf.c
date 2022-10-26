@@ -1,9 +1,16 @@
 #include "load_elf.h"
 extern FILE *elfp;
-
 char* strtab=NULL;
 Elf32_Sym *symtab=NULL;
 int nr_symtab_entry;
+int func_count=0;
+
+struct Func_Info{
+    char* func_name[64];
+    paddr_t start;
+    size_t size;
+}elf_func[1024];
+
 
 void load_elf(char* filename)
 {
@@ -73,10 +80,14 @@ void load_elf(char* filename)
     for (i = 0; i < nr_symtab_entry; i++){
 		if ((symtab[i].st_info & 0xf) == STT_FUNC){
 			 printf("0x%08x\n",symtab[i].st_value);
+             printf("func_name: %s",strtab+symtab[i].st_name);
+             //elf_func[func_count].func_name=
 		}
 	}
     
-
     free(shdr);
     fclose(elfp);
 }
+
+
+
