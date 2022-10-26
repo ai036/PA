@@ -169,7 +169,7 @@ void init_monitor(int argc, char *argv[]) {
   /* Parse arguments. */
   parse_args(argc, argv);
 
-  load_elf_tables("hello-world");
+  load_elf_tables("add-riscv32-nemu.elf");
   printf("%s\n",strtab);
 /*  elf = fopen("bit-riscv32-nemu.elf","r");
   if (NULL == elf)
