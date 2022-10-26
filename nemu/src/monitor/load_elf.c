@@ -1,6 +1,5 @@
 #include "load_elf.h"
 
-
 void load_elf(char* filename)
 {
    elfp = fopen(filename,"r");
