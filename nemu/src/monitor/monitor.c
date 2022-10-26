@@ -195,10 +195,10 @@ void init_monitor(int argc, char *argv[]) {
 		{
 		    printf("%x", *p);
             p++;
-		}
+		}  free(sign_data);
 	 }  
   free(shdr);
-  
+
   /* Set random seed. */
   init_rand();
 
