@@ -1,5 +1,5 @@
 #include <memory/paddr.h>
 #include <elf.h>
 
-FILE* elf=NULL;
+FILE* elfp=NULL;
 void load_elf(char* filename);

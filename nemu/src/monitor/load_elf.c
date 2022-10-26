@@ -3,8 +3,8 @@
 
 void load_elf(char* filename)
 {
-   elf = fopen(filename,"r");
-  if (NULL == elf)
+   elfp = fopen(filename,"r");
+  if (NULL == elfp)
 	{
 		printf("fail to open the file");
 		exit(0);
@@ -15,7 +15,7 @@ void load_elf(char* filename)
 	int  a;
 
 	// 读取 head 到elf_head
-	a = fread(&elf_head, sizeof(Elf32_Ehdr), 1, elf);   //fread参数1：读取内容存储地址，参数2：读取内容大小，参数3：读取次数，参数4：文件读取引擎
+	a = fread(&elf_head, sizeof(Elf32_Ehdr), 1, elfp);   //fread参数1：读取内容存储地址，参数2：读取内容大小，参数3：读取次数，参数4：文件读取引擎
 	if (0 == a)
 	{
 		printf("fail to read head\n");
@@ -41,7 +41,7 @@ void load_elf(char* filename)
 	}
 
 	// 设置fp偏移量 offset，e_shoff含义
-	a = fseek(elf, elf_head.e_shoff, SEEK_SET); //fseek调整指针的位置，采用参考位置+偏移量
+	a = fseek(elfp, elf_head.e_shoff, SEEK_SET); //fseek调整指针的位置，采用参考位置+偏移量
 	if (0 != a)
 	{
 		printf("\nfaile to fseek\n");
@@ -49,7 +49,7 @@ void load_elf(char* filename)
 	}
 
 	// 读取section 到 shdr, 大小为shdr * 数量
-	a = fread(shdr, sizeof(Elf32_Shdr) * elf_head.e_shnum, 1, elf);
+	a = fread(shdr, sizeof(Elf32_Shdr) * elf_head.e_shnum, 1, elfp);
 	if (0 == a)
 	{
 		printf("\nfail to read section\n");
@@ -57,17 +57,17 @@ void load_elf(char* filename)
 	}
 
 	// 重置指针位置到文件流开头
-	rewind(elf);
+	rewind(elfp);
 
 	// 将fp指针移到 字符串表偏移位置处
-	fseek(elf, shdr[elf_head.e_shstrndx].sh_offset, SEEK_SET);
+	fseek(elfp, shdr[elf_head.e_shstrndx].sh_offset, SEEK_SET);
 
 	// 第e_shstrndx项是字符串表 定义 字节 长度 char类型 数组
 	char shstrtab[shdr[elf_head.e_shstrndx].sh_size];
 	char *temp = shstrtab;
 
 	// 读取内容
-	a = fread(shstrtab, shdr[elf_head.e_shstrndx].sh_size, 1, elf);
+	a = fread(shstrtab, shdr[elf_head.e_shstrndx].sh_size, 1, elfp);
 	if (0 == a)
 	{
 		printf("\nfaile to read\n");
@@ -84,8 +84,8 @@ void load_elf(char* filename)
 		printf("节的大小: %x\n", shdr[i].sh_size);
         uint8_t *sign_data=(uint8_t*)malloc(sizeof(uint8_t)*shdr[i].sh_size);
 		// 依据此段在文件中的偏移读取出
-		fseek(elf, shdr[i].sh_offset, SEEK_SET);
-		a=fread(sign_data, sizeof(uint8_t)*shdr[i].sh_size, 1, elf);
+		fseek(elfp, shdr[i].sh_offset, SEEK_SET);
+		a=fread(sign_data, sizeof(uint8_t)*shdr[i].sh_size, 1, elfp);
 		// 显示读取的内容
 		uint8_t *p = sign_data;
 		int j = 0;
