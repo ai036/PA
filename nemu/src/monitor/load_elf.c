@@ -54,7 +54,7 @@ void load_elf(char* filename)
     assert(ret==1);
 	// 显示读取的内容
 	char *p = strtab;
-    printf("%s",p);
+    printf("%s",p+1);
 
     printf("\n");
     symtab = malloc(shdr[symtab_index].sh_size);
