@@ -1,5 +1,7 @@
 #include "load_elf.h"
 extern FILE *elfp;
+char* strtab=NULL;
+Elf32_Sym *symtab=NULL;
 void load_elf(char* filename)
 {
     elfp=fopen(filename,"r"); //打开一个elf文件
@@ -45,22 +47,21 @@ void load_elf(char* filename)
             symtab_index=i;
         i++;
     }
-    printf("%d %d \n",strtab_index,symtab_index);
-    printf("size: %d \n",shdr[strtab_index].sh_size);
 
-    uint8_t *strtab=(uint8_t*)malloc(sizeof(uint8_t)*shdr[strtab_index].sh_size);
+    strtab=malloc(shdr[strtab_index].sh_size);
     ret=fseek(elfp,shdr[strtab_index].sh_offset,SEEK_SET);
-    ret=fread(strtab,sizeof(char)*shdr[strtab_index].sh_size,1,elfp);//读取strtab
-
-		// 显示读取的内容
-	uint8_t *p = strtab;
+    ret=fread(strtab,shdr[strtab_index].sh_size,1,elfp);//读取strtab
+    assert(ret==1);
+	// 显示读取的内容
+	char *p = strtab;
 	int j = 0;
 	for (j=0; j<shdr[strtab_index].sh_size; j++)
 		{
 		    printf("%c", *p);
             p++;
 		}
-    Elf32_Sym *symtab=NULL;
+
+
     symtab = malloc(shdr[symtab_index].sh_size);
 	fseek(elfp, shdr[symtab_index].sh_offset, SEEK_SET);
 	ret = fread(symtab, shdr[symtab_index].sh_size, 1, elfp);
@@ -69,22 +70,9 @@ void load_elf(char* filename)
     for (i = 0; i < nr_symtab_entry; i++){
 		if ((symtab[i].st_info & 0xf) == STT_FUNC){
 			 printf("0x%08x\n",symtab[i].st_value);
-
 		}
 	}
-/*
-    uint8_t *symtab=(uint8_t*)malloc(sizeof(uint8_t)*shdr[symtab_index].sh_size);
-    ret=fseek(elfp,shdr[symtab_index].sh_offset,SEEK_SET);
-    ret=fread(symtab,sizeof(char)*shdr[symtab_index].sh_size,1,elfp);//读取symtab
     
-    uint8_t *q = symtab;
-
-	for (j=0; j<shdr[symtab_index].sh_size; j++)
-		{
-		    printf("%x", *q);
-            q++;
-		}
-*/
     free(strtab);
     free(symtab);
     free(shdr);
