@@ -43,6 +43,7 @@ void load_elf(char* filename)
             strtab_index=i;
         else if(strcmp(temp,".symtab")==0)
             symtab_index=i;
+        i++;
     }
     char* strtab=(char*)malloc(sizeof(char)*shdr[strtab_index].sh_size);
     ret=fread(strtab,sizeof(char)*shdr[strtab_index].sh_size,1,elfp);//读取strtab
