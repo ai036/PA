@@ -1,7 +1,10 @@
 #include "load_elf.h"
 extern FILE *elfp;
+
 char* strtab=NULL;
 Elf32_Sym *symtab=NULL;
+int nr_symtab_entry;
+
 void load_elf(char* filename)
 {
     elfp=fopen(filename,"r"); //打开一个elf文件
@@ -54,7 +57,12 @@ void load_elf(char* filename)
     assert(ret==1);
 	// 显示读取的内容
 	char *p = strtab;
-    printf("%s",p+1);
+	int j = 0;
+	for (j=0; j<shdr[strtab_index].sh_size; j++)
+		{
+		    printf("%c", *p);
+            p++;
+		}
 
     printf("\n");
     symtab = malloc(shdr[symtab_index].sh_size);
@@ -68,8 +76,7 @@ void load_elf(char* filename)
 		}
 	}
     
-    free(strtab);
-    free(symtab);
+
     free(shdr);
     fclose(elfp);
 }

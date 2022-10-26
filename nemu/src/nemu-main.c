@@ -14,12 +14,16 @@
 ***************************************************************************************/
 
 #include <common.h>
+#include <elf.h>
 
 void init_monitor(int, char *[]);
 void am_init_monitor();
 void engine_start();
 int is_exit_status_bad();
 word_t expr(char *e, bool *success);
+extern char *strtab;
+extern Elf32_Sym* symtab;
+
 void test()//测试表达式
 {
   FILE *fp= fopen("input.txt", "r");
@@ -60,5 +64,7 @@ int main(int argc, char *argv[]) {
   /* Start engine. */
   engine_start();
   
+  free(strtab);
+  free(symtab);
   return is_exit_status_bad();
 }
