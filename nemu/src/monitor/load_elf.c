@@ -53,7 +53,7 @@ void load_elf(char* filename)
     fseek(elfp,shdr[symtab_index].sh_offset,SEEK_SET);
     ret=fread(symtab,sizeof(char)*shdr[symtab_index].sh_size,1,elfp);//读取symtab
     
-    printf("%s",strtab);
+    printf("%s111",strtab);
     free(strtab);
     free(symtab);
     free(shdr);
