@@ -101,12 +101,12 @@ struct Function_inst
     struct Func_Info dest;
     paddr_t addr;
     int type;           //1为call，2为ret
-}func_inst[512];
+}func_inst[1024];
 int func_inst_count=0;
 
 void check_func(Decode *s, vaddr_t pc)
 {   
-    assert(func_inst_count<512);
+    assert(func_inst_count<1024);
     func_inst[func_inst_count].addr=pc;     
     for(int i=0;i<func_count;i++)
     {
