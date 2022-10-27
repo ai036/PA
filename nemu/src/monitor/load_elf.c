@@ -82,12 +82,22 @@ void load_elf(char* filename)
 			 printf("0x%08x\n",symtab[i].st_value);
              printf("func_name: %s  ",strtab+symtab[i].st_name);
 
+            //把所有函数信息存储在elf_func中
              strcpy(elf_func[func_count].func_name,strtab+symtab[i].st_name);
              elf_func[func_count].start=symtab[i].st_value;
              elf_func[func_count].size=symtab[i].st_size;
+             func_count++;
 		}
 	}
 
     free(shdr);
     fclose(elfp);
 }
+
+struct Function_inst
+{
+    struct Func_Info current;
+    struct Func_Info dest;
+    paddr_t addr;
+    int type;   
+};
