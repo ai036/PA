@@ -110,8 +110,14 @@ void init_monitor(int argc, char *argv[]) {
   /* Parse arguments. */
   parse_args(argc, argv);
   
-
-
+  char filename[100];
+  strcpy(filename, argv[4]);
+  int len=strlen(filename);
+  filename[len-1]='f';
+  filename[len-2]='l';
+  filename[len-3]='e';
+  load_elf(filename);
+  
   /* Set random seed. */
   init_rand();
 
