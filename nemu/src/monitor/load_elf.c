@@ -106,7 +106,7 @@ int func_inst_count=0;
 
 void check_func(Decode *s, vaddr_t pc)
 {   
-    assert(func_inst_count<200);
+    assert(func_inst_count<512);
     func_inst[func_inst_count].addr=pc;   
     int i=0;     
     for(;i<func_count;i++)
