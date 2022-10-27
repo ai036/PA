@@ -21,6 +21,13 @@ int convert(char *out,int end,int num,int base)
   int index=0;
   if(num==0)
     output[index++]='0';
+  else if(num==-2147483648)  //最小负数特殊情况
+    {
+      out[end++]='-';
+      output[index++]=dict[-(num%base)];
+      num/=base;
+      num=-num;
+    }
   else if(num<0)
     {
       out[end++]='-';
