@@ -146,5 +146,4 @@ void print_func_info()
             {printf("[0x%08x]:    ret [%s]\n",func_inst[i].addr,func_inst[i].current.func_name);
              tab--;}
     }
-
 }

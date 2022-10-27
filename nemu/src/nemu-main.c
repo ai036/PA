@@ -62,11 +62,15 @@ int main(int argc, char *argv[]) {
   init_monitor(argc, argv);
 #endif
  // test();  测试表达式用
+
   /* Start engine. */
   engine_start();
-  
+
+#ifdef CONFIG_FTRACE           //ftrace
   print_func_info();
   free(strtab);
   free(symtab);
+#endif
+
   return is_exit_status_bad();
 }

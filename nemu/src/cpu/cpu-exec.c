@@ -87,10 +87,11 @@ static void exec_once(Decode *s, vaddr_t pc) {
   iringbuf.no=(iringbuf.no+1)%20;
 //  for(int i=0; i<iringbuf.no;i++)    
 //    printf("the %dth instruction %s\n",i,iringbuf.instruction[i]);  
-
 #endif
+
+#ifdef CONFIG_FTRACE        //ftrace
   check_func(s, pc);
-  
+#endif
 }
 
 static void execute(uint64_t n) {

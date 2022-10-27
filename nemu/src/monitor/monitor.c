@@ -109,7 +109,8 @@ void init_monitor(int argc, char *argv[]) {
 
   /* Parse arguments. */
   parse_args(argc, argv);
-  
+
+#ifdef CONFIG_FTRACE   //ftrace 功能
   char filename[100];
   strcpy(filename, argv[4]);
   int len=strlen(filename);
@@ -117,7 +118,8 @@ void init_monitor(int argc, char *argv[]) {
   filename[len-2]='l';
   filename[len-3]='e';
   load_elf(filename);            //解析运行的elf文件
-  
+#endif
+
   /* Set random seed. */
   init_rand();
 
