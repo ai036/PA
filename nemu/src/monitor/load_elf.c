@@ -101,7 +101,7 @@ struct Function_inst
     struct Func_Info dest;
     paddr_t addr;
     int type;           //1为call，2为ret
-}func_inst[200];
+}func_inst[512];
 int func_inst_count=0;
 
 void check_func(Decode *s, vaddr_t pc)
