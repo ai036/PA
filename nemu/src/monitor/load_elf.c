@@ -105,15 +105,25 @@ struct Function_inst
 int func_inst_count=0;
 
 void check_func(Decode *s, vaddr_t pc)
-{
-    for(int i=0;i<func_count;i++)
+{   
+    assert(func_inst_count<200);
+    func_inst[func_inst_count].addr=pc;   
+    int i=0;     
+    for(;i<func_count;i++)
     {
         if(s->dnpc==elf_func[i].start)
             {
                 func_inst[func_inst_count].dest=elf_func[i];
-                func_inst[func_inst_count].addr=pc;
                 func_inst[func_inst_count].type=1;
-                break;
+                func_inst_count++;
+                return;  //说明是函数调用
             }
     }
+    if(s->dnpc<elf_func[i].start || s->dnpc<elf_func[i].start+elf_func[i].size)//既不是函数调用也不是函数内跳转，则为ret
+        {
+            func_inst[func_inst_count].current=elf_func[i];
+            func_inst[func_inst_count].type=2;
+            func_inst_count++;
+            return; 
+        }
 }
