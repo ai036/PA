@@ -63,7 +63,8 @@ void load_elf(char* filename)
     ret=fseek(elfp,shdr[strtab_index].sh_offset,SEEK_SET);
     ret=fread(strtab,shdr[strtab_index].sh_size,1,elfp);//读取strtab
     assert(ret==1);
-	// 显示读取的内容
+
+/*	// 显示读取的内容
 	char *p = strtab;
 	int j = 0;
 	for (j=0; j<shdr[strtab_index].sh_size; j++)
@@ -71,8 +72,9 @@ void load_elf(char* filename)
 		    printf("%c", *p);
             p++;
 		}
-
     printf("\n");
+*/
+
     symtab = malloc(shdr[symtab_index].sh_size);
 	fseek(elfp, shdr[symtab_index].sh_offset, SEEK_SET);
 	ret = fread(symtab, shdr[symtab_index].sh_size, 1, elfp);
@@ -80,8 +82,8 @@ void load_elf(char* filename)
 	int nr_symtab_entry = shdr[symtab_index].sh_size / sizeof(symtab[0]);
     for (i = 0; i < nr_symtab_entry; i++){
 		if ((symtab[i].st_info & 0xf) == STT_FUNC){
-			 printf("\n0x%08x ",symtab[i].st_value);
-             printf("func_name: %s  ",strtab+symtab[i].st_name);
+//			 printf("\n0x%08x ",symtab[i].st_value);           打印函数信息
+//             printf("func_name: %s  ",strtab+symtab[i].st_name);
 
             //把所有函数信息存储在elf_func中
              strcpy(elf_func[func_count].func_name,strtab+symtab[i].st_name);
