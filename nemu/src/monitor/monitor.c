@@ -110,7 +110,7 @@ void init_monitor(int argc, char *argv[]) {
   /* Parse arguments. */
   parse_args(argc, argv);
   
-  load_elf("add-riscv32-nemu.elf");//加载符号表和字符串表
+  load_elf(argv[1]);//加载符号表和字符串表
 
   /* Set random seed. */
   init_rand();
