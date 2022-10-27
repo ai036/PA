@@ -119,7 +119,7 @@ void check_func(Decode *s, vaddr_t pc)
                 return;  //说明是函数调用
             }
     }
-    if(s->dnpc<elf_func[i].start || s->dnpc<elf_func[i].start+elf_func[i].size)//既不是函数调用也不是函数内跳转，则为ret
+    if(s->dnpc<elf_func[i].start || s->dnpc>elf_func[i].start+elf_func[i].size)//既不是函数调用也不是函数内跳转，则为ret
         {
             func_inst[func_inst_count].current=elf_func[i];
             func_inst[func_inst_count].type=2;
