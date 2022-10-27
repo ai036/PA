@@ -37,7 +37,7 @@ struct Iringbuf{
   int no;
 } iringbuf;
 //ftrace的记录
-
+void check_func(Decode *s, vaddr_t pc);
 
 void device_update();
 
@@ -89,7 +89,8 @@ static void exec_once(Decode *s, vaddr_t pc) {
 //    printf("the %dth instruction %s\n",i,iringbuf.instruction[i]);  
 
 #endif
-
+  check_func(s, pc);
+  
 }
 
 static void execute(uint64_t n) {

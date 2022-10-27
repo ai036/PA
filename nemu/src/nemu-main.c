@@ -23,6 +23,7 @@ int is_exit_status_bad();
 word_t expr(char *e, bool *success);
 extern char *strtab;
 extern Elf32_Sym* symtab;
+void print_func_info();
 
 void test()//测试表达式
 {
@@ -64,6 +65,7 @@ int main(int argc, char *argv[]) {
   /* Start engine. */
   engine_start();
   
+  print_func_info();
   free(strtab);
   free(symtab);
   return is_exit_status_bad();
