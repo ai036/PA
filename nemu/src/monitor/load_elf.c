@@ -80,7 +80,7 @@ void load_elf(char* filename)
 	int nr_symtab_entry = shdr[symtab_index].sh_size / sizeof(symtab[0]);
     for (i = 0; i < nr_symtab_entry; i++){
 		if ((symtab[i].st_info & 0xf) == STT_FUNC){
-			 printf("0x%08x\n",symtab[i].st_value);
+			 printf("\n0x%08x ",symtab[i].st_value);
              printf("func_name: %s  ",strtab+symtab[i].st_name);
 
             //把所有函数信息存储在elf_func中
