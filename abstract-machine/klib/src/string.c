@@ -16,8 +16,9 @@ char *strcpy(char *dst, const char *src) {
 //  panic("Not implemented");
   char* c=dst;
   size_t len=strlen(src);
-  for(int i=0;i<=len;i++)
+  for(int i=0;i<len;i++)
     dst[i]=src[i];
+  dst[len]='\0';
   return c;
 }
 
