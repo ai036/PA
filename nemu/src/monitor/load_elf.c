@@ -136,7 +136,7 @@ void print_func_info()
         if(func_inst[i].type==1)
             printf("[0x%08x]:    call [%s0x%08x]\n",func_inst[i].addr,func_inst[i].dest.func_name,func_inst[i].dest.start);
         else 
-            printf("[0x%08x]:    call [%s]\n",func_inst[i].addr,func_inst[i].current.func_name);
+            printf("[0x%08x]:    ret [%s]\n",func_inst[i].addr,func_inst[i].current.func_name);
 }
 
 }
