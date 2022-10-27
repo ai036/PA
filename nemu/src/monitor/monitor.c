@@ -110,7 +110,7 @@ void init_monitor(int argc, char *argv[]) {
   /* Parse arguments. */
   parse_args(argc, argv);
   
-  load_elf(argv[1]);//加载符号表和字符串表
+  printf("%s\n",argv[0]);
 
   /* Set random seed. */
   init_rand();
