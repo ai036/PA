@@ -1,4 +1,5 @@
 #include "load_elf.h"
+#include <cpu/decode.h>
 extern FILE *elfp;
 char* strtab=NULL;
 Elf32_Sym *symtab=NULL;
@@ -9,7 +10,7 @@ struct Func_Info{
     char func_name[64];
     paddr_t start;
     size_t size;
-}elf_func[1024];
+}elf_func[100];
 
 
 void load_elf(char* filename)
@@ -99,5 +100,20 @@ struct Function_inst
     struct Func_Info current;
     struct Func_Info dest;
     paddr_t addr;
-    int type;   
-};
+    int type;           //1为call，2为ret
+}func_inst[200];
+int func_inst_count=0;
+
+void check_func(Decode *s, vaddr_t pc)
+{
+    for(int i=0;i<func_count;i++)
+    {
+        if(s->dnpc==elf_func[i].start)
+            {
+                func_inst[func_inst_count].dest=elf_func[i];
+                func_inst[func_inst_count].addr=pc;
+                func_inst[func_inst_count].type=1;
+                break;
+            }
+    }
+}

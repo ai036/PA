@@ -116,7 +116,7 @@ void init_monitor(int argc, char *argv[]) {
   filename[len-1]='f';
   filename[len-2]='l';
   filename[len-3]='e';
-  load_elf(filename);
+  load_elf(filename);            //解析运行的elf文件
   
   /* Set random seed. */
   init_rand();
