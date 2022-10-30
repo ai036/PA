@@ -2,7 +2,7 @@
 #include <nemu.h>
 #include <time.h>
 #include <sys/time.h>
-uint32_t init_time;
+uint64_t init_time;
 
 void __am_timer_init() {
     init_time=inl(RTC_ADDR);
@@ -10,7 +10,7 @@ void __am_timer_init() {
 
 void __am_timer_uptime(AM_TIMER_UPTIME_T *uptime) {
 
-  uint32_t new_time=inl(RTC_ADDR);
+  uint64_t new_time=inl(RTC_ADDR);
   uptime->us = new_time-init_time;
   
 }
