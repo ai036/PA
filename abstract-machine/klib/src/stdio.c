@@ -82,7 +82,11 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
           arg_int=va_arg(ap,int);
           end=convert(out,end,arg_int,10);
           i++;
-          break;    
+          break;
+
+          case 'c':
+          
+          break;
         }
       }
       else
@@ -118,7 +122,12 @@ int sprintf(char *out, const char *fmt, ...) {
           arg_int=va_arg(args,int);
           end=convert(out,end,arg_int,10);
           i++;
-          break;    
+          break;
+
+          case 'c':
+          
+          break;
+
         }
       }
       else
