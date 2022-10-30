@@ -5,14 +5,14 @@
 uint64_t init_time;
 
 void __am_timer_init() {
-    uint64_t low=inl(RTC_ADDR+4);
-    uint64_t high=(uint64_t)inl(RTC_ADDR)<<32;
+    uint64_t low=inl(RTC_ADDR);
+    uint64_t high=(uint64_t)inl(RTC_ADDR+4)<<32;
     init_time=low|high;
 }
 
 uint64_t __am_timer_uptime(AM_TIMER_UPTIME_T *uptime) {
-  uint64_t low=inl(RTC_ADDR+4);
-  uint64_t high=(uint64_t)inl(RTC_ADDR)<<32;
+  uint64_t low=inl(RTC_ADDR);
+  uint64_t high=(uint64_t)inl(RTC_ADDR+4)<<32;
   uint64_t new_time=low|high;
   uptime->us = new_time-init_time;
   return uptime->us;
