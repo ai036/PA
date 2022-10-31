@@ -6,25 +6,13 @@
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
 
 //将十进制数num转换为base进制的字符串
-int convert(char *out,int end,int64_t num,int base)
+int convert(char *out,int end,uint64_t num,int base)
 { 
   char dict[16]={'0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f'};
   char output[50];
   int index=0;
   if(num==0)
     output[index++]='0';
- /* else if(num==-2147483648)  //最小负数特殊情况
-    {
-      out[end++]='-';
-      output[index++]=dict[-(num%base)];
-      num/=base;
-      num=-num;
-    }*/
-  else if(num<0)
-    {
-      out[end++]='-';
-      num=-num;
-    }
   while(num>0)
     {
       int bit=num%base;
@@ -87,9 +75,14 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
           case 'c':
           char c = (char)va_arg(ap, int);
           out[end++]=c;
+          i++;
           break;
 
-          
+          case 'u':
+          uint64_t unum=va_arg(ap, uint64_t);
+          end=convert(out,end,unum,10);
+          i++;
+          break;
         }
       }
       else
@@ -105,7 +98,7 @@ int sprintf(char *out, const char *fmt, ...) {
   va_start(args, fmt);
   size_t len=strlen(fmt);
   int end=0;
-  int arg_int=0;
+  int64_t arg_int=0;
   char *arg_str=NULL;
   for(int i=0;i<len;i++)
     {
@@ -123,14 +116,26 @@ int sprintf(char *out, const char *fmt, ...) {
           
           case 'd':
           arg_int=va_arg(args,int);
+          if(arg_int<0)
+          {
+            out[end++]='-';
+            arg_int=-arg_int;
+           }
           end=convert(out,end,arg_int,10);
           i++;
           break;
-
-          case 'c':
           
+          case 'c':
+          char c = (char)va_arg(args, int);
+          out[end++]=c;
+          i++;
           break;
 
+          case 'u':
+          uint64_t unum=va_arg(args, uint64_t);
+          end=convert(out,end,unum,10);
+          i++;
+          break;
         }
       }
       else
