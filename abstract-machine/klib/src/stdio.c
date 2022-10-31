@@ -85,8 +85,11 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
           break;
 
           case 'c':
-          
+          char c = (char)va_arg(ap, int);
+          out[end++]=c;
           break;
+
+          
         }
       }
       else
