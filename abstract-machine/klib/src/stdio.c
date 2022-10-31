@@ -6,7 +6,7 @@
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
 
 //将十进制数num转换为base进制的字符串
-int convert(char *out,int end,int num,int base)
+int convert(char *out,int end,int64_t num,int base)
 { 
   char dict[16]={'0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f'};
   char output[50];
@@ -62,7 +62,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
 //  panic("Not implemented");
   size_t len=strlen(fmt);
   int end=0;
-  int arg_int=0;
+  int64_t arg_int=0;
   char *arg_str=NULL;
   for(int i=0;i<len;i++)
     {
@@ -79,7 +79,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
           break;
           
           case 'd':
-          arg_int=va_arg(ap,int);
+          arg_int=va_arg(ap,int64_t);
           end=convert(out,end,arg_int,10);
           i++;
           break;
