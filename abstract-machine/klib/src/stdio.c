@@ -67,11 +67,16 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
           break;
           
           case 'd':
-          arg_int=va_arg(ap,int64_t);
+          arg_int=va_arg(ap,int);
+          if(arg_int<0)
+          {
+            out[end++]='-';
+            arg_int=-arg_int;
+           }
           end=convert(out,end,arg_int,10);
           i++;
           break;
-
+          
           case 'c':
           char c = (char)va_arg(ap, int);
           out[end++]=c;
