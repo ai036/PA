@@ -45,7 +45,7 @@ void *malloc(size_t size) {
   for (uint64_t *p = (uint64_t *)old; p != (uint64_t *)hbrk; p ++) {
     *p = 0;
   }
-  printf("%p\n",old);
+
   return old;
 #endif
   return NULL;
