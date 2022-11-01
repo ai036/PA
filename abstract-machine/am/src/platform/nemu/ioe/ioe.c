@@ -18,6 +18,11 @@ void __am_disk_config(AM_DISK_CONFIG_T *cfg);
 void __am_disk_status(AM_DISK_STATUS_T *stat);
 void __am_disk_blkio(AM_DISK_BLKIO_T *io);
 
+extern char *hbrk;
+
+static void bench_reset() {
+  hbrk = (void *)ROUNDUP(heap.start, 8);
+}
 static void __am_timer_config(AM_TIMER_CONFIG_T *cfg) { cfg->present = true; cfg->has_rtc = true; }
 static void __am_input_config(AM_INPUT_CONFIG_T *cfg) { cfg->present = true;  }
 static void __am_uart_config(AM_UART_CONFIG_T *cfg)   { cfg->present = false; }
@@ -52,6 +57,7 @@ bool ioe_init() {
   __am_gpu_init();
   __am_timer_init();
   __am_audio_init();
+  bench_reset();
   return true;
 }
 
