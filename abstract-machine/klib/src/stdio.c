@@ -88,6 +88,16 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
           end=convert(out,end,unum,10);
           i++;
           break;
+
+          case 'p':
+           
+      uint32_t num = va_arg(ap, uint32_t);
+        out[end++]='0';
+        out[end++]='x';
+        end=convert(out,end,num,16);
+        i++;
+      break;
+    
         }
       }
       else

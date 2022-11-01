@@ -37,7 +37,7 @@ void *malloc(size_t size) {
 #if !(defined(__ISA_NATIVE__) && defined(__NATIVE_USE_KLIB__))
 //  panic("Not implemented");
   hbrk = (void *)ROUNDUP(heap.start, 8);
-  printf("123\n");
+  printf("%p\n",hbrk);
   size  = (size_t)ROUNDUP(size, 8);
   char *old = heap.start;
   hbrk += size;
