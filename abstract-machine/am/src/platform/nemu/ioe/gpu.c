@@ -23,7 +23,7 @@ void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
   int x = ctl->x, y = ctl->y, w = ctl->w, h = ctl->h;//(x,y)像素坐标，(w,h)像素宽高
   uint32_t *pixel= (uint32_t *)ctl->pixels;
   fb=fb+y*W+x;
-  for (int i = 0; i < h; i ++)
+  for (int i = 0; i < h; i++)
     for(int j=0;j<w;j++)
       fb[i*W+j]=pixel[i*w+j];
   if (ctl->sync) {
