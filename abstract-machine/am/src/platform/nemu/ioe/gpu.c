@@ -21,13 +21,13 @@ void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
   uint32_t *fb = (uint32_t *)(uintptr_t)FB_ADDR;
   int x = ctl->x, y = ctl->y, w = ctl->w, h = ctl->h;//(x,y)像素坐标，(w,h)像素宽高
   int W=inw(WIDTH_ADDR);
-  uint32_t *pixel= (uint32_t *)ctl->pixels;
+
   if(h==0||w==0)
     return;
   fb=fb+y*w+x;
   for (int i = 0; i < h; i ++)
     for(int j=0;j<w;j++)
-      outl(FB_ADDR+(y*W+x+i*w+j)*4,*pixel);
+      outl(FB_ADDR+(y*W+x+i*w+j)*4,5);
 
   if (ctl->sync) {
     outl(SYNC_ADDR, 1);
