@@ -2,8 +2,8 @@
 #include <nemu.h>
 
 #define SYNC_ADDR (VGACTL_ADDR + 4)
-#define HEIGHT_ADDR (VGACTL_ADDR + 2)
-#define WIDTH_ADDR (VGACTL_ADDR)
+#define HEIGHT_ADDR (VGACTL_ADDR)
+#define WIDTH_ADDR (VGACTL_ADDR + 2)
 
 void __am_gpu_init() {
   int i;
