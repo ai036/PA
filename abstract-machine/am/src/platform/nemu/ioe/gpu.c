@@ -29,7 +29,7 @@ void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
   int H=inw(HEIGHT_ADDR);
   uint32_t *pixel= (uint32_t *)ctl->pixels;
     int size_pixels_copy = sizeof(uint32_t) * w;
-  fb=fb+y*W+x;
+
     for (int i = 0; i < h && y + i < H; i++) {
 
     memcpy(&fb[(y + i) * W + x], pixel, size_pixels_copy);
