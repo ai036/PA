@@ -25,16 +25,14 @@ void __am_gpu_config(AM_GPU_CONFIG_T *cfg) {
 void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
   uint32_t *fb = (uint32_t *)(uintptr_t)FB_ADDR;
   int x = ctl->x, y = ctl->y, w = ctl->w, h = ctl->h;//(x,y)像素坐标，(w,h)像素宽高
-  int W = inw(WIDTH_ADDR);  // TODO: get the correct width
-
-
+  int W=inw(WIDTH_ADDR);
   uint32_t *pixel= (uint32_t *)ctl->pixels;
   if(h==0||w==0)
     return;
-  fb=fb+y*W+x*w;
+  fb=fb+y*w+x;
   for (int i = 0; i < h; i ++)
-    for(int j = 0;j < w;j++)
-      *(fb+i*W+j)=pixel[i*w+j];
+    for(int j=0;j<w;j++)
+      outl(FB_ADDR+y*W+x*w+i*w+j,*pixel);
 
   if (ctl->sync) {
     outl(SYNC_ADDR, 1);
