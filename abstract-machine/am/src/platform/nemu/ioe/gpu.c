@@ -22,9 +22,11 @@ void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
   int W=inw(WIDTH_ADDR);
   uint32_t *pixel= (uint32_t *)ctl->pixels;
   fb=fb+y*W+x;
+  if(h==0||w==0)
+    return ;
   for (int i = 0; i < h; i ++)
     for(int j=0;j<w;j++)
-        fb[i*W+j]=pixel[i*w+j];
+      fb[i*W+j]=pixel[i*w+j];
   if (ctl->sync) {
     outl(SYNC_ADDR, 1);
   }
