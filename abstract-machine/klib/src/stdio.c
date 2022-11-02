@@ -53,6 +53,8 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
   int64_t arg_int=0;
   char *arg_str=NULL;
   char c;
+  uint64_t unum64;
+  uint32_t unum32;
   for(int i=0;i<len;i++)
     {
       if(fmt[i]!='%')
@@ -85,19 +87,18 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
           break;
 
           case 'u':
-          uint64_t unum=va_arg(ap, uint64_t);
-          end=convert(out,end,unum,10);
+          unum64=va_arg(ap, uint64_t);
+          end=convert(out,end,unum64,10);
           i++;
           break;
 
           case 'p':
-           
-      uint32_t num = va_arg(ap, uint32_t);
-        out[end++]='0';
-        out[end++]='x';
-        end=convert(out,end,num,16);
-        i++;
-      break;
+            unum32 = va_arg(ap, uint32_t);
+            out[end++]='0';
+            out[end++]='x';
+            end=convert(out,end,unum32,16);
+            i++;
+            break;
     
         }
       }
@@ -117,6 +118,8 @@ int sprintf(char *out, const char *fmt, ...) {
   int64_t arg_int=0;
   char *arg_str=NULL;
   char c ;
+  uint64_t unum64;
+  uint32_t unum32; 
   for(int i=0;i<len;i++)
     {
       if(fmt[i]!='%')
@@ -149,10 +152,19 @@ int sprintf(char *out, const char *fmt, ...) {
           break;
 
           case 'u':
-          uint64_t unum=va_arg(args, uint64_t);
-          end=convert(out,end,unum,10);
+          unum64=va_arg(args, uint64_t);
+          end=convert(out,end,unum64,10);
           i++;
           break;
+
+          case 'p':
+            unum32 = va_arg(args, uint32_t);
+            out[end++]='0';
+            out[end++]='x';
+            end=convert(out,end,unum32,16);
+            i++;
+            break;
+
         }
       }
       else
