@@ -4,7 +4,7 @@
 #define SYNC_ADDR (VGACTL_ADDR + 4)
 #define HEIGHT_ADDR (VGACTL_ADDR + 2)
 #define WIDTH_ADDR (VGACTL_ADDR)
-
+void *memcpy(void *out, const void *in, size_t n) ;
 void __am_gpu_init() {
   int i;
   int w = inw(WIDTH_ADDR);  // TODO: get the correct width
@@ -26,13 +26,17 @@ void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
   uint32_t *fb = (uint32_t *)(uintptr_t)FB_ADDR;
   int x = ctl->x, y = ctl->y, w = ctl->w, h = ctl->h;//(x,y)像素坐标，(w,h)像素宽高
   int W=inw(WIDTH_ADDR);
+  int H=inw(HEIGHT_ADDR);
   uint32_t *pixel= (uint32_t *)ctl->pixels;
-
+    int size_pixels_copy = sizeof(uint32_t) * w;
   fb=fb+y*W+x;
-  for (int i = 0; i < h; i ++)
-    for(int j=0;j<w;j++)
-//      outl(FB_ADDR+(y*W+x+i*w+j)*4,pixel[0]);
-        fb[i*W+j]=pixel[i*w+j];
+    for (int i = 0; i < h && y + i < H; i++) {
+
+    memcpy(&fb[(y + i) * W + x], pixel, size_pixels_copy);
+
+    pixel += w;
+
+    }
 
   if (ctl->sync) {
     outl(SYNC_ADDR, 1);
