@@ -52,6 +52,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
   int end=0;
   int64_t arg_int=0;
   char *arg_str=NULL;
+  char c;
   for(int i=0;i<len;i++)
     {
       if(fmt[i]!='%')
@@ -78,7 +79,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
           break;
           
           case 'c':
-          char c = (char)va_arg(ap, int);
+          c = (char)va_arg(ap, int);
           out[end++]=c;
           i++;
           break;
@@ -115,6 +116,7 @@ int sprintf(char *out, const char *fmt, ...) {
   int end=0;
   int64_t arg_int=0;
   char *arg_str=NULL;
+  char c ;
   for(int i=0;i<len;i++)
     {
       if(fmt[i]!='%')
@@ -141,7 +143,7 @@ int sprintf(char *out, const char *fmt, ...) {
           break;
           
           case 'c':
-          char c = (char)va_arg(args, int);
+          c = (char)va_arg(args, int);
           out[end++]=c;
           i++;
           break;
