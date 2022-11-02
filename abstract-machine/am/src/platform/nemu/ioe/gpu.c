@@ -7,10 +7,10 @@
 
 void __am_gpu_init() {
   int i;
-  int w = inw(WIDTH_ADDR)/3;  // TODO: get the correct width
+  int w = inw(WIDTH_ADDR);  // TODO: get the correct width
   int h = inw(HEIGHT_ADDR);  // TODO: get the correct height
   uint32_t *fb = (uint32_t *)(uintptr_t)FB_ADDR;
-  for (i = 0; i < w * h; i ++) fb[i] = i;
+  for (i = 0; i < w * h; i ++) fb[i] = 2*i;
   outl(SYNC_ADDR, 1);
 }
 
