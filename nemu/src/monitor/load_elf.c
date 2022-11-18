@@ -92,7 +92,6 @@ void load_elf(char* filename)
              func_count++;
 		}
 	}
-
     free(shdr);
     fclose(elfp);
 }
