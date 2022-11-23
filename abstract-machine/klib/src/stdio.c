@@ -54,7 +54,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
   char *arg_str=NULL;
   char c;
   uint64_t unum64;
-  uint32_t unum32;
+
   for(int i=0;i<len;i++)
     {
       if(fmt[i]!='%')
@@ -92,13 +92,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
           i++;
           break;
 
-          case 'p':
-            unum32 = va_arg(ap, uint32_t);
-            out[end++]='0';
-            out[end++]='x';
-            end=convert(out,end,unum32,16);
-            i++;
-            break;
+       
     
         }
       }
