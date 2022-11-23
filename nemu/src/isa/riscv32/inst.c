@@ -84,6 +84,7 @@ static int decode_exec(Decode *s) {
   INSTPAT("0000000 ????? ????? 001 ????? 00100 11", slli   , I, R(dest) = src1 << (imm & 0x01f));//默认shamt[5]=0，立即数逻辑左移
   INSTPAT("0000000 ????? ????? 101 ????? 00100 11", srli   , I, R(dest) = src1 >> (imm & 0x01f));//默认shamt[5]=0，立即数逻辑右移
   INSTPAT("0100000 ????? ????? 101 ????? 00100 11", srai   , I, R(dest) = (int)src1>>(imm&0x01f));   //默认shamt[5]=0，立即数算数右移
+  INSTPAT("000000000000  00000 000 00000 11100 11", ecall  , I, isa_raise_intr(0b1110011,s->pc));
 
 
   
