@@ -50,6 +50,14 @@ static void decode_operand(Decode *s, int *dest, word_t *src1, word_t *src2, wor
   }
 }
 
+word_t* CSD;
+#define get_csr() do{\
+  switch (imm)\
+{ case 0x305:\
+  CSD=&csr.mtvec;break;\
+}}while (0)
+
+
 static int decode_exec(Decode *s) {
   int dest = 0;
   word_t src1 = 0, src2 = 0, imm = 0;
@@ -85,7 +93,7 @@ static int decode_exec(Decode *s) {
   INSTPAT("0000000 ????? ????? 101 ????? 00100 11", srli   , I, R(dest) = src1 >> (imm & 0x01f));//默认shamt[5]=0，立即数逻辑右移
   INSTPAT("0100000 ????? ????? 101 ????? 00100 11", srai   , I, R(dest) = (int)src1>>(imm&0x01f));   //默认shamt[5]=0，立即数算数右移
   INSTPAT("000000000000  00000 000 00000 11100 11", ecall  , I, isa_raise_intr(0b1110011,s->pc));
-  INSTPAT("??????? ????? ????? 010 ????? 11100 11", csrrs  , I, word_t t=csr.mtvec; csr.mtvec=csr.mtvec|src1;R(dest)=t);
+  INSTPAT("??????? ????? ????? 010 ????? 11100 11", csrrs  , I, get_csr();word_t t=*CSD; *CSD=t | src1;R(dest)=t);
 
 
   
