@@ -36,7 +36,7 @@ int cat(char *out, char *src,int end)
 
 int printf(const char *fmt, ...) {
 //  panic("Not implemented");
-  char buf[1024];
+  char buf[4096];
   va_list args;
   va_start(args, fmt);
   vsprintf(buf,fmt, args);
