@@ -14,6 +14,15 @@
 ***************************************************************************************/
 
 #include <isa.h>
+
+typedef struct 
+{
+    word_t mepc;
+    word_t mstatus;
+    word_t mcause;
+}riscv32_CSR;
+riscv32_CSR csr;
+
 void set_nemu_state(int state, vaddr_t pc, int halt_ret);
 
 word_t isa_raise_intr(word_t NO, vaddr_t epc) {
