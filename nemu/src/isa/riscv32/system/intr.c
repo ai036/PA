@@ -14,11 +14,13 @@
 ***************************************************************************************/
 
 #include <isa.h>
+void set_nemu_state(int state, vaddr_t pc, int halt_ret);
 
 word_t isa_raise_intr(word_t NO, vaddr_t epc) {
   /* TODO: Trigger an interrupt/exception with ``NO''.
    * Then return the address of the interrupt/exception vector.
    */
+  set_nemu_state(NEMU_STOP,epc,NO);
 
   return 0;
 }
