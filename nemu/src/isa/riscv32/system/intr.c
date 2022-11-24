@@ -36,9 +36,9 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
 
 #ifdef CONFIG_ETRACE   //etrace
   if(exception_idx<10)
-    exception_buf[error_idx].cause=NO;
-    exception_buf[error_idx].epc=epc;
-    exception_idx++;
+    {exception_buf[exception_idx].cause=NO;
+    exception_buf[exception_idx].epc=epc;
+    exception_idx++;}
   else
     printf("error_buf overflow!\n");
 #endif
