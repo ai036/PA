@@ -13,7 +13,8 @@ Context* __am_irq_handle(Context *c) {
     }
 
     c = user_handler(ev, c);
-    assert(c != NULL);  printf("\n\n%u123\n\n",c->mstatus);
+    printf("\n\n%u123\n\n",c->mstatus);
+    assert(c != NULL);  
   }
 
   return c;
