@@ -25,7 +25,7 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
   printf("raise_intr\n");
   csr.mcause=NO;
   csr.mepc=epc;
-  printf("hhh:%x\n\n",csr.mepc);
+  printf("hhh:%x\n\n",csr.mstatus);
 
   return csr.mtvec;
 }
