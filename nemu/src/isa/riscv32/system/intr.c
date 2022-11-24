@@ -15,8 +15,16 @@
 
 #include <isa.h>
 
+struct EXCEPTION_TRACE
+{
+  word_t cause;
+  vaddr_t epc;
+};
 
-void set_nemu_state(int state, vaddr_t pc, int halt_ret);
+#ifdef CONFIG_ETRACE
+static struct EXCEPTION_TRACE exception_buf[10];
+static int exception_idx=0;
+#endif
 
 word_t isa_raise_intr(word_t NO, vaddr_t epc) {
   /* TODO: Trigger an interrupt/exception with ``NO''.
@@ -25,6 +33,15 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
   printf("raise_intr\n");
   csr.mcause=NO;
   csr.mepc=epc;
+
+#ifdef CONFIG_ETRACE   //etrace
+  if(exception_idx<10)
+    exception_buf[error_idx].cause=NO;
+    exception_buf[error_idx].epc=epc;
+    exception_idx++;
+  else
+    printf("error_buf overflow!\n");
+#endif
 
   return csr.mtvec;
 }
