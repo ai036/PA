@@ -53,8 +53,12 @@ static void decode_operand(Decode *s, int *dest, word_t *src1, word_t *src2, wor
 word_t* CSD;
 #define get_csr() do{\
   switch (imm)\
-{ case 0x305:\
+{ case 0x300:\
+  CSD=&csr.mstatus;break;\
+  case 0x305:\
   CSD=&csr.mtvec;break;\
+  case 0x341:\
+  CSD=&csr.mepc;break;\
   case 0x342:\
   CSD=&csr.mcause;break;\
 }}while (0)
