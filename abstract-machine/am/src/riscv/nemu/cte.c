@@ -18,7 +18,7 @@ Context* __am_irq_handle(Context *c) {
       case 6: ev.event = EVENT_IRQ_IODEV; break;
       default: ev.event = EVENT_ERROR; break;
     }
-  printf("\n%d\n\n",ev.event);
+  printf("\n%d\n\n",c->mcause);
 
     c = user_handler(ev, c);
     
