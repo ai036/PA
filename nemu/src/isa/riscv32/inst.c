@@ -140,7 +140,7 @@ static int decode_exec(Decode *s) {
   INSTPAT("0000001 ????? ????? 101 ????? 01100 11", divu   , R, R(dest) = src1 / src2);//无符号整数除法
   INSTPAT("0000001 ????? ????? 001 ????? 01100 11", mulh   , R, R(dest) = (SEXT((int64_t)src1,32) * SEXT((int64_t)src2,32))>>32);//高位乘法
   INSTPAT("0000001 ????? ????? 011 ????? 01100 11", mulhu  , R, R(dest) = ((int64_t)src1 * (int64_t)src2)>>32);//高位无符号乘法
-  INSTPAT("0011000 00010 00000 000 00000 11100 11", mret   , R, s->dnpc=csr.mepc+4 );//机器模式异常返回
+  INSTPAT("0011000 00010 00000 000 00000 11100 11", mret   , R, s->dnpc=csr.mepc);//机器模式异常返回
 
   INSTPAT("0000000 00001 00000 000 00000 11100 11", ebreak , N, NEMUTRAP(s->pc, R(10))); // R(10) is $a0
   INSTPAT("??????? ????? ????? ??? ????? ????? ??", inv    , N, INV(s->pc));
