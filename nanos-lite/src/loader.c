@@ -30,7 +30,9 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
     { printf("load\n");
       printf("%p\n",phdr[i].p_offset); 
       printf("%p\n",phdr[i].p_vaddr); 
+      printf("%d\n",phdr[i].p_memsz); 
 
+     
     }
   printf("load end\n");
   return 0;
