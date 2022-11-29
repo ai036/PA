@@ -21,10 +21,15 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
        assert(0);
        }
 
-  Elf32_Phdr *phdr=(Elf32_Phdr*)malloc(sizeof(Elf32_Phdr)*elf_head.e_phnum);
+  Elf_Phdr *phdr=(Elf_Phdr*)malloc(sizeof(Elf_Phdr)*elf_head.e_phnum);
   assert(phdr!=NULL);
-  ramdisk_read(phdr,elf_head.e_phoff,sizeof(Elf32_Phdr)*elf_head.e_phnum);
+  ramdisk_read(phdr,elf_head.e_phoff,sizeof(Elf_Phdr)*elf_head.e_phnum);
   
+  for(int i=0;i<elf_head.e_phnum;i++)
+    if(phdr[i].p_type==PT_LOAD)
+    {
+      memcpy(&phdr[i].p_vaddr,(&elf_head+phdr[i].p_offset), phdr[i].p_memsz);
+    }
   printf("load end\n");
   return 0;
 }
