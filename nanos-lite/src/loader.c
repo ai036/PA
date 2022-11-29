@@ -28,7 +28,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   for(int i=0;i<elf_head.e_phnum;i++)
     if(phdr[i].p_type==PT_LOAD)
     { printf("load\n");
-      char data[1000];  //这里有毛病
+      char data[10000];  //这里有毛病
       ramdisk_read(data,phdr[i].p_offset,phdr[i].p_memsz);
       memcpy(&phdr[i].p_vaddr,data, phdr[i].p_memsz);
     }
