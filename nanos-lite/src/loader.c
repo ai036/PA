@@ -24,6 +24,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
 
     Elf32_Shdr *shdr=(Elf32_Shdr*)malloc(sizeof(Elf32_Shdr)*elf_head.e_shnum);//分配内存section*数量
     assert(shdr!=NULL);
+    printf("load end\n");
   return 0;
 }
 
