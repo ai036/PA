@@ -13,11 +13,17 @@ size_t ramdisk_read(void *buf, size_t offset, size_t len);
 Elf_Ehdr elf;
 
 static uintptr_t loader(PCB *pcb, const char *filename) {
-          //把用户程序加载到正确的内存位置
-
+  //TODO把用户程序加载到正确的内存位置
   Elf32_Ehdr elf_head;
   ramdisk_read(&elf_head,0, sizeof(Elf32_Ehdr));
-  
+
+  if(elf_head.e_ident[0]!=0x7F || elf_head.e_ident[1]!='E' || elf_head.e_ident[2]!='L' || elf_head.e_ident[3]!='F')
+        {printf("Error,file is not a valid elf");
+        assert(0);
+        }
+
+    Elf32_Shdr *shdr=(Elf32_Shdr*)malloc(sizeof(Elf32_Shdr)*elf_head.e_shnum);//分配内存section*数量
+    assert(shdr!=NULL);
   return 0;
 }
 
