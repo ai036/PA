@@ -32,10 +32,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
       printf("%p\n",phdr[i].p_vaddr); 
       printf("%d\n",phdr[i].p_memsz); 
 
-      char data[20000];  //这里有毛病
-
-      ramdisk_read(data,phdr[i].p_offset,phdr[i].p_memsz);
-      memcpy(&phdr[i].p_vaddr,data, phdr[i].p_memsz);
+    
     }
   printf("load end\n");
   return 0x83000000;
