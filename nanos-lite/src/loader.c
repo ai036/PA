@@ -9,8 +9,14 @@
 # define Elf_Phdr Elf32_Phdr
 #endif
 
+size_t ramdisk_read(void *buf, size_t offset, size_t len);
+Elf_Ehdr elf;
+
 static uintptr_t loader(PCB *pcb, const char *filename) {
-  TODO();             //吧用户程序加载到正确的内存位置
+  TODO();             //把用户程序加载到正确的内存位置
+
+  Elf32_Ehdr elf_head;
+  ramdisk_read(&elf_head,0, sizeof(Elf32_Ehdr));
   
   return 0;
 }
