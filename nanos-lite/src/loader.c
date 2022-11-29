@@ -38,7 +38,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
       memcpy(&phdr[i].p_vaddr,data, phdr[i].p_memsz);
     }
   printf("load end\n");
-  return 0;
+  return 0x83000000;
 }
 
 void naive_uload(PCB *pcb, const char *filename) {
