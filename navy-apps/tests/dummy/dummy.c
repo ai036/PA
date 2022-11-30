@@ -6,10 +6,7 @@
 
 #define SYS_yield 1
 extern int _syscall_(int, uintptr_t, uintptr_t, uintptr_t);
-extern void _exit(int status);
 
 int main() {
-  int ret=_syscall_(SYS_yield, 0, 0, 0);
-  _exit(ret);
-  return ret;
+  return _syscall_(SYS_yield, 0, 0, 0);
 }
