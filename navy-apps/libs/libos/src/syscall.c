@@ -178,3 +178,4 @@ int symlink(const char *target, const char *linkpath) {
 int ioctl(int fd, unsigned long request, ...) {
   return -1;
 }
+
