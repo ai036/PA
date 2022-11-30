@@ -29,14 +29,14 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
     if(phdr[i].p_type==PT_LOAD)
     { printf("load\n");
       printf("%p\n",phdr[i].p_offset); 
-      printf("%p\n",phdr[i].p_vaddr); 
+      printf("%p\n",phdr[i].p_vaddr);
       printf("%d\n",phdr[i].p_memsz);
 
       ramdisk_read(&phdr[i].p_vaddr,phdr[i].p_offset,phdr[i].p_memsz);
 
     }
   printf("load end\n");
-  return 0x83000000;
+  return 0x830000b4;
 }
 
 void naive_uload(PCB *pcb, const char *filename) {
