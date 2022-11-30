@@ -27,7 +27,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   printf("%d\n",elf_head.e_phnum);
   for(int i=0;i<elf_head.e_phnum;i++)
     if(phdr[i].p_type==PT_LOAD)
-    { printf("load\n");
+    { printf("%d:  load\n",i);
       printf("%p\n",phdr[i].p_offset); 
       printf("%p\n",phdr[i].p_vaddr);
       printf("%d\n",phdr[i].p_memsz);
