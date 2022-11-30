@@ -33,6 +33,9 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
       printf("%d\n",phdr[i].p_memsz); 
 
 
+
+      ramdisk_read(&phdr[i].p_vaddr,phdr[i].p_offset,phdr[i].p_memsz);
+
     }
   printf("load end\n");
   return 0x83000000;
