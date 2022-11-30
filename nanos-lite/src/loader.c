@@ -20,6 +20,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
       {printf("Error,file is not a valid elf");
        assert(0);
        }
+  assert(*(uint32_t *)elf_head.e_ident == 0x7f454c46);
 
   Elf_Phdr *phdr=(Elf_Phdr*)malloc(sizeof(Elf_Phdr)*elf_head.e_phnum);
   assert(phdr!=NULL);
