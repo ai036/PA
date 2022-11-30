@@ -26,14 +26,16 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   ramdisk_read(phdr,elf_head.e_phoff,sizeof(Elf_Phdr)*elf_head.e_phnum);
   printf("%d\n",elf_head.e_phnum);
   for(int i=0;i<elf_head.e_phnum;i++)
+  { printf("%d\n",i);
     if(phdr[i].p_type==PT_LOAD)
-    { printf("%d:  load\n",i);
+    { printf("load\n");
       printf("%p\n",phdr[i].p_offset); 
       printf("%p\n",phdr[i].p_vaddr);
       printf("%d\n",phdr[i].p_memsz);
 
       ramdisk_read(&phdr[i].p_vaddr,phdr[i].p_offset,phdr[i].p_memsz);
 
+    }
     }
   printf("load end\n");
   return 0x830000b4;
