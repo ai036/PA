@@ -9,13 +9,9 @@ Context* __am_irq_handle(Context *c) {
   if (user_handler) {
     Event ev = {0};
     switch (c->mcause) {
-      case 0: ev.event = EVENT_NULL; break;
-      case 1: ev.event = EVENT_YIELD; break;
-      case 2: ev.event = EVENT_SYSCALL; break;
-      case 3: ev.event = EVENT_PAGEFAULT; break;
+
       case 11: ev.event = EVENT_YIELD; break;
-      case 5: ev.event = EVENT_IRQ_TIMER; break;
-      case 6: ev.event = EVENT_IRQ_IODEV; break;
+
       default: ev.event = EVENT_ERROR; break;
     }
   printf("cause: %d\n",c->mcause);
