@@ -10,11 +10,11 @@
 #endif
 
 size_t ramdisk_read(void *buf, size_t offset, size_t len);
-Elf_Ehdr elf;
+Elf_Ehdr elf_head;
 
 static uintptr_t loader(PCB *pcb, const char *filename) {
   //TODO把用户程序加载到正确的内存位置
-  Elf_Ehdr elf_head;
+
   ramdisk_read(&elf_head,0, sizeof(Elf_Ehdr));
   if(elf_head.e_ident[0]!=0x7F || elf_head.e_ident[1]!='E' || elf_head.e_ident[2]!='L' || elf_head.e_ident[3]!='F')
       {printf("Error,file is not a valid elf");
@@ -32,7 +32,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
       printf("%p\n",phdr[i].p_vaddr); 
       printf("%d\n",phdr[i].p_memsz); 
 
-    
+
     }
   printf("load end\n");
   return 0x83000000;
