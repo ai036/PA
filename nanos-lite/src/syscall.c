@@ -30,6 +30,9 @@ void do_syscall(Context *c) {
        c->GPRx=count;
       }
     break;
+    case SYS_brk:   //简易版，直接返回0
+      c->GPRx=0;
+      break;
     default: panic("Unhandled syscall ID = %d", a[0]);
   }
   

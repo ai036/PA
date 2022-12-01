@@ -14,20 +14,13 @@ Elf_Ehdr elf_head;
 
 static uintptr_t loader(PCB *pcb, const char *filename) {
   //TODO把用户程序加载到正确的内存位置
-
   ramdisk_read(&elf_head,0, sizeof(Elf_Ehdr));
-  if(elf_head.e_ident[0]!=0x7F || elf_head.e_ident[1]!='E' || elf_head.e_ident[2]!='L' || elf_head.e_ident[3]!='F')
-      {printf("Error,file is not a valid elf");
-       assert(0);
-       }
   assert(*(uint32_t *)elf_head.e_ident == 0x464c457f);
 
   Elf_Phdr *phdr=(Elf_Phdr*)malloc(sizeof(Elf_Phdr)*elf_head.e_phnum);
   assert(phdr!=NULL);
   ramdisk_read(phdr,elf_head.e_phoff,sizeof(Elf_Phdr)*elf_head.e_phnum);
-  printf("%d\n",elf_head.e_phnum);
   for(int i=0;i<elf_head.e_phnum;i++)
-  
     if(phdr[i].p_type==PT_LOAD)
     { printf("load\n");
       printf("%p\n",phdr[i].p_offset); 

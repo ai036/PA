@@ -66,7 +66,18 @@ int _write(int fd, void *buf, size_t count) {
   return ret;
 }
 
+extern char end;  //链接时自动加的符号，直接声明
+void* program_break=NULL;
+
 void *_sbrk(intptr_t increment) {
+  if(program_break==NULL) 
+    program_break=&end;
+  int ret=_syscall_(SYS_brk, (intptr_t)(program_break+increment),0,0);
+  void* old=program_break;
+  if(ret==0)
+    {program_break+=increment;
+     return old;
+     }
   return (void *)-1;
 }
 
