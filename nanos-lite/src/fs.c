@@ -3,12 +3,15 @@
 typedef size_t (*ReadFn) (void *buf, size_t offset, size_t len);
 typedef size_t (*WriteFn) (const void *buf, size_t offset, size_t len);
 
+size_t ramdisk_read(void *buf, size_t offset, size_t len);
+
 typedef struct {
   char *name;
   size_t size;
   size_t disk_offset;
-  ReadFn read;
-  WriteFn write;
+  ReadFn read;    //函数指针
+  WriteFn write;   //函数指针
+  size_t open_offset; //已经打开文件的偏移量
 } Finfo;
 
 enum {FD_STDIN, FD_STDOUT, FD_STDERR, FD_FB};
@@ -31,6 +34,18 @@ static Finfo file_table[] __attribute__((used)) = {
 #include "files.h"
 };
 
+#define file_num sizeof(file_table)/sizeof(Finfo)
+
 void init_fs() {
   // TODO: initialize the size of /dev/fb
+}
+
+
+
+
+size_t fs_lseek(int fd, size_t offset, int whence);
+
+int fs_close(int fd)
+{
+  return 0;
 }
