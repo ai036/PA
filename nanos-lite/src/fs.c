@@ -63,6 +63,8 @@ size_t fs_read(int fd, void *buf, size_t len)
      file_table[fd].open_offset=file_table[fd].size;
      }
   printf("open_offset:%d\n",file_table[fd].open_offset);
+  printf("size:%d\n",file_table[fd].size);
+
   return ret;
 }
 
