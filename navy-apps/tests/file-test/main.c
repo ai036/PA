@@ -30,6 +30,8 @@ int main() {
   for (i = 0; i < 500; i ++) {
     fscanf(fp, "%d", &n);
     printf("%dth\n",i);
+    if(i==204)
+    	printf("n:%d\n",n);
     assert(n == i + 1 + 1000);
   }
 
