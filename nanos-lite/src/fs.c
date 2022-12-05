@@ -65,22 +65,17 @@ size_t fs_read(int fd, void *buf, size_t len)
   return ret;
 }
 
-size_t fs_write(int fd, const void *buf, size_t len){
-  //TODO: STDOUT添加支持
-  Finfo *info = &file_table[fd];
-  size_t real_len;
-  
-  if (info->write){
-    real_len = info->write(buf, info->open_offset, len);
-    info->open_offset += real_len;
-  }else {
-    assert(info->open_offset + len <= info->size);
-    ramdisk_write(buf, info->disk_offset + info->open_offset, len);
-    real_len = len;
-    info->open_offset += len;
-  }
-
-  return real_len;
+size_t fs_write(int fd, const void *buf, size_t len)
+{
+  assert(file_table[fd].open_offset <= file_table[fd].size);
+  size_t ret=ramdisk_write(buf,file_table[fd].disk_offset+file_table[fd].open_offset,len);
+  if(file_table[fd].open_offset+len<=file_table[fd].size)
+    file_table[fd].open_offset+=len;
+  else
+    {ret=file_table[fd].size-file_table[fd].open_offset;
+     file_table[fd].open_offset=file_table[fd].size;
+     }
+  return ret;
 }
 
 size_t fs_lseek(int fd, size_t offset, int whence)

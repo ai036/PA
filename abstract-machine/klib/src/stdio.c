@@ -20,7 +20,7 @@ int convert(char *out,int end,uint64_t num,int base)
       num/=base;
     }
   for(int i=index-1;i>=0;i--)
-  { 
+  {
     out[end++]=output[i];
   }
   return end;
