@@ -96,22 +96,10 @@ void *memcpy(void *out, const void *in, size_t n) {
   assert(out!=NULL&&in!=NULL);
   char* o=(char*)out;
   char* i=(char*)in;
-  if(i<=o || i+n<=o)
-    {
-      while(n--)
-        {
-          *o=*i;
-          i++;
-          o++;
-        }
-    }
-  else
-    {
-      while(n--)
-      {
-        *(o+n-1)=*(i+n-1);
-      }
-    }
+  for(int j=0;j<n;j++)
+  {
+    o[j]=i[j];
+  }
   return out;
 }
 
