@@ -30,6 +30,7 @@ void do_syscall(Context *c) {
       fd=c->GPR2,ret=0;
       if(fd>=3)
       {
+        printf("%p %d\n",c->GPR3,c->GPR4);
         ret=fs_read(fd,(void*)c->GPR3,c->GPR4);
         c->GPRx=ret;
       }
