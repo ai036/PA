@@ -81,10 +81,9 @@ size_t fs_lseek(int fd, size_t offset, int whence)
     case SEEK_CUR:file_table[fd].open_offset += offset;break;
     case SEEK_END:
     assert(offset==0);
-
-    file_table[fd].open_offset = file_table[fd].size+offset;    printf("%d\n",file_table[fd].open_offset);break;
+    file_table[fd].open_offset = file_table[fd].size+offset;break;
   }
-  return 0;
+  return file_table[fd].open_offset;
 }
 
 int fs_close(int fd)
