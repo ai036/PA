@@ -46,7 +46,7 @@ void do_syscall(Context *c) {
         }
        c->GPRx=ret;
       }
-    else
+    else if(fd!=0)
       { printf("write:%p %d\n",c->GPR3,c->GPR4);
         ret=fs_write(fd,(void*)c->GPR3,c->GPR4);
         c->GPRx=ret;
