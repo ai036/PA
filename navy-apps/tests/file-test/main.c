@@ -26,7 +26,7 @@ int main() {
     assert(n == i + 1);
   }
 
-  fseek(fp, 1020, SEEK_SET);
+  fseek(fp, 1021, SEEK_SET);
   for (i = 0; i < 500; i ++) {
     fscanf(fp, "%d", &n);
     printf("%dth ",i);
