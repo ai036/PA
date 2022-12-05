@@ -36,21 +36,8 @@ void do_syscall(Context *c) {
       }
       break;
     case SYS_write: 
-    fd=c->GPR2,ret=0;
-    char *start=(char *)c->GPR3;
-    if(fd==1||fd==2)
-      {for(size_t i=0;i<c->GPR4;i++)
-        {
-          putch(start[i]);
-          ret++;
-        }
-       c->GPRx=ret;
-      }
-    else
-      {
-        ret=fs_write(fd,(void*)c->GPR3,c->GPR4);
-        c->GPRx=ret;
-      }
+      int ret = fs_write(c->GPR2, (void *)c->GPR3, c->GPR4);
+  c->GPRx = ret;
     break;
     case SYS_lseek:
       fd=c->GPR2;
