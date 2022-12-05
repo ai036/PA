@@ -1,5 +1,6 @@
 #include <common.h>
 #include "syscall.h"
+#include <fs.h>
 
 struct SYS_TRACE{
     char *name;
@@ -11,6 +12,8 @@ struct SYS_TRACE{
   int sys_index=0;
 #endif
 
+static int fd,ret;
+
 void do_syscall(Context *c) {
   uintptr_t a[4];
   a[0] = c->GPR1;
@@ -18,18 +21,47 @@ void do_syscall(Context *c) {
   switch (a[0]) {
     case SYS_exit: halt(c->GPR2); break;
     case SYS_yield: yield(); c->GPRx=0; break;
+    case SYS_open:
+      char* path=(char*)c->GPR2;
+      fd=fs_open(path,0,0);
+      c->GPRx=fd;
+      break;
+    case SYS_read:
+      fd=c->GPR2,ret=0;
+      if(fd>=3)
+      {
+        ret=fs_read(fd,(void*)c->GPR3,c->GPR4);
+        c->GPRx=ret;
+      }
+      break;
     case SYS_write: 
-    int fd=c->GPR2,count=0;
+    fd=c->GPR2,ret=0;
     char *start=(char *)c->GPR3;
     if(fd==1||fd==2)
       {for(size_t i=0;i<c->GPR4;i++)
         {
           putch(start[i]);
-          count++;
+          ret++;
         }
-       c->GPRx=count;
+       c->GPRx=ret;
+      }
+    else
+      {
+        ret=fs_write(fd,(void*)c->GPR3,c->GPR4);
+        c->GPRx=ret;
       }
     break;
+    case SYS_lseek:
+      fd=c->GPR2;
+      int offset=c->GPR3,whence=c->GPR4;
+      ret=fs_lseek(fd,offset,whence);
+      c->GPRx=ret;
+      break;
+    case SYS_close:
+      fd=c->GPR2;
+      ret=fs_close(fd);
+      c->GPRx=ret;
+      break;
     case SYS_brk:   //简易版，直接返回0
       c->GPRx=0;
       break;

@@ -35,17 +35,16 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
 
       fs_lseek(fd,phdr[i].p_offset,SEEK_SET);
       fs_read(fd,(void*)phdr[i].p_vaddr,phdr[i].p_memsz);
-
-
       memset((void*)(phdr[i].p_vaddr+phdr[i].p_filesz),0,phdr[i].p_memsz-phdr[i].p_filesz);
     }
+  fs_close(fd);
   printf("load end\n");
-  printf("entry %p\n",elf_head.e_entry);
+  printf("entry: %p\n",elf_head.e_entry);
   return elf_head.e_entry;
 }
 
 void naive_uload(PCB *pcb, const char *filename) {
-  uintptr_t entry = loader(pcb, "/bin/dummy");
+  uintptr_t entry = loader(pcb, "/bin/file-test");
   Log("Jump to entry = %p", entry);
   ((void(*)())entry) ();
 }
