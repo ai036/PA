@@ -22,9 +22,8 @@ int main() {
 
   }
 
-  for (i = 500; i < 1005; i ++) {
+  for (i = 500; i < 1000; i ++) {
     fscanf(fp, "%d", &n);
-    printf("%dth n:%d\n",i,n);
     assert(n == i + 1);
   }
 
