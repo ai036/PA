@@ -80,9 +80,6 @@ size_t fs_write(int fd, const void *buf, size_t len)
      }
     printf("open_offset:%d\n",file_table[fd].open_offset);
   printf("size:%d\n",file_table[fd].size);
-  char f[10000];
-  ramdisk_read(f,file_table[fd].disk_offset,5000);
-  printf("%s\n",f);
   return ret;
 }
 
