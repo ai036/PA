@@ -20,14 +20,13 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   int fd=fs_open(filename,0,0);
   fs_read(fd,&elf_head,sizeof(Elf_Ehdr));
 
-  ramdisk_read(&elf_head,0, sizeof(Elf_Ehdr));
+
   assert(*(uint32_t *)elf_head.e_ident == 0x464c457f);
   Elf_Phdr *phdr=(Elf_Phdr*)malloc(sizeof(Elf_Phdr)*elf_head.e_phnum);
   assert(phdr!=NULL);
   
   fs_lseek(fd,elf_head.e_phoff,SEEK_SET);
   fs_read(fd,phdr,sizeof(Elf_Phdr)*elf_head.e_phnum);//这里有bug
-
 
   for(int i=0;i<elf_head.e_phnum;i++)
     if(phdr[i].p_type==PT_LOAD)
