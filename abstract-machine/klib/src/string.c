@@ -93,25 +93,12 @@ void *memmove(void *dst, const void *src, size_t n) {
 }
 
 void *memcpy(void *out, const void *in, size_t n) {
-  assert(out!=NULL&&in!=NULL);
-  char* o=(char*)out;
-  char* i=(char*)in;
-  if(i<=o || i+n<=o)
-    {
-      while(n--)
-        {
-          *o=*i;
-          i++;
-          o++;
-        }
-    }
-  else
-    {
-      while(n--)
-      {
-        *(o+n-1)=*(i+n-1);
-      }
-    }
+  char *char_out = (char *)out;
+  const char *char_in = (const char *)in;
+  for (int i = 0; i < n; ++i){
+    char_out[i] = char_in[i];
+  }
+
   return out;
 }
 
