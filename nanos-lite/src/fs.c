@@ -52,66 +52,38 @@ int fs_open(const char *pathname, int flags, int mode)
   assert(0);
 }
 
-size_t fs_read(int fd, void *buf, size_t len){
-  Finfo *info = &file_table[fd];
-  size_t real_len;
-  
-  //assert(info->open_offset + len <= info->size);
-  if (info->read){
-    real_len = info->read(buf, info->open_offset, len);
-    info->open_offset += real_len;
-  }else {
-    real_len = info->open_offset + len <= info->size ?
-    len : info->size - info->open_offset;
-    ramdisk_read(buf, info->disk_offset + info->open_offset, real_len);
-    info->open_offset += real_len;
-  }
-
-  return real_len;
+size_t fs_read(int fd, void *buf, size_t len)
+{
+  assert(file_table[fd].open_offset <= file_table[fd].size);
+  size_t ret=ramdisk_read(buf,file_table[fd].disk_offset+file_table[fd].open_offset,len);
+  if(file_table[fd].open_offset+len<=file_table[fd].size)
+    file_table[fd].open_offset+=len;
+  else
+    file_table[fd].open_offset=file_table[fd].size;
+  return ret;
 }
 
-size_t fs_write(int fd, const void *buf, size_t len){
-  //TODO: STDOUT添加支持
-  Finfo *info = &file_table[fd];
-  size_t real_len;
-  
-  if (info->write){
-    real_len = info->write(buf, info->open_offset, len);
-    info->open_offset += real_len;
-  }else {
-    assert(info->open_offset + len <= info->size);
-    ramdisk_write(buf, info->disk_offset + info->open_offset, len);
-    real_len = len;
-    info->open_offset += len;
-  }
-
-  return real_len;
+size_t fs_write(int fd, const void *buf, size_t len)
+{
+  assert(file_table[fd].open_offset <= file_table[fd].size);
+  size_t ret=ramdisk_write(buf,file_table[fd].disk_offset+file_table[fd].open_offset,len);
+  if(file_table[fd].open_offset+len<=file_table[fd].size)
+    file_table[fd].open_offset+=len;
+  else
+    file_table[fd].open_offset=file_table[fd].size;
+  return ret;
 }
 
-size_t fs_lseek(int fd, size_t offset, int whence){
-  Finfo *info = &file_table[fd];
-
+size_t fs_lseek(int fd, size_t offset, int whence)
+{
   switch(whence){
-    case SEEK_CUR:
-      assert(info->open_offset + offset <= info->size);
-      info->open_offset += offset;
-      break;
-
-    case SEEK_SET:
-      assert(offset <= info->size);
-      info->open_offset = offset;
-      break;
-
+    case SEEK_SET:file_table[fd].open_offset = offset;break;
+    case SEEK_CUR:file_table[fd].open_offset += offset;break;
     case SEEK_END:
-      assert(offset <= info->size);
-      info->open_offset = info->size + offset;
-      break;
-
-    default:
-      assert(0);
+    assert(offset==0);
+    file_table[fd].open_offset = file_table[fd].size+offset;break;
   }
-
-  return info->open_offset;
+  return file_table[fd].open_offset;//这里不能返回0
 }
 
 int fs_close(int fd)
