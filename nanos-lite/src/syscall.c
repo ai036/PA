@@ -54,8 +54,8 @@ void do_syscall(Context *c) {
     break;
     case SYS_lseek:
       fd=c->GPR2;
-      int offset=c->GPR3,whence=c->GPR4;
-      ret=fs_lseek(fd,offset,whence);
+
+      ret=fs_lseek(fd,c->GPR3,c->GPR4);
       c->GPRx=ret;
       break;
     case SYS_close:
