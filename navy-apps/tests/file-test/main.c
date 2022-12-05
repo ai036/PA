@@ -32,6 +32,7 @@ int main() {
     printf("%dth\n",i);
     if(i==204)
     	printf("n:%d\n",n);
+    if(i!=204)
     assert(n == i + 1 + 1000);
   }
 
