@@ -36,17 +36,21 @@ void do_syscall(Context *c) {
       }
       break;
     case SYS_write: 
-
-   if (c->GPR2 == 1 || c->GPR2 == 2){
-     for (int i = 0; i < c->GPR4; ++i){
-       putch(*(((char *)c->GPR3) + i));
-     }
-     c->GPRx = c->GPR4;
-   }else {  
-  int ret = fs_write(c->GPR2, (void *)c->GPR3, c->GPR4);
-  c->GPRx = ret;
-   }
-
+    fd=c->GPR2,ret=0;
+    char *start=(char *)c->GPR3;
+    if(fd==1||fd==2)
+      {for(size_t i=0;i<c->GPR4;i++)
+        {
+          putch(start[i]);
+          ret++;
+        }
+       c->GPRx=ret;
+      }
+    else
+      {
+        ret=fs_write(fd,(void*)c->GPR3,c->GPR4);
+        c->GPRx=ret;
+      }
     break;
     case SYS_lseek:
       fd=c->GPR2;
