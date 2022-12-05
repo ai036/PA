@@ -28,7 +28,7 @@ int main() {
 
   fseek(fp, 0, SEEK_SET);
   for (i = 0; i < 500; i ++) {
-    fscanf(fp, "%d", &n);
+    fscanf(fp, "%4d", &n);
     printf("%dth\n",i);
     if(i==204)
     	printf("n:%d\n",n);
