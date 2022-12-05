@@ -73,22 +73,17 @@ void *memmove(void *dst, const void *src, size_t n) {
   assert(dst!=NULL&&src!=NULL);
   char* d=(char*)dst;
   char* s=(char*)src;
-  if(s<=d || s+n<=d)
-    {
-      while(n--)
-        {
+  if(s<d)
+    for(int i=0;i<n;i++)
+      {
           *d=*s;
           d++;
           s++;
         }
-    }
-  else
-    {
-      while(n--)
-      {
-        *(d+n-1)=*(s+n-1);
-      }
-    }
+  else if(s>d)
+    for(int i=n-1;i>=0;i--)
+      d[i]=s[i];
+      
   return dst;
 }
 
