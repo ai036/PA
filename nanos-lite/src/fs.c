@@ -83,7 +83,7 @@ size_t fs_lseek(int fd, size_t offset, int whence)
     assert(offset==0);
     file_table[fd].open_offset = file_table[fd].size+offset;break;
   }
-  return file_table[fd].open_offset;
+  return file_table[fd].open_offset;//这里不能返回0
 }
 
 int fs_close(int fd)
