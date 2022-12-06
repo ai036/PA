@@ -1,6 +1,7 @@
 #include <common.h>
 #include "syscall.h"
 #include <fs.h>
+#include <sys/time.h>
 
 struct SYS_TRACE{
     char *name;
@@ -63,6 +64,13 @@ void do_syscall(Context *c) {
       c->GPRx=ret;
       break;
     case SYS_brk:   //简易版，直接返回0
+      c->GPRx=0;
+      break;
+    case SYS_gettimeofday:
+      struct timeval* tv=(struct timeval*)c->GPR2;
+      __uint64_t time=io_read(AM_TIMER_UPTIME).us;
+      tv->tv_sec=time%1000000;
+      tv->tv_usec=time/1000000;
       c->GPRx=0;
       break;
     default: panic("Unhandled syscall ID = %d", a[0]);
