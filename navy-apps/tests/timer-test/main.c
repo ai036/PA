@@ -10,14 +10,15 @@ int main(){
   struct timeval tv;
   int ret=gettimeofday(&tv,NULL);
 
+  NDL_Init(0);
   uint32_t time=NDL_GetTicks();
   uint32_t msec = 500;
   printf("%u\n",time);
   while (1) {
     while(time < msec) {
       uint32_t time=NDL_GetTicks();
-      printf("%u\n",time);
-      printf("%u\n",msec);
+      printf("%d\n",time);
+      printf("%d\n",msec);
     }
     printf("time pass 0.5s\n");
 
