@@ -26,14 +26,20 @@ size_t invalid_write(const void *buf, size_t offset, size_t len) {
   panic("should not reach here");
   return 0;
 }
+size_t serial_write(const void *buf, size_t offset, size_t len);
 
 /* This is the information about all files in disk. */
 static Finfo file_table[] __attribute__((used)) = {
   [FD_STDIN]  = {"stdin", 0, 0, invalid_read, invalid_write},
-  [FD_STDOUT] = {"stdout", 0, 0, invalid_read, invalid_write},
-  [FD_STDERR] = {"stderr", 0, 0, invalid_read, invalid_write},
+  [FD_STDOUT] = {"stdout", 0, 0, invalid_read, serial_write},
+  [FD_STDERR] = {"stderr", 0, 0, invalid_read, serial_write},
 #include "files.h"
 };
+
+void get_name(int fd,char *buf)
+{
+  buf=file_table[fd].name;
+}
 
 #define file_num sizeof(file_table)/sizeof(Finfo)
 
@@ -71,7 +77,12 @@ size_t fs_read(int fd, void *buf, size_t len)
 size_t fs_write(int fd, const void *buf, size_t len)
 {
   assert(file_table[fd].open_offset <= file_table[fd].size);
-  size_t ret=ramdisk_write(buf,file_table[fd].disk_offset+file_table[fd].open_offset,len);
+  size_t ret=0;
+  if(file_table[fd].write)
+    ret=file_table[fd].write(buf, 0, len);
+  else
+    ret=ramdisk_write(buf,file_table[fd].disk_offset+file_table[fd].open_offset,len);
+
   if(file_table[fd].open_offset+len<=file_table[fd].size)
     file_table[fd].open_offset+=len;
   else

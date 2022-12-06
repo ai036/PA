@@ -36,16 +36,16 @@ void do_syscall(Context *c) {
       break;
     case SYS_write: 
     fd=c->GPR2,ret=0;
-    char *start=(char *)c->GPR3;
-    if(fd==1||fd==2)
+  
+    /*if(fd==1||fd==2)
       {for(size_t i=0;i<c->GPR4;i++)
         {
           putch(start[i]);
           ret++;
         }
        c->GPRx=ret;
-      }
-    else if(fd!=0)
+      }*/
+    if(fd!=0)
       { 
         ret=fs_write(fd,(void*)c->GPR3,c->GPR4);
         c->GPRx=ret;
@@ -67,9 +67,10 @@ void do_syscall(Context *c) {
       break;
     default: panic("Unhandled syscall ID = %d", a[0]);
   }
-  
+
+void get_name(int fd,char *buf);
 #ifdef STRACE
-  strace[sys_index].name="syscall";
+  get_name(fd,strace[sys_index].name);
   strace[sys_index].perimeter[0]=c->GPR1;
   strace[sys_index].perimeter[1]=c->GPR2;
   strace[sys_index].perimeter[2]=c->GPR3;
