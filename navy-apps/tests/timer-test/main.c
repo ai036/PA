@@ -11,10 +11,11 @@ int main(){
   uint32_t time=NDL_GetTicks();
   uint32_t msec = 500;
   printf("%u\n",time);
+  
   while (1) {
-    uint32_t time;
+ 
     while(time < msec) {
-      uint32_t time=NDL_GetTicks();
+      time=NDL_GetTicks();
       printf("%d\n",time);
       printf("%d\n",msec);
     }
