@@ -17,6 +17,7 @@ int main(){
     while(time < msec) {
       uint32_t time=NDL_GetTicks();
       printf("%u\n",time);
+      printf("%u\n",msec);
     }
     printf("time pass 0.5s\n");
 
