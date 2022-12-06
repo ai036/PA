@@ -17,7 +17,7 @@ int main(){
     while(time < msec) {
   	ret=gettimeofday(&tv,NULL);
   	time=tv.tv_sec*1000+tv.tv_usec/1000;
-  	printf("%u\n",time);
+
     };
     printf("time pass 0.5s\n");
 
