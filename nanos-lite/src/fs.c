@@ -68,9 +68,6 @@ size_t fs_read(int fd, void *buf, size_t len)
     {ret=file_table[fd].size-file_table[fd].open_offset;
      file_table[fd].open_offset=file_table[fd].size;
      }
-  printf("open_offset:%d\n",file_table[fd].open_offset);
-  printf("size:%d\n",file_table[fd].size);
-
   return ret;
 }
 
@@ -89,9 +86,6 @@ size_t fs_write(int fd, const void *buf, size_t len)
     {ret=file_table[fd].size-file_table[fd].open_offset;
      file_table[fd].open_offset=file_table[fd].size;
      }
-    printf("open_offset:%d\n",file_table[fd].open_offset);
-  printf("size:%d\n",file_table[fd].size);
-
   return ret;
 }
 
