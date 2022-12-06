@@ -5,18 +5,22 @@
 #include <NDL.h>
 
 int main(){
-  printf("Hello. %d\n", sizeof(struct timeval));
-  NDL_Init(0);
+  printf("Start test. %d\n", sizeof(struct timeval));
+
+  struct timeval tv;
+  int ret=gettimeofday(&tv,NULL);
 
   uint32_t time;
   uint32_t msec = 500;
+  printf("%u\n",time);
   while (1) {
-    time = NDL_GetTicks();
     while(time < msec) {
-      time = NDL_GetTicks();
+  	ret=gettimeofday(&tv,NULL);
+  	time=tv.tv_sec*1000+tv.tv_usec/1000;
+  	printf("%u\n",time);
     };
     
-    printf("Oh, 0.5s have been lost...\n");
+
     msec += 500;
   }
 
