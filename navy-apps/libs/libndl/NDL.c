@@ -83,21 +83,30 @@ int NDL_Init(uint32_t flags) {
   int fd=open("/proc/dispinfo",0,0);
   char buf[100];
   read(fd, buf,100);
-  char b[100];
+  close(fd);
+  char b[100];//对文件进行格式化处理，删掉空格
   int end=0;
   for(int i=0;i<100;i++) 
     if(buf[i]!=' '&&buf[i]!='\0')
       b[end++]=buf[i];
   b[end]='\0';
-  char *value=strtok(buf,"\n");
+  
+  char *str=strtok(b,"\n");
   char key[50];
-  int data;
-  sscanf(value,"%[a-zA-Z]:%d", key, &data);
-    printf("%d\n",data);
-  value=strtok(NULL,"\n");
-  sscanf(value,"%[a-zA-Z]:%d", key, &data);
-    printf("%d\n",data);
-
+  int value;
+  sscanf(str,"%[a-zA-Z]:%d", key, &value);
+  if(strcmp(key,"WIDTH")==0)
+    screen_w=value;
+  else if(strcmp(key,"HEIGHT")==0)
+    screen_h=value;
+  
+  str=strtok(NULL,"\n");
+  sscanf(str,"%[a-zA-Z]:%d", key, &value);
+  if(strcmp(key,"WIDTH")==0)
+    screen_w=value;
+  else if(strcmp(key,"HEIGHT")==0)
+    screen_h=value;
+  printf("WIDTH: %d, HEIGHT: %d\n",screen_w,screen_h);
   return 0;
 }
 
