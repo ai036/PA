@@ -45,6 +45,7 @@ size_t dispinfo_read(void *buf, size_t offset, size_t len) {
   printf("(%d,%d)\n",width,height);
   int ret=sprintf(buf,"WIDTH:%d\nHEIGHT:%d",width,height);
   assert(ret<=len);
+  printf("111\n");
   return 0;
 }
 
