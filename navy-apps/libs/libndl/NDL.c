@@ -84,10 +84,9 @@ int NDL_Init(uint32_t flags) {
 
   char buf[50];
   read(fd, buf,50);
-  char *token = strtok(buf, "\n");
-  printf("%s\n",token);
-  *token = strtok(NULL, "\n");
-  printf("%s\n",token);
+
+  printf("%s\n",buf);
+
 
 
   return 0;
