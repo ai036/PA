@@ -86,7 +86,7 @@ int NDL_Init(uint32_t flags) {
   read(fd, buf,128);
   char b[128];
   int end=0;
-  for(int i=0;i<128;i++)
+  for(int i=0;i<80;i++)
     printf("%c",buf[i]);
   b[end]='\0';
   printf("%s\n",b);
