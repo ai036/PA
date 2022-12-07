@@ -110,21 +110,26 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
 }
 
 int sprintf(char *out, const char *fmt, ...) {
-  
   va_list args;
   va_start(args, fmt);
   int end=vsprintf(out, fmt, args);
- 
   return end;
 }
 
 int snprintf(char *out, size_t n, const char *fmt, ...) {
-  panic("Not implemented");
+  va_list args;
+  va_start(args, fmt);
+  int end=vsnprintf(out, n, fmt, args);
+  return end;
 }
 
 int vsnprintf(char *out, size_t n, const char *fmt, va_list ap) {
-
-  panic("Not implemented");
+  int end=vsprintf(out,fmt,ap);
+  out[n]='\0';
+  if(end>n)
+    return n;
+  else
+    return end;
 }
 
 #endif
