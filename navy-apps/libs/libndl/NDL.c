@@ -5,10 +5,12 @@
 #include <unistd.h>
 #include <sys/time.h>
 #include <fcntl.h>
+#include <assert.h>
 
 static int evtdev = -1;
 static int fbdev = -1;
 static int screen_w = 0, screen_h = 0;
+static int canvas_w = 0, canvas_h = 0;
 
 uint32_t NDL_GetTicks() {
   struct timeval tv;
@@ -43,13 +45,18 @@ void NDL_OpenCanvas(int *w, int *h) {
     }
     close(fbctl);
   }
-  int fd=open("/dev/fb",0,0);
-  char buf[50];
-  read(fd, buf,10);
-  printf("%s\n",buf);
-  read(fd, buf,10);
-  printf("%s\n",buf);
-
+  if(*w==0 && *h==0)
+    {canvas_w=screen_w;
+     canvas_h=screen_h;
+     *w=screen_w;
+     *h=screen_h;
+     }
+  else 
+  {
+    assert(*w<=screen_w && *h<=screen_h);
+    canvas_w=*w;
+    canvas_h=*h;
+  }
 }
 
 void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
@@ -73,6 +80,11 @@ int NDL_Init(uint32_t flags) {
   if (getenv("NWM_APP")) {
     evtdev = 3;
   }
+  int fd=open("/proc/dispinfo",0,0);
+
+  char buf[50];
+  read(fd, buf,20);
+  printf("%s\n",buf);
   return 0;
 }
 
