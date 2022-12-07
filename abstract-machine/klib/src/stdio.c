@@ -110,67 +110,11 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
 }
 
 int sprintf(char *out, const char *fmt, ...) {
-//  panic("Not implemented");
+  
   va_list args;
   va_start(args, fmt);
-  size_t len=strlen(fmt);
-  int end=0;
-  int64_t arg_int=0;
-  char *arg_str=NULL;
-  char c ;
-  uint64_t unum64;
-  uint32_t unum32; 
-  for(int i=0;i<len;i++)
-    {
-      if(fmt[i]!='%')
-        out[end++]=fmt[i];
-      else if(i+1<len)//后面是需要格式化输出的内容
-      {
-        switch(fmt[i+1])
-        { 
-          case 's':
-          arg_str=va_arg(args,char*);
-          end=cat(out,arg_str,end);
-          i++;
-          break;
-          
-          case 'd':
-          arg_int=va_arg(args,int);
-          if(arg_int<0)
-          {
-            out[end++]='-';
-            arg_int=-arg_int;
-           }
-          end=convert(out,end,arg_int,10);
-          i++;
-          break;
-          
-          case 'c':
-          c = (char)va_arg(args, int);
-          out[end++]=c;
-          i++;
-          break;
-
-          case 'u':
-          unum64=va_arg(args, uint64_t);
-          end=convert(out,end,unum64,10);
-          i++;
-          break;
-
-          case 'p':
-            unum32 = va_arg(args, uint32_t);
-            out[end++]='0';
-            out[end++]='x';
-            end=convert(out,end,unum32,16);
-            i++;
-            break;
-
-        }
-      }
-      else
-        out[end++]=fmt[i];
-    }
-  out[end]='\0';
+  int end=vsprintf(out, fmt, args);
+ 
   return end;
 }
 
@@ -179,6 +123,7 @@ int snprintf(char *out, size_t n, const char *fmt, ...) {
 }
 
 int vsnprintf(char *out, size_t n, const char *fmt, va_list ap) {
+
   panic("Not implemented");
 }
 
