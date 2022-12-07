@@ -20,7 +20,8 @@ int NDL_PollEvent(char *buf, int len) {
   int fd=3;
   int count=read(fd,buf,len);
   if(count>0)
-    return 1;
+  { printf("%s\n",buf);
+    return 1;}
   return 0;
 }
 
