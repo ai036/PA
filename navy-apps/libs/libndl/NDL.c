@@ -84,23 +84,9 @@ int NDL_Init(uint32_t flags) {
 
   char buf[128];
   read(fd, buf,128);
-  char b[128];
-  int end=0;
-  for(int i=0;i<80;i++)
-  { if(buf[i]=='\0')
-      printf("0\n");
-    if(buf[i]=='\n')
-      printf("n\n");
-    b[end++]=buf[i];
-    printf("%c",buf[i]);
-    }
-  b[end]='\0';
-  for(int i=0;i<end;i++)
-    printf("%c",b[i]);
+  printf("%s\n",buf);
+
   printf("\n\n");
-
-
-
 
 
   return 0;
