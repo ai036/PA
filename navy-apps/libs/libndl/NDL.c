@@ -81,13 +81,15 @@ int NDL_Init(uint32_t flags) {
     evtdev = 3;
   }
   int fd=open("/proc/dispinfo",0,0);
-  FILE *fp = fopen("/proc/dispinfo", "r+");
-  char buf[50];
-  fscanf(fp, "%s", buf);
-  printf("%s",buf);
 
-  fscanf(fp, "%s", buf);
-  printf("%s",buf);
+  char buf[128];
+  read(fd, buf,128);
+  char *token = strtok(buf, "\n");
+  printf("%s\n",token);
+  *token = strtok(NULL, "\n");
+  printf("%s\n",token);
+
+
   return 0;
 }
 
