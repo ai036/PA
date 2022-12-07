@@ -82,8 +82,8 @@ int NDL_Init(uint32_t flags) {
   }
   int fd=open("/proc/dispinfo",0,0);
 
-  char buf[128];
-  read(fd, buf,128);
+  char buf[256];
+  read(fd, buf,256);
   char *token = strtok(buf, "\n");
   printf("%s\n",token);
   *token = strtok(NULL, "\n");
