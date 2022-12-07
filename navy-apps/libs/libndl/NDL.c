@@ -3,43 +3,31 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <fcntl.h>
 #include <sys/time.h>
+#include <fcntl.h>
 #include <assert.h>
 
 static int evtdev = -1;
 static int fbdev = -1;
 static int screen_w = 0, screen_h = 0;
+static int canvas_w = 0, canvas_h = 0;
 
 uint32_t NDL_GetTicks() {
   struct timeval tv;
   gettimeofday(&tv, NULL);
-
-  return tv.tv_usec / 1000 + tv.tv_sec * 1000;
+  uint32_t time=tv.tv_sec*1000+tv.tv_usec/1000;
+  return time;
 }
 
 int NDL_PollEvent(char *buf, int len) {
-  int fp = open("/dev/events", O_RDONLY);
-
-  return read(fp, buf, sizeof(char) * len);
+  int fd=open("/dev/events",0,0);
+  int count=read(fd,buf,len);
+  if(count>0)
+    return 1;
+  return 0;
 }
 
-static int canvas_w, canvas_h, canvas_x = 0, canvas_y = 0;
-
 void NDL_OpenCanvas(int *w, int *h) {
-  if (*w == 0){
-    *w = screen_w;
-  }else if(*w > screen_w){
-    assert(0);
-  }
-  if (*h == 0){
-    *h = screen_h;
-  }else if(*h > screen_h){
-    assert(0);
-  }
-  canvas_w = *w;
-  canvas_h = *h;
-
   if (getenv("NWM_APP")) {
     int fbctl = 4;
     fbdev = 5;
@@ -57,22 +45,21 @@ void NDL_OpenCanvas(int *w, int *h) {
     }
     close(fbctl);
   }
+  if(*w==0 && *h==0)
+    {canvas_w=screen_w;
+     canvas_h=screen_h;
+     *w=screen_w;
+     *h=screen_h;
+     }
+  else 
+  {
+    assert(*w<=screen_w && *h<=screen_h);
+    canvas_w=*w;
+    canvas_h=*h;
+  }
 }
 
 void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
-  // FILE *graphics = fopen("/dev/fb", "w");
-  // for (int i = 0; i < h; ++i){
-  //   fseek(graphics, ((canvas_y + y + i) * screen_w + (canvas_x + x)) * sizeof(uint32_t), SEEK_SET);
-  //   fwrite(pixels + w * i, w * sizeof(uint32_t), 1, graphics);
-  // }
-  // fclose(graphics);
-  int graphics = open("/dev/fb", O_RDWR);
-  
-  for (int i = 0; i < h; ++i){
-    lseek(graphics, ((canvas_y + y + i) * screen_w + (canvas_x + x)) * sizeof(uint32_t), SEEK_SET);
-    ssize_t s = write(graphics, pixels + w * i, w * sizeof(uint32_t));
-  }
-  //close(graphics);
 }
 
 void NDL_OpenAudio(int freq, int channels, int samples) {
@@ -88,7 +75,6 @@ int NDL_PlayAudio(void *buf, int len) {
 int NDL_QueryAudio() {
   return 0;
 }
-
 static void read_key_value(char *str, char *key, int* value){
   char buffer[128];
   int len = 0;
