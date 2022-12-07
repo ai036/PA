@@ -95,7 +95,8 @@ int NDL_Init(uint32_t flags) {
     printf("%c",buf[i]);
     }
   b[end]='\0';
-  printf("%s\n",b);
+  for(int i=0;i<end;i++)
+    printf("%c",b[i]);
 
 
 
