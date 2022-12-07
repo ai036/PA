@@ -83,7 +83,7 @@ int NDL_Init(uint32_t flags) {
   int fd=open("/proc/dispinfo",0,0);
 
   char buf[50];
-  read(fd, buf,20);
+  read(fd, buf,50);
   printf("%s\n",buf);
   return 0;
 }
