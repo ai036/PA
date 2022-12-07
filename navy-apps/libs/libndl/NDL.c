@@ -46,7 +46,10 @@ void NDL_OpenCanvas(int *w, int *h) {
   int fd=open("/dev/fb",0,0);
   char buf[50];
   read(fd, buf,10);
-  printf("%s\n",buf); 
+  printf("%s\n",buf);
+  read(fd, buf,10);
+  printf("%s\n",buf);
+
 }
 
 void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
