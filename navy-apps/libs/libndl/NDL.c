@@ -94,7 +94,9 @@ int NDL_Init(uint32_t flags) {
   int data;
   sscanf(value,"%[a-zA-Z]:%d", key, &data);
     printf("%d\n",data);
-
+  value=strtok(b,"\n");
+  sscanf(value,"%[a-zA-Z]:%d", key, &data);
+    printf("%d\n",data);
 fflush (stdout);
 
 
