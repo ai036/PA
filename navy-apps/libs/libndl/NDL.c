@@ -88,6 +88,7 @@ int NDL_Init(uint32_t flags) {
   for(int i=0;i<100;i++) 
     if(buf[i]!=' '&&buf[i]!='\0')
       b[end++]=buf[i];
+  b[end]='\0';
   char *value=strtok(b,":");
 
   printf("%s\n",b);
