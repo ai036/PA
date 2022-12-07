@@ -76,21 +76,56 @@ int NDL_QueryAudio() {
   return 0;
 }
 
+static void read_key_value(char *str, char *key, int* value){
+  char buffer[128];
+  int len = 0;
+  for (char* c = str; *c; ++c){
+    if(*c != ' '){
+      buffer[len++] = *c;
+    }
+  }
+  buffer[len] = '\0';
+
+  sscanf(buffer, "%[a-zA-Z]:%d", key, value);
+  // printf("read_key_value\n");
+}
+
 int NDL_Init(uint32_t flags) {
   if (getenv("NWM_APP")) {
     evtdev = 3;
   }
-  int fd=open("/proc/dispinfo",0,0);
 
-  char buf[128];
-  read(fd, buf,128);
-  printf("%s\n",buf);
+  char info[128], key[64];
+  int value;
 
-  printf("\n\n");
-  printf("\n\n");
-  printf("\n\n");
-  printf("\n\n");
+  //memset(info, 0, 128);
+  int dispinfo = open("/proc/dispinfo", 0);
+  read(dispinfo, info, sizeof(info));
+  close(dispinfo);
+  // printf("%s \n", info);
 
+  /* 获取第一个子字符串 */
+  char *token = strtok(info, "\n");
+   
+   /* 继续获取其他的子字符串 */
+   while( token != NULL ) {
+      
+      // printf("while begin 105 %s \n", info);
+      //printf("%s = %d\n", key, value);
+      read_key_value(token, key, &value);
+
+      if(strcmp(key, "WIDTH") == 0){
+        screen_w = value;
+      }else if(strcmp(key, "HEIGHT") == 0) {
+        screen_h = value;
+      }
+
+      // printf("while middle 105 %s \n", info);
+      token = strtok(NULL, "\n");
+      // printf("while end 105 %s \n", info);
+  }
+
+  printf("With width = %d, height = %d.\n", screen_w, screen_h);
 
   return 0;
 }
