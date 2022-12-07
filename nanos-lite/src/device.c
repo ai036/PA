@@ -46,8 +46,9 @@ size_t dispinfo_read(void *buf, size_t offset, size_t len) {
   char b[100];
   sprintf(b,"WIDTH:%d\nHEIGHT:%d",width,height);
 
+  sprintf((char*)buf,"WIDTH:%d\nHEIGHT:%d",width,height);
 
-  printf("111%s\n",b);
+  printf("111%s\n",buf);
   return 0;
 }
 
