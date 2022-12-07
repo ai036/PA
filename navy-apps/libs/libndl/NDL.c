@@ -89,7 +89,7 @@ int NDL_Init(uint32_t flags) {
     if(buf[i]!=' '&&buf[i]!='\0')
       b[end++]=buf[i];
   b[end]='\0';
-  char *value=strtok(b,":");
+  char *value=strtok(b,"\n");
   char *key;
   int data;
   sscanf(value,"%[a-zA-Z]:%d", key, &data);
