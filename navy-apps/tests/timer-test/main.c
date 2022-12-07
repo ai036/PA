@@ -13,7 +13,7 @@ int main(){
   printf("%u\n",time);
   
   while (1) {
- 
+
     while(time < msec) {
       time=NDL_GetTicks();
     }
