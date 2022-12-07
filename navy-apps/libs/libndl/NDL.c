@@ -90,7 +90,7 @@ int NDL_Init(uint32_t flags) {
       b[end++]=buf[i];
   char *value=strtok(b,":");
 
-  printf("%s\n",value);
+  printf("%s\n",b);
 
 fflush (stdout);
   value=strtok(NULL,":");
