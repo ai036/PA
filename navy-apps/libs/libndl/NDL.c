@@ -85,6 +85,8 @@ int NDL_Init(uint32_t flags) {
   char buf[50];
   read(fd, buf,50);
   printf("%s\n",buf);
+  read(fd, buf,50);
+  printf("%s\n",buf);
   return 0;
 }
 
