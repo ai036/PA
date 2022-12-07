@@ -87,6 +87,9 @@ int NDL_Init(uint32_t flags) {
   printf("%s\n",buf);
 
   printf("\n\n");
+  printf("\n\n");
+  printf("\n\n");
+  printf("\n\n");
 
 
   return 0;
