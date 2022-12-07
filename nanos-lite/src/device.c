@@ -40,20 +40,12 @@ size_t events_read(void *buf, size_t offset, size_t len) {
 
 size_t dispinfo_read(void *buf, size_t offset, size_t len) {
 
- if (offset > 0){
-    return 0;
-  }
+  int width=io_read(AM_GPU_CONFIG).width;
+  int height=io_read(AM_GPU_CONFIG).height;
+  printf("(%d,%d)\n",width,height);
+  sprintf(buf,"WIDTH:%d\nHEIGHT:%d",width,height);
 
-  int w = io_read(AM_GPU_CONFIG).width;
-  int h = io_read(AM_GPU_CONFIG).height;
-
-  int ret = snprintf(buf, len, "WIDTH:%d\nHEIGHT:%d", w, h);
-  Log("%s", (char *)buf);
-  if (ret >= len){
-    assert(0);
-  }
-
-  return ret + 1;
+  return 0;
 }
 
 size_t fb_write(const void *buf, size_t offset, size_t len) {
