@@ -93,7 +93,7 @@ int NDL_Init(uint32_t flags) {
   char key[50];
   int data;
   sscanf(value,"%[a-zA-Z]:%d", key, &data);
-    printf("%s\n",key);
+    printf("%d\n",data);
 
 fflush (stdout);
 
