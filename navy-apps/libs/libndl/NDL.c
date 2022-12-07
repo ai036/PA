@@ -43,6 +43,10 @@ void NDL_OpenCanvas(int *w, int *h) {
     }
     close(fbctl);
   }
+  int fd=open("/dev/fb",0,0);
+  char *buf;
+  read(fd, buf,10);
+  printf("%s\n",buf); 
 }
 
 void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
