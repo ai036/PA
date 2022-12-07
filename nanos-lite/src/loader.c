@@ -11,8 +11,6 @@
 #endif
 
 size_t ramdisk_read(void *buf, size_t offset, size_t len);
-int fs_open(const char *pathname, int flags, int mode);
-size_t fs_read(int fd, void *buf, size_t len);
 Elf_Ehdr elf_head;
 
 static uintptr_t loader(PCB *pcb, const char *filename) {
@@ -29,7 +27,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   for(int i=0;i<elf_head.e_phnum;i++)
     if(phdr[i].p_type==PT_LOAD)
     { printf("load\n");
-      printf("%p\n",phdr[i].p_offset); 
+      printf("%p\n",phdr[i].p_offset);
       printf("%p\n",phdr[i].p_vaddr);
       printf("%d\n",phdr[i].p_memsz);
 

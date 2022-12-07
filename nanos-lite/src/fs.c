@@ -15,7 +15,7 @@ typedef struct {
   size_t open_offset; //已经打开文件的偏移量
 } Finfo;
 
-enum {FD_STDIN, FD_STDOUT, FD_STDERR, FD_FB};
+enum {FD_STDIN, FD_STDOUT, FD_STDERR, FD_EVENTS, FD_FB};
 
 size_t invalid_read(void *buf, size_t offset, size_t len) {
   panic("should not reach here");
@@ -34,8 +34,8 @@ static Finfo file_table[] __attribute__((used)) = {
   [FD_STDIN]  = {"stdin", 0, 0, invalid_read, invalid_write},
   [FD_STDOUT] = {"stdout", 0, 0, invalid_read, serial_write},
   [FD_STDERR] = {"stderr", 0, 0, invalid_read, serial_write},
-  {"/dev/events",0, 0, events_read, invalid_write},
-  {"/dev/fb",0, 0,invalid_read, invalid_write},
+  [FD_EVENTS] = {"/dev/events",0, 0, events_read, invalid_write},
+  [FD_FB] = {"/dev/fb",0, 0,invalid_read, invalid_write},
   {"/proc/dispinfo", 0, 0, dispinfo_read, invalid_write},
 #include "files.h"
 };
@@ -51,6 +51,7 @@ void init_fs() {
   // TODO: initialize the size of /dev/fb
   file_table[4].size=io_read(AM_GPU_CONFIG).width*io_read(AM_GPU_CONFIG).height*4;
   printf("fb size:%d\n",file_table[4].size);
+  printf("%d\n",file_table[4].disk_offset);
 }
 
 int fs_open(const char *pathname, int flags, int mode)
