@@ -92,10 +92,13 @@ int NDL_Init(uint32_t flags) {
 
   printf("%s\n",value);
 
-  printf("\n\n");
+fflush (stdout);
   value=strtok(NULL,":");
   printf("%s\n",value);
-  printf("\n\n");
+fflush (stdout);
+
+
+
 
   return 0;
 }
