@@ -44,7 +44,7 @@ void NDL_OpenCanvas(int *w, int *h) {
     close(fbctl);
   }
   int fd=open("/dev/fb",0,0);
-  char buf[20];
+  char buf[50];
   read(fd, buf,10);
   printf("%s\n",buf); 
 }
