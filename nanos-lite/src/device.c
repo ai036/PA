@@ -56,7 +56,7 @@ size_t fb_write(const void *buf, size_t offset, size_t len) {
   void* color=(void*)buf;
   int x=(offset/4)%width;
   int y=(offset/4)/width;
-  io_write(AM_GPU_FBDRAW, x, y, color, real_len, 1, false);
+  io_write(AM_GPU_FBDRAW, x, y, color, real_len/4, 1, false);
   io_write(AM_GPU_FBDRAW, 0, 0, NULL, 0, 0, true);
 
   return 0;
