@@ -11,6 +11,7 @@ static int evtdev = -1;
 static int fbdev = -1;
 static int screen_w = 0, screen_h = 0;
 static int canvas_w = 0, canvas_h = 0;
+static int canvas_x, canvas_y;
 
 uint32_t NDL_GetTicks() {
   struct timeval tv;
@@ -63,7 +64,7 @@ void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
   int fd=open("/dev/fb",0,0);
   size_t offset, len;
 
-  offset = y*screen_w+x;
+  offset = canvas_y*screen_w+canvas_x+ y*screen_w+x;
   for(int i=0;i<h;i++)
   {
     lseek(fd,offset,SEEK_SET);
@@ -118,6 +119,9 @@ int NDL_Init(uint32_t flags) {
   else if(strcmp(key,"HEIGHT")==0)
     screen_h=value;
   printf("WIDTH: %d, HEIGHT: %d\n",screen_w,screen_h);
+
+  canvas_x=(screen_w-canvas_w)/2;
+  canvas_y=(screen_h-canvas_h)/2;
   return 0;
 }
 
