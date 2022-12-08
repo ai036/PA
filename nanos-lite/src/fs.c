@@ -51,7 +51,6 @@ void init_fs() {
   // TODO: initialize the size of /dev/fb
   file_table[4].size=io_read(AM_GPU_CONFIG).width*io_read(AM_GPU_CONFIG).height*4;
   printf("fb size:%d\n",file_table[4].size);
-  printf("%d\n",file_table[7].disk_offset);
 }
 
 int fs_open(const char *pathname, int flags, int mode)
@@ -85,7 +84,7 @@ size_t fs_write(int fd, const void *buf, size_t len)
   assert(file_table[fd].open_offset <= file_table[fd].size);
   size_t ret=0;
   if(file_table[fd].write)
-    ret=file_table[fd].write(buf, 0, len);
+    ret=file_table[fd].write(buf, file_table[fd].open_offset, len);
   else
     ret=ramdisk_write(buf,file_table[fd].disk_offset+file_table[fd].open_offset,len);
 

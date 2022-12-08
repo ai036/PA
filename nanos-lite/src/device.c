@@ -14,6 +14,8 @@ static const char *keyname[256] __attribute__((used)) = {
   AM_KEYS(NAME)
 };
 
+static int width,height,size;
+
 size_t serial_write(const void *buf, size_t offset, size_t len) {
   int ret=0;
   char* start=(char*)buf;
@@ -40,25 +42,30 @@ size_t events_read(void *buf, size_t offset, size_t len) {
 
 size_t dispinfo_read(void *buf, size_t offset, size_t len) {
 
-  int width=io_read(AM_GPU_CONFIG).width;
-  int height=io_read(AM_GPU_CONFIG).height;
   int ret=snprintf(buf,len,"WIDTH:%d\nHEIGHT:%d",width,height);
   assert(ret<=len);
 
   return ret;
 }
 
-size_t fs_write(int fd, const void *buf, size_t len);
-size_t ramdisk_write(const void *buf, size_t offset, size_t len);
-
 size_t fb_write(const void *buf, size_t offset, size_t len) {
+  
+  size_t real_len=len;
+  if(len+offset>size)
+    real_len=size-offset;
+  void* color=(void*)buf;
+  int x=(offset/4)%width;
+  int y=(offset/4)/width;
+  io_write(AM_GPU_FBDRAW, x, y, color, real_len, 1, false);
+  io_write(AM_GPU_FBDRAW, 0, 0, NULL, 0, 0, true);
 
-  
-  
   return 0;
 }
 
 void init_device() {
   Log("Initializing devices...");
   ioe_init();
+  width=io_read(AM_GPU_CONFIG).width;
+  height=io_read(AM_GPU_CONFIG).height;
+  size=width*height*4;
 }
