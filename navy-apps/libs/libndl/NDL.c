@@ -66,6 +66,7 @@ void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
 
   canvas_x=(screen_w-canvas_w)/2;
   canvas_y=(screen_h-canvas_h)/2;
+  printf("width:%d height:%d\n",canvas_w,canvas_h);
   offset = canvas_y*screen_w+canvas_x+ y*screen_w+x;
   for(int i=0;i<h;i++)
   {
