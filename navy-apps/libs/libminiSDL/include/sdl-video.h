@@ -42,10 +42,10 @@ typedef struct {
 
 typedef struct {
 	uint32_t flags;
-	SDL_PixelFormat *format;
-	int w, h;
-	uint16_t pitch;
-	uint8_t *pixels;
+	SDL_PixelFormat *format; //存储着和像素有关的格式                read-only
+	int w, h;             	 //图像宽度 高度                     read-only
+	uint16_t pitch; 		 //pixels中一行有多少个像素（以Bytes计） read-only
+	uint8_t *pixels;		 //实际的像素数据                        read-write
 } SDL_Surface;
 
 SDL_Surface* SDL_CreateRGBSurfaceFrom(void *pixels, int width, int height, int depth,
