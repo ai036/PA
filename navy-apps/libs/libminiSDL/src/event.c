@@ -19,6 +19,7 @@ int SDL_PollEvent(SDL_Event *ev) {
 int SDL_WaitEvent(SDL_Event *event) {
   char buf[100];
   NDL_PollEvent(buf,20);
+  printf("%s\n",buf);
   char type[10];
   char key[10];
   sscanf(buf,"%s %s",type,key);
