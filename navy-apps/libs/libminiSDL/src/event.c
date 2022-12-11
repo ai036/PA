@@ -47,7 +47,10 @@ int SDL_WaitEvent(SDL_Event *event) {
       event->key.keysym.sym=SDLK_UP;
       break;
     case 4:
-      event->key.keysym.sym=SDLK_DOWN;
+      if(key[0]=='D')
+        event->key.keysym.sym=SDLK_DOWN;
+      else
+        event->key.keysym.sym=SDLK_NONE;
       break;
     default:
       event->key.keysym.sym=SDLK_NONE;
