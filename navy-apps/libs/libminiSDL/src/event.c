@@ -18,14 +18,15 @@ int SDL_PollEvent(SDL_Event *ev) {
 }
 
 int SDL_WaitEvent(SDL_Event *event) {
+  event->type=SDL_KEYUP;
   char buf[100];
   NDL_PollEvent(buf,20);
   char type[10];
   char key[10];
   sscanf(buf,"%s %s",type,key);
-  if(strcmp(type,"kd")==0)
+  if(type[1]=='d')
     event->type = SDL_KEYDOWN;
-  else if(strcmp(type,"ku")==0)
+  else if(type[1]=='u')
     event->type = SDL_KEYUP;
 
   switch(strlen(key))
