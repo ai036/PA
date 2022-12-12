@@ -61,8 +61,7 @@ int SDL_WaitEvent(SDL_Event *event) {
     default:
       event->key.keysym.sym=SDLK_NONE;
   }
-  if(event->type=SDL_KEYDOWN)
-    printf("type:%s key:%s\n",type,key);
+
   }
   return 1;
 }
