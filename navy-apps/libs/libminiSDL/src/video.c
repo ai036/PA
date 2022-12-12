@@ -72,11 +72,10 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
 }
 
 void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
-  if (s->format->BitsPerPixel == 32){
+  
     if (w == 0 && h == 0 && x ==0 && y == 0){
-      //printf("%d %d\n", s->w, s->h);
       NDL_DrawRect((uint32_t *)s->pixels, 0, 0, s->w, s->h);
-      return ;
+      return;
     }
     
     uint32_t *pixels = malloc(w * h * sizeof(uint32_t));
@@ -88,10 +87,8 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
     NDL_DrawRect(pixels, x, y, w, h);
 
     free(pixels);
-  }else {
-    assert(0);
-  }
 }
+
 
 
 // APIs below are already implemented.
