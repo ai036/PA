@@ -15,6 +15,7 @@ int SDL_PushEvent(SDL_Event *ev) {
 
 int SDL_PollEvent(SDL_Event *ev) {
   ev->type=SDL_KEYUP;
+  ev->key.keysym.sym=SDLK_NONE;
   char buf[100];
   char type[10];
   char key[10];
@@ -65,6 +66,7 @@ int SDL_PollEvent(SDL_Event *ev) {
 
 int SDL_WaitEvent(SDL_Event *event) {
   event->type=SDL_KEYUP;
+  event->key.keysym.sym=SDLK_NONE;
   char buf[100];
   char type[10];
   char key[10];
