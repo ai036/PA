@@ -3,6 +3,7 @@
 #include <assert.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_Rect *dstrect) {
   assert(dst && src);
@@ -72,17 +73,24 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
 }
 
 void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
-  
     if (w == 0 && h == 0 && x ==0 && y == 0){
       NDL_DrawRect((uint32_t *)s->pixels, 0, 0, s->w, s->h);
       return;
     }
-    
+    //修改
     uint32_t *pixels = malloc(w * h * sizeof(uint32_t));
-    assert(pixels);
-    uint32_t *src = (uint32_t *)s->pixels;
-    for (int i = 0; i < h; ++i){
-      memcpy(&pixels[i * w], &src[(y + i) * s->w + x], sizeof(uint32_t) * w);
+    if(pixels==NULL)
+      {printf("ERROR!\n");
+       assert(0);
+       }
+    uint32_t *s_pixels = (uint32_t *)s->pixels;
+    s_pixels+=y*s->w+x;
+
+    for (int i = 0; i < h; i++){
+      for(int j=0; j < w; j++)
+        pixels[j]=s_pixels[j];
+      pixels+=w;
+      s_pixels+=s->w;
     }
     NDL_DrawRect(pixels, x, y, w, h);
 
