@@ -93,10 +93,8 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
       s_pixels+=s->w;
     }
     NDL_DrawRect(pixels, x, y, w, h);
-
     free(pixels);
 }
-
 
 
 // APIs below are already implemented.
