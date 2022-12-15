@@ -135,46 +135,47 @@ void parse_key(char *key, SDL_Event *ev)
   }
 }
 
-int SDL_PollEvent(SDL_Event *ev) {
-  ev->type=SDL_KEYUP;
-  ev->key.keysym.sym=SDLK_NONE;
+int SDL_PollEvent(SDL_Event *ev) {  
   char buf[30];
   char type[10];
   char key[15];
 
-  NDL_PollEvent(buf,20);
+  int ret=NDL_PollEvent(buf,25);
+  if(!ret)return 0;
   sscanf(buf,"%s %s",type,key);
-  printf("%s",type);
-  if(type[1]=='u')
-{  printf("ret\n");
-    return 0;
+    parse_key(key,ev);
+  if(type[1]=='u'){
+    ev->type=SDL_KEYUP;
   }
-  ev->type = SDL_KEYDOWN;
-  parse_key(key,ev);
+  else if(type[1]=='d')
+    ev->type = SDL_KEYDOWN;
+  else
+    return 0;
 
-  if(ev->type=SDL_KEYDOWN)
-    printf("type:%s key:%s\n",type,key);
+  printf("type:%s key:%s\n",type,key);
   return 1;
 }
 
 int SDL_WaitEvent(SDL_Event *event) {
-  event->type=SDL_KEYUP;
-  event->key.keysym.sym=SDLK_NONE;
+  printf("Waiting for\n");
+
   char buf[30];
   char type[10];
   char key[15];
-  while(event->type==SDL_KEYUP){
-  NDL_PollEvent(buf,20);
-  sscanf(buf,"%s %s",type,key);
-  {if(type[1]=='d')
-    {event->type = SDL_KEYDOWN;
-//  else if(type[1]=='u')
-//    event->type = SDL_KEYUP;
-    parse_key(key,event);
+  int ret=NDL_PollEvent(buf,25);
+  while(1){
+  ret=NDL_PollEvent(buf,25);
+  if(ret)
+    {sscanf(buf,"%s %s",type,key);
+     parse_key(key,event);
+    if(type[1]=='u')
+      event->type = SDL_KEYUP;
+    else if(type[1]=='d')
+      event->type = SDL_KEYDOWN;
+    break;
+    }
   }
-  }
-  }
-  if(event->type=SDL_KEYDOWN)
+
     printf("type:%s key:%s\n",type,key);
   return 1;
 }
