@@ -152,28 +152,12 @@ int SDL_PollEvent(SDL_Event *ev) {
 
   if(ev->type=SDL_KEYDOWN)
     printf("type:%s key:%s\n",type,key);
-  return 1;
+  return 11;
 }
 
 int SDL_WaitEvent(SDL_Event *event) {
-  event->type=SDL_KEYUP;
-  event->key.keysym.sym=SDLK_NONE;
-  char buf[30];
-  char type[10];
-  char key[15];
-  while(event->type==SDL_KEYUP){
-  NDL_PollEvent(buf,20);
-  sscanf(buf,"%s %s",type,key);
-  {if(type[1]=='d')
-    event->type = SDL_KEYDOWN;
-//  else if(type[1]=='u')
-//    event->type = SDL_KEYUP;
-  parse_key(key,event);
-  }
-  }
-  if(event->type=SDL_KEYDOWN)
-    printf("type:%s key:%s\n",type,key);
-  return 1;
+  
+  return SDL_PollEvent(event);
 }
 
 int SDL_PeepEvents(SDL_Event *ev, int numevents, int action, uint32_t mask) {
