@@ -135,7 +135,8 @@ void parse_key(char *key, SDL_Event *ev)
   }
 }
 
-int SDL_PollEvent(SDL_Event *ev) { 
+int SDL_PollEvent(SDL_Event *ev) {
+  ev->type=SDL_KEYUP;
   ev->key.keysym.sym=SDLK_NONE;
   char buf[30];
   char type[10];
