@@ -176,7 +176,7 @@ int SDL_WaitEvent(SDL_Event *event) {
     }
   }
 
-    printf("type:%s key:%s\n",type,key);
+  printf("type:%s key:%s\n",type,key);
   return 1;
 }
 
