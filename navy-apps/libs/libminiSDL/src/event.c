@@ -144,6 +144,7 @@ int SDL_PollEvent(SDL_Event *ev) {
 
   NDL_PollEvent(buf,20);
   sscanf(buf,"%s %s",type,key);
+  printf("%s",type);
   if(type[1]=='u')
 {  printf("ret\n");
     return 0;
