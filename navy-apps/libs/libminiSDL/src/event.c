@@ -143,7 +143,7 @@ int SDL_PollEvent(SDL_Event *ev) {
   int ret=NDL_PollEvent(buf,25);
   if(!ret)return 0;
   sscanf(buf,"%s %s",type,key);
-    parse_key(key,ev);
+  parse_key(key,ev);
   if(type[1]=='u'){
     ev->type=SDL_KEYUP;
   }
