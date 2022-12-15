@@ -159,7 +159,7 @@ int SDL_PollEvent(SDL_Event *ev) {
 
 int SDL_WaitEvent(SDL_Event *event) {
   printf("Waiting for\n");
-
+  event->key.keysym.sym=SDLK_NONE;
   char buf[30];
   char type[10];
   char key[15];
