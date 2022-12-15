@@ -3,43 +3,32 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <fcntl.h>
 #include <sys/time.h>
+#include <fcntl.h>
 #include <assert.h>
 
 static int evtdev = -1;
 static int fbdev = -1;
 static int screen_w = 0, screen_h = 0;
+static int canvas_w = 0, canvas_h = 0;
+static int canvas_x, canvas_y;
 
 uint32_t NDL_GetTicks() {
   struct timeval tv;
   gettimeofday(&tv, NULL);
-
-  return tv.tv_usec / 1000 + tv.tv_sec * 1000;
+  uint32_t time=tv.tv_sec*1000+tv.tv_usec/1000;
+  return time;
 }
 
 int NDL_PollEvent(char *buf, int len) {
-  int fp = open("/dev/events", O_RDONLY);
-
-  return read(fp, buf, sizeof(char) * len);
+  int fd=open("/dev/events",0,0);
+  int count=read(fd,buf,len);
+  if(count>0)
+    return 1;
+  return 0;
 }
 
-static int canvas_w, canvas_h, canvas_x = 0, canvas_y = 0;
-
 void NDL_OpenCanvas(int *w, int *h) {
-  if (*w == 0){
-    *w = screen_w;
-  }else if(*w > screen_w){
-    assert(0);
-  }
-  if (*h == 0){
-    *h = screen_h;
-  }else if(*h > screen_h){
-    assert(0);
-  }
-  canvas_w = *w;
-  canvas_h = *h;
-
   if (getenv("NWM_APP")) {
     int fbctl = 4;
     fbdev = 5;
@@ -57,22 +46,37 @@ void NDL_OpenCanvas(int *w, int *h) {
     }
     close(fbctl);
   }
+  if(*w==0 && *h==0)
+    {canvas_w=screen_w;
+     canvas_h=screen_h;
+     *w=screen_w;
+     *h=screen_h;
+     }
+  else 
+  {
+    assert(*w<=screen_w && *h<=screen_h);
+    canvas_w=*w;
+    canvas_h=*h;
+  }
+  
 }
 
 void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
-  // FILE *graphics = fopen("/dev/fb", "w");
-  // for (int i = 0; i < h; ++i){
-  //   fseek(graphics, ((canvas_y + y + i) * screen_w + (canvas_x + x)) * sizeof(uint32_t), SEEK_SET);
-  //   fwrite(pixels + w * i, w * sizeof(uint32_t), 1, graphics);
-  // }
-  // fclose(graphics);
-  int graphics = open("/dev/fb", O_RDWR);
-  
-  for (int i = 0; i < h; ++i){
-    lseek(graphics, ((canvas_y + y + i) * screen_w + (canvas_x + x)) * sizeof(uint32_t), SEEK_SET);
-    ssize_t s = write(graphics, pixels + w * i, w * sizeof(uint32_t));
+  int fd=open("/dev/fb",0,0);
+  size_t offset, len;
+//  printf("x: %d y: %d\n",x,y);
+  canvas_x=(screen_w-canvas_w)/2;
+  canvas_y=(screen_h-canvas_h)/2;
+//  printf("canvas_x: %d, y: %d\n",canvas_x,canvas_y);
+//  printf("width:%d height:%d\n",canvas_w,canvas_h);
+  offset = (canvas_y*screen_w+canvas_x+ y*screen_w+x)*4;
+  for(int i=0;i<h;i++)
+  {
+    lseek(fd,offset,SEEK_SET);
+    write(fd,pixels,w*4);
+    pixels+=w;
+    offset+=screen_w*4;
   }
-  //close(graphics);
 }
 
 void NDL_OpenAudio(int freq, int channels, int samples) {
@@ -89,56 +93,37 @@ int NDL_QueryAudio() {
   return 0;
 }
 
-static void read_key_value(char *str, char *key, int* value){
-  char buffer[128];
-  int len = 0;
-  for (char* c = str; *c; ++c){
-    if(*c != ' '){
-      buffer[len++] = *c;
-    }
-  }
-  buffer[len] = '\0';
-
-  sscanf(buffer, "%[a-zA-Z]:%d", key, value);
-  // printf("read_key_value\n");
-}
-
 int NDL_Init(uint32_t flags) {
   if (getenv("NWM_APP")) {
     evtdev = 3;
   }
-
-  char info[128], key[64];
+  int fd=open("/proc/dispinfo",0,0);
+  char buf[100];
+  read(fd, buf,100);
+  close(fd);
+  char b[100];//对文件进行格式化处理，删掉空格
+  int end=0;
+  for(int i=0;i<100;i++) 
+    if(buf[i]!=' '&&buf[i]!='\0')
+      b[end++]=buf[i];
+  b[end]='\0';
+  
+  char *str=strtok(b,"\n");
+  char key[50];
   int value;
-
-  //memset(info, 0, 128);
-  int dispinfo = open("/proc/dispinfo", 0);
-  read(dispinfo, info, sizeof(info));
-  close(dispinfo);
-  // printf("%s \n", info);
-
-  /* 获取第一个子字符串 */
-  char *token = strtok(info, "\n");
-   
-   /* 继续获取其他的子字符串 */
-   while( token != NULL ) {
-      
-      // printf("while begin 105 %s \n", info);
-      //printf("%s = %d\n", key, value);
-      read_key_value(token, key, &value);
-
-      if(strcmp(key, "WIDTH") == 0){
-        screen_w = value;
-      }else if(strcmp(key, "HEIGHT") == 0) {
-        screen_h = value;
-      }
-
-      // printf("while middle 105 %s \n", info);
-      token = strtok(NULL, "\n");
-      // printf("while end 105 %s \n", info);
-  }
-
-  printf("With width = %d, height = %d.\n", screen_w, screen_h);
+  sscanf(str,"%[a-zA-Z]:%d", key, &value);
+  if(strcmp(key,"WIDTH")==0)
+    screen_w=value;
+  else if(strcmp(key,"HEIGHT")==0)
+    screen_h=value;
+  
+  str=strtok(NULL,"\n");
+  sscanf(str,"%[a-zA-Z]:%d", key, &value);
+  if(strcmp(key,"WIDTH")==0)
+    screen_w=value;
+  else if(strcmp(key,"HEIGHT")==0)
+    screen_h=value;
+  printf("WIDTH: %d, HEIGHT: %d\n",screen_w,screen_h);
 
   return 0;
 }
