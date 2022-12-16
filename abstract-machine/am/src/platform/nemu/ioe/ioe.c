@@ -10,6 +10,7 @@ void __am_timer_uptime(AM_TIMER_UPTIME_T *);
 void __am_gpu_config(AM_GPU_CONFIG_T *);
 void __am_gpu_status(AM_GPU_STATUS_T *);
 void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *);
+void __am_gpu_memcpy(AM_GPU_MEMCPY_T *);
 void __am_audio_config(AM_AUDIO_CONFIG_T *);
 void __am_audio_ctrl(AM_AUDIO_CTRL_T *);
 void __am_audio_status(AM_AUDIO_STATUS_T *);
@@ -18,11 +19,6 @@ void __am_disk_config(AM_DISK_CONFIG_T *cfg);
 void __am_disk_status(AM_DISK_STATUS_T *stat);
 void __am_disk_blkio(AM_DISK_BLKIO_T *io);
 
-extern char *hbrk;
-
-static void bench_reset() {
-  hbrk = (void *)ROUNDUP(heap.start, 8);
-}
 static void __am_timer_config(AM_TIMER_CONFIG_T *cfg) { cfg->present = true; cfg->has_rtc = true; }
 static void __am_input_config(AM_INPUT_CONFIG_T *cfg) { cfg->present = true;  }
 static void __am_uart_config(AM_UART_CONFIG_T *cfg)   { cfg->present = false; }
@@ -38,6 +34,7 @@ static void *lut[128] = {
   [AM_GPU_CONFIG  ] = __am_gpu_config,
   [AM_GPU_FBDRAW  ] = __am_gpu_fbdraw,
   [AM_GPU_STATUS  ] = __am_gpu_status,
+  [AM_GPU_MEMCPY  ] = __am_gpu_memcpy,
   [AM_UART_CONFIG ] = __am_uart_config,
   [AM_AUDIO_CONFIG] = __am_audio_config,
   [AM_AUDIO_CTRL  ] = __am_audio_ctrl,
@@ -57,7 +54,6 @@ bool ioe_init() {
   __am_gpu_init();
   __am_timer_init();
   __am_audio_init();
-  bench_reset();
   return true;
 }
 

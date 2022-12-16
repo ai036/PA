@@ -1,20 +1,14 @@
 #include <am.h>
+#include <klib.h>
 #include <nemu.h>
-#include <time.h>
-#include <sys/time.h>
-uint64_t init_time;
 
-void __am_timer_init() {
-    uint64_t low=inl(RTC_ADDR);
-    uint64_t high=(uint64_t)inl(RTC_ADDR+4)<<32;
-    init_time=low|high;
-}
+#include "../../../riscv/riscv.h"
+
+void __am_timer_init() {}
 
 void __am_timer_uptime(AM_TIMER_UPTIME_T *uptime) {
-  uint64_t low=inl(RTC_ADDR);
-  uint64_t high=(uint64_t)inl(RTC_ADDR+4)<<32;
-  uint64_t new_time=low|high;
-  uptime->us = new_time-init_time;
+  // printf("%d \n", RTC_ADDR);
+  uptime->us = ((uint64_t)inl(RTC_ADDR + 4) << 32) | (uint64_t)inl(RTC_ADDR);
 }
 
 void __am_timer_rtc(AM_TIMER_RTC_T *rtc) {
