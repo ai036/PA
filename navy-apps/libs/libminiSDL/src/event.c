@@ -1,6 +1,8 @@
 #include <NDL.h>
 #include <SDL.h>
 #include <string.h>
+#include <stdio.h>
+#include <assert.h>
 
 #define keyname(k) #k,
 
@@ -186,7 +188,6 @@ int SDL_WaitEvent(SDL_Event *event) {
     break;
     }
   }
-
   printf("type:%s key:%s\n",type,key);
   return 1;
 }
