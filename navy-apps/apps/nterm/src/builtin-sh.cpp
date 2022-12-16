@@ -23,6 +23,10 @@ static void sh_prompt() {
 }
 
 static void sh_handle_cmd(const char *cmd) {
+  char command[100];
+  strcpy(command, cmd);
+  command[strlen(cmd)-1] = '\0';
+  execve(command,0,0);
 }
 
 void builtin_sh_run() {
