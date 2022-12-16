@@ -42,7 +42,11 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
 }
 
 void naive_uload(PCB *pcb, const char *filename) {
-  uintptr_t entry = loader(pcb, "/bin/menu");
+  uintptr_t entry;
+  if(filename!=NULL)
+    entry = loader(pcb, "filename");
+  else
+    entry = loader(pcb, "/bin/menu");
   Log("Jump to entry = %p", entry);
   ((void(*)())entry) ();
 }
