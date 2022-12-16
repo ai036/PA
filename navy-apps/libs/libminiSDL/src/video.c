@@ -33,18 +33,39 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_
     dst_x=dstrect->x;
     dst_y=dstrect->y;
   }
-  uint32_t* src_pixels=(uint32_t*)src->pixels;
-  uint32_t* dst_pixels=(uint32_t*)dst->pixels;
-  src_pixels+=src->w*src_y+src_x;
-  dst_pixels+=dst->w*dst_y+dst_x;
-  for(int i=0;i<h;i++)
-  {
-    for(int j=0;j<w;j++)
-      dst_pixels[j]=src_pixels[j];
-    src_pixels+=src->w;
-    dst_pixels+=dst->w;
-  }
 
+  switch(src->format->BitsPerPixel)
+  {
+    case 32:
+      uint32_t* src_pixels32=(uint32_t*)src->pixels;
+      uint32_t* dst_pixels32=(uint32_t*)dst->pixels;
+      src_pixels32+=src->w*src_y+src_x;
+      dst_pixels32+=dst->w*dst_y+dst_x;
+      for(int i=0;i<h;i++)
+      {
+        for(int j=0;j<w;j++)
+          dst_pixels32[j]=src_pixels32[j];
+        src_pixels32+=src->w;
+        dst_pixels32+=dst->w;
+      }
+      break;
+
+    case 8:
+      uint8_t* src_pixels8=(uint8_t*)src->pixels;
+      uint8_t* dst_pixels8=(uint8_t*)dst->pixels;
+      src_pixels8+=src->w*src_y+src_x;
+      dst_pixels8+=dst->w*dst_y+dst_x;
+      for(int i=0;i<h;i++)
+      {
+        for(int j=0;j<w;j++)
+          dst_pixels8[j]=src_pixels8[j];
+        src_pixels8+=src->w;
+        dst_pixels8+=dst->w;
+      }
+      break;
+
+    default: assert(0);
+  }
 }
 
 void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
@@ -69,33 +90,62 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
       d[j]=color;
     d+=w;
     }
-
 }
 
+//转成32位颜色格式
+static inline uint32_t convert_color(SDL_Color *color){
+  uint32_t real_color=(color->a << 24) | (color->r << 16) | (color->g << 8) | color->b;
+  return real_color;
+}
+
+//TODO 有一点问题
 void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
-    if (w == 0 && h == 0 && x ==0 && y == 0){
-      NDL_DrawRect((uint32_t *)s->pixels, 0, 0, s->w, s->h);
-      return;
-    }
-    //修改
-    uint32_t *pixels = malloc(w * h * sizeof(uint32_t));
-    if(pixels==NULL)
-      {printf("ERROR!\n");
-       assert(0);
-       }
-    uint32_t *s_pixels = (uint32_t *)s->pixels;
-    s_pixels+=y*s->w+x;
 
-    for (int i = 0; i < h; i++){
-      for(int j=0; j < w; j++)
-        pixels[j]=s_pixels[j];
-      pixels+=w;
-      s_pixels+=s->w;
-    }
-    NDL_DrawRect(pixels, x, y, w, h);
-    free(pixels);
+    switch (s->format->BitsPerPixel)
+    {
+      case 32:
+      if (w == 0 && h == 0 && x ==0 && y == 0){
+        NDL_DrawRect((uint32_t *)s->pixels, 0, 0, s->w, s->h);
+        return;
+      }
+      //修改    
+      uint32_t *pixels32 = malloc(w * h * sizeof(uint32_t));
+      uint32_t p32=pixels32;
+      uint32_t *s_pixels32 = (uint32_t *)s->pixels;
+      s_pixels32+=y*s->w+x;
+
+      for (int i = 0; i < h; i++){
+        for(int j=0; j < w; j++)
+          pixels32[j]=s_pixels32[j];
+        pixels32+=w;
+        s_pixels32+=s->w;
+      }
+      NDL_DrawRect(p32, x, y, w, h);
+      free(p32);
+      break;
+      
+      case 8:
+      if (w == 0 && h == 0 && x == 0 && y == 0){
+        w=s->w;h=s->h;
+      }
+      uint32_t *pixels8 = malloc(w * h * sizeof(uint32_t));
+      uint32_t *p8=pixels8;
+      uint8_t *s_pixels8 = (uint8_t *)s->pixels;
+      s_pixels8+=y*s->w+x;
+      
+      for (int i = 0; i < h; i++){
+        for(int j = 0; j < w; j++)
+          pixels8[j] = convert_color(&s->format->palette->colors[s_pixels8[j]]);
+        pixels8+=w;
+        s_pixels8+=s->w;
+      }
+      NDL_DrawRect(p8, x, y, w, h);
+      free(p8);
+      break;
+
+      default: assert(0); 
+    }      
 }
-
 
 // APIs below are already implemented.
 

@@ -10,6 +10,7 @@ static const char *keyname[] = {
 };
 
 int SDL_PushEvent(SDL_Event *ev) {
+  printf("SDL_PushEvent not implemented\n");
   return 0;
 }
 
@@ -135,6 +136,8 @@ void parse_key(char *key, SDL_Event *ev)
   }
 }
 
+static uint8_t key_state[sizeof(keyname) / sizeof(keyname[0])];
+
 int SDL_PollEvent(SDL_Event *ev) {
   ev->key.keysym.sym=SDLK_NONE;
   char buf[30];
@@ -147,9 +150,12 @@ int SDL_PollEvent(SDL_Event *ev) {
   parse_key(key,ev);
   if(type[1]=='u'){
     ev->type=SDL_KEYUP;
+    key_state[ev->key.keysym.sym]=0;
   }
   else if(type[1]=='d')
-    ev->type = SDL_KEYDOWN;
+  { ev->type = SDL_KEYDOWN;
+    key_state[ev->key.keysym.sym]=1;
+  }
   else
     return 0;
 
@@ -170,9 +176,13 @@ int SDL_WaitEvent(SDL_Event *event) {
     {sscanf(buf,"%s %s",type,key);
      parse_key(key,event);
     if(type[1]=='u')
-      event->type = SDL_KEYUP;
+      {event->type = SDL_KEYUP;
+       key_state[event->key.keysym.sym]=0;
+       }
     else if(type[1]=='d')
-      event->type = SDL_KEYDOWN;
+      {event->type = SDL_KEYDOWN;
+      key_state[event->key.keysym.sym]=1;
+      }
     break;
     }
   }
@@ -182,9 +192,14 @@ int SDL_WaitEvent(SDL_Event *event) {
 }
 
 int SDL_PeepEvents(SDL_Event *ev, int numevents, int action, uint32_t mask) {
+  printf("SDL_PeepEvents not implemented\n");
   return 0;
 }
 
 uint8_t* SDL_GetKeyState(int *numkeys) {
-  return NULL;
+  //TODO: 待测试
+  if(numkeys==NULL)
+    return key_state;
+  *numkeys=sizeof(key_state)/sizeof(key_state[0]);
+  return key_state;
 }
