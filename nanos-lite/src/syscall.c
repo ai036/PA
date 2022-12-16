@@ -15,6 +15,8 @@ struct SYS_TRACE{
 
 static int fd,ret;
 
+int execve(const char *filename,char* const argv[],char* const envp[]);
+
 void do_syscall(Context *c) {
   uintptr_t a[4];
   a[0] = c->GPR1;
@@ -72,6 +74,11 @@ void do_syscall(Context *c) {
       tv->tv_usec=time%1000000;
       tv->tv_sec=time/1000000;
       c->GPRx=0;
+      break;
+    case SYS_execve:
+      char* filename=(char*)c->GPR2;
+      ret=execve(filename,0,0);
+      c->GPRx=ret;
       break;
     default: panic("Unhandled syscall ID = %d", a[0]);
   }

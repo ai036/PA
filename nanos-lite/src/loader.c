@@ -42,7 +42,14 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
 }
 
 void naive_uload(PCB *pcb, const char *filename) {
-  uintptr_t entry = loader(pcb, "/bin/pal");
+  uintptr_t entry = loader(pcb, "/bin/menu");
   Log("Jump to entry = %p", entry);
   ((void(*)())entry) ();
 }
+
+int execve(const char *filename,char* const argv[],char* const envp[])
+{
+  printf("execve %s\n",filename);
+  naive_uload(NULL,filename);
+  return -1;
+} 
