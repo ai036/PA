@@ -5,135 +5,131 @@
 
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
 
-int vsprintf(char *out, const char *fmt, va_list ap);
-int vsnprintf(char *out, size_t n, const char *fmt, va_list ap);
-
-int printf(const char *fmt, ...) {
-  char buffer[2048];
-  va_list arg;
-  va_start (arg, fmt);
-  
-  int done = vsprintf(buffer, fmt, arg);
-
-  putstr(buffer);
-
-  va_end(arg);
-  return done;
+//将十进制数num转换为base进制的字符串
+int convert(char *out,int end,uint64_t num,int base)
+{ 
+  char dict[16]={'0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f'};
+  char output[50];
+  int index=0;
+  if(num==0)
+    output[index++]='0';
+  while(num>0)
+    {
+      int bit=num%base;
+      output[index++]=dict[bit];
+      num/=base;
+    }
+  for(int i=index-1;i>=0;i--)
+  {
+    out[end++]=output[i];
+  }
+  return end;
 }
 
-static char HEX_CHARACTERS[] = "0123456789ABCDEF";
-#define BIT_WIDE_HEX 8
+int cat(char *out, char *src,int end)
+{
+  while(*src!='\0')
+    out[end++]=*src++;
+  out[end]='\0';
+  return end;
+}
+
+int printf(const char *fmt, ...) {
+//  panic("Not implemented");
+  char buf[4096];
+  va_list args;
+  va_start(args, fmt);
+  vsprintf(buf,fmt, args);
+  int i=0;
+  while(buf[i]!='\0') 
+    putch(buf[i++]);
+  return i;
+}
 
 int vsprintf(char *out, const char *fmt, va_list ap) {
-  return vsnprintf(out, -1, fmt, ap);
+//  panic("Not implemented");
+  size_t len=strlen(fmt);
+  int end=0;
+  int64_t arg_int=0;
+  char *arg_str=NULL;
+  char c;
+  uint64_t unum64;
+  uint32_t unum32;
+  for(int i=0;i<len;i++)
+    {
+      if(fmt[i]!='%')
+        out[end++]=fmt[i];
+      else if(i+1<len)//后面是需要格式化输出的内容
+      {
+        switch(fmt[i+1])
+        { 
+          case 's':
+          arg_str=va_arg(ap,char*);
+          end=cat(out,arg_str,end);
+          i++;
+          break;
+          
+          case 'd':
+          arg_int=va_arg(ap,int);
+          if(arg_int<0)
+          {
+            out[end++]='-';
+            arg_int=-arg_int;
+           }
+          end=convert(out,end,arg_int,10);
+          i++;
+          break;
+          
+          case 'c':
+          c = (char)va_arg(ap, int);
+          out[end++]=c;
+          i++;
+          break;
+
+          case 'u':
+          unum64=va_arg(ap, uint64_t);
+          end=convert(out,end,unum64,10);
+          i++;
+          break;
+
+          case 'p':
+            unum32 = va_arg(ap, uint32_t);
+            out[end++]='0';
+            out[end++]='x';
+            end=convert(out,end,unum32,16);
+            i++;
+            break;
+    
+        }
+      }
+      else
+        out[end++]=fmt[i];
+    }
+  out[end]='\0';
+  return end;
 }
 
 int sprintf(char *out, const char *fmt, ...) {
-  va_list valist;
-  va_start(valist, fmt);
-
-  int res = vsprintf(out ,fmt, valist);
-  va_end(valist);
-  return res;
+  va_list args;
+  va_start(args, fmt);
+  int end=vsprintf(out, fmt, args);
+  return end;
 }
 
 int snprintf(char *out, size_t n, const char *fmt, ...) {
-  va_list arg;
-  va_start (arg, fmt);
-
-  int done = vsnprintf(out, n, fmt, arg);
-
-  va_end(arg);
-  return done;
+  va_list args;
+  va_start(args, fmt);
+  int end=vsnprintf(out, n, fmt, args);
+  return end;
 }
 
-#define append(x) {out[j++]=x; if (j >= n) {break;}}
-
 int vsnprintf(char *out, size_t n, const char *fmt, va_list ap) {
-  char buffer[128];
-  char *txt, cha;
-  int num, len;
-  unsigned int unum;
-  uint32_t pointer;
-  
-  
-  int state = 0, i, j;//模仿一个状态机
-  for (i = 0, j = 0; fmt[i] != '\0'; ++i){
-    switch (state)
-    {
-    case 0:
-      if (fmt[i] != '%'){
-        append(fmt[i]);
-      } else
-        state = 1;
-      break;
-    
-    case 1:
-      switch (fmt[i])
-      {
-      case 's':
-        txt = va_arg(ap, char*);
-        for (int k = 0; txt[k] !='\0'; ++k)
-          append(txt[k]);
-        break;
-      
-      case 'd':
-        num = va_arg(ap, int);
-        if(num == 0){
-          append('0');
-          break;
-        }
-        if (num < 0){
-          append('-');
-          num = 0 - num;
-        }
-        for (len = 0; num ; num /= 10, ++len)
-          //buffer[len] = num % 10 + '0';//逆序的
-          buffer[len] = HEX_CHARACTERS[num % 10];//逆序的
-        for (int k = len - 1; k >= 0; --k)
-          append(buffer[k]);
-        break;
-      
-      case 'c':
-        cha = (char)va_arg(ap, int);
-        append(cha);
-        break;
-
-      case 'p':
-        pointer = va_arg(ap, uint32_t);
-        for (len = 0; pointer ; pointer /= 16, ++len)
-          buffer[len] = HEX_CHARACTERS[pointer % 16];//逆序的
-        for (int k = 0; k < BIT_WIDE_HEX - len; ++k)
-          append('0');
-
-        for (int k = len - 1; k >= 0; --k)
-          append(buffer[k]);
-        break;
-
-      case 'x':
-        unum = va_arg(ap, unsigned int);
-        if(unum == 0){
-          append('0');
-          break;
-        }
-        for (len = 0; unum ; unum >>= 4, ++len)
-          buffer[len] = HEX_CHARACTERS[unum & 0xF];//逆序的
-
-        for (int k = len - 1; k >= 0; --k)
-          append(buffer[k]);
-        break;  
-
-      default:
-        assert(0);
-      }
-      state = 0;
-      break;
-      
-    }
-  }
-
-  out[j] = '\0';
-  return j;
+  int end=vsprintf(out,fmt,ap);
+  out[n]='\0';
+  if(end>n)
+    return n;
+  else
+    return end;
 }
 
 #endif

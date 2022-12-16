@@ -49,21 +49,17 @@ size_t dispinfo_read(void *buf, size_t offset, size_t len) {
 }
 
 size_t fb_write(const void *buf, size_t offset, size_t len) {
-
-  // const uint32_t *src = (uint32_t *)buf;
-  // uint32_t *fb = (uint32_t *)(uintptr_t)(FB_ADDR + offset); //字节编址
-
-  // for (int i = 0; i < len / 4; ++i){
-  //   fb[i] = src[i];
-  // }
-  //yield();
-  uintptr_t *ptr;
-  ptr = (uintptr_t *)(&buf);
-
-  io_write(AM_GPU_MEMCPY, offset, (void *)*ptr, len);
-  io_write(AM_GPU_FBDRAW, 0, 0, NULL, 0, 0, true);
   
-  return len;
+  size_t real_len=len;
+  if(len+offset>size)
+    real_len=size-offset;
+  void* color=(void*)buf;
+  int x=(offset/4)%width;
+  int y=(offset/4)/width;
+  io_write(AM_GPU_FBDRAW, x, y, color, real_len/4, 1, false);
+  io_write(AM_GPU_FBDRAW, 0, 0, NULL, 0, 0, true);
+
+  return 0;
 }
 
 void init_device() {
