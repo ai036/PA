@@ -127,12 +127,14 @@ static int cmd_d(char *args)
 
 static int cmd_detach(char *args)
 {
+  printf("exit difftest\n");
   diffte=0;
   return 0;
 }
 
 static int cmd_attach(char *args)
 {
+  printf("start difftest\n");
   diffte=1;
   return 0;
 }
