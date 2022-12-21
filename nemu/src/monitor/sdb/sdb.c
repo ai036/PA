@@ -23,6 +23,15 @@
 
 extern int nr_token;
 static int is_batch_mode = false;
+static int diffte=1;
+
+bool is_difftest()
+{
+  if(diffte==1)
+    return true;
+  else
+    return false;
+}
 
 void init_regex();
 void init_wp_pool();
@@ -115,6 +124,19 @@ static int cmd_d(char *args)
   free_wp(index);
   return 0;
 }
+
+static int cmd_detach(char *args)
+{
+  diffte=0;
+  return 0;
+}
+
+static int cmd_attach(char *args)
+{
+  diffte=1;
+  return 0;
+}
+
 static struct {
   const char *name;
   const char *description;
@@ -129,6 +151,8 @@ static struct {
   {"p", "compute the expression", cmd_p },
   {"w", "Create a new watchpoint", cmd_w },
   {"d", "delete the watchpoint of NO.", cmd_d },
+  {"detach", "exit difftest mode", cmd_detach},
+  {"attach", "enter difftest mode", cmd_attach}
   /* TODO: Add more commands */
 
 };
