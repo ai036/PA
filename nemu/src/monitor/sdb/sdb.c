@@ -132,10 +132,12 @@ static int cmd_detach(char *args)
   return 0;
 }
 
+int copy_into_ref();
 static int cmd_attach(char *args)
 {
   printf("start difftest\n");
   diffte=1;
+  copy_into_ref();
   return 0;
 }
 
