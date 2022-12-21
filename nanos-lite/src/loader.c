@@ -41,7 +41,7 @@ void naive_uload(PCB *pcb, const char *filename) {
   if(filename!=NULL)
     entry = loader(pcb, filename);
   else
-    entry = loader(pcb, "/bin/nslider");
+    entry = loader(pcb, "/bin/nterm");
   Log("Jump to entry = %p", entry);
   ((void(*)())entry) ();
 }
