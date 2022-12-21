@@ -35,7 +35,7 @@ bool is_difftest();
 int copy_into_ref()//进入difftest，从dut复制信息到ref
 {
   ref_difftest_regcpy(&cpu, DIFFTEST_TO_REF);
-  ref_difftest_memcpy(RESET_VECTOR, guest_to_host(RESET_VECTOR), PMEM_RIGHT-PMEM_LEFT, DIFFTEST_TO_REF);
+
   return 0;
 }
 
