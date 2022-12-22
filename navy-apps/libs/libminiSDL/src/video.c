@@ -98,7 +98,7 @@ static inline uint32_t convert_color(SDL_Color *color){
   return real_color;
 }
 
-//TODO 有一点问题
+//TODO 有一点问题(已解决)
 void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
 
     switch (s->format->BitsPerPixel)
