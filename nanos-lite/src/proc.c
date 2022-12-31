@@ -24,10 +24,10 @@ void hello_fun(void *arg) {
 
 void context_kload(PCB* p,void (*entry)(void *), void *arg)
 {
-
+  printf("context_kload: %p\n", entry);
   Area kstack;
   kstack.start=&p->cp;
-  kstack.end=&p->cp+STACK_SIZE-4;
+  kstack.end=&p->cp+STACK_SIZE-4;//这里好像出现了点问题 不-4参数会错误
 
   p->cp=kcontext(kstack,entry,arg);
 }
