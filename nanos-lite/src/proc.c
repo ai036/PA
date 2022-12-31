@@ -27,14 +27,14 @@ void context_kload(PCB* p,void (*entry)(void *), void *arg)
   printf("context_kload: %p\n", entry);
   Area kstack;
   kstack.start=&p->cp;
-  kstack.end=&p->cp+STACK_SIZE;
+  kstack.end=&p->cp+STACK_SIZE-10;
 
   p->cp=kcontext(kstack,entry,arg);
 }
 
 void init_proc() {
   context_kload(&pcb[0], hello_fun, "NULL");
-
+  context_kload(&pcb[1], hello_fun, "hhr");
   
   switch_boot_pcb();
 
