@@ -16,7 +16,7 @@ void hello_fun(void *arg) {
   int j = 1;
   
   while (1) {
-    Log("Hello World from Nanos-lite with arg '%p' for the %dth time!", arg, j);
+    Log("Hello World from Nanos-lite with arg '%s' for the %dth time!", (char*)arg, j);
     j ++;
     yield();
   }
@@ -27,7 +27,7 @@ void context_kload(PCB* p,void (*entry)(void *), void *arg)
   printf("context_kload: %p\n", entry);
   Area kstack;
   kstack.start=&p->cp;
-  kstack.end=&p->cp+STACK_SIZE-4;//这里好像出现了点问题 不-4参数会错误
+  kstack.end=&p->cp+STACK_SIZE-1;//这里好像出现了点问题 不-4参数会错误
 
   p->cp=kcontext(kstack,entry,arg);
 }
@@ -49,7 +49,7 @@ Context* schedule(Context *prev) {
   current->cp = prev;
 
   // 在两个进程之间切换
-  current = &pcb[0];
+  current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
 
   // then return the new context
   return current->cp;
