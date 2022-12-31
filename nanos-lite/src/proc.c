@@ -21,8 +21,18 @@ void hello_fun(void *arg) {
   }
 }
 
+void context_kload(PCB* p,void (*entry)(void *), void *arg)
+{
+  printf("context_kload: %p\n", entry);
+  Area kstack;
+  kstack.start=&p->cp;
+  kstack.end=&p->cp+STACK_SIZE;
+
+  p->cp=kcontext(kstack,entry,arg);
+}
+
 void init_proc() {
-  naive_uload(NULL,NULL);
+  context_kload(&pcb[0], hello_fun, NULL);
   switch_boot_pcb();
 
   Log("Initializing processes...");
@@ -32,5 +42,12 @@ void init_proc() {
 }
 
 Context* schedule(Context *prev) {
-  return NULL;
+  // save the context pointer
+  current->cp = prev;
+
+  // always select pcb[0] as the new process
+  current = &pcb[0];
+
+  // then return the new context
+  return current->cp;
 }
