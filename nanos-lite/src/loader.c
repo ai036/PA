@@ -96,17 +96,6 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   *ptr=NULL;
   ptr-=1;
 
-  for(int i=argc-1;i>=0;i--)
-  {
-    strcpy(str,argv[i]);
-    int len=strlen(envp[i]);
-    *ptr=str;
-    ptr-=1;
-    str[len]='\0';
-    str+=(len+2);
-  }
-  
-  *ptr=(char*)argc;
 
   c->GPRx=(uintptr_t)ptr;
 }
