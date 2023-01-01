@@ -7,6 +7,7 @@ static PCB pcb_boot = {};
 PCB *current = NULL;
 
 void naive_uload(PCB *pcb, const char *filename);
+void context_uload(PCB* p,const char* filename);
 
 void switch_boot_pcb() {
   current = &pcb_boot;
@@ -27,14 +28,16 @@ void context_kload(PCB* p,void (*entry)(void *), void *arg)
   printf("context_kload: %p\n", entry);
   Area kstack;
   kstack.start=&p->cp;
-  kstack.end=&p->cp+STACK_SIZE-1;//这里好像出现了点问题 不-4参数会错误
+  kstack.end=&p->cp+STACK_SIZE-4;//这里好像出现了点问题 不-4参数会错误
 
   p->cp=kcontext(kstack,entry,arg);
 }
 
+
+
 void init_proc() {
-  context_kload(&pcb[0], hello_fun, "NULL");
-  context_kload(&pcb[1], hello_fun, "hhr");
+  context_kload(&pcb[0], hello_fun, "hhr");
+  context_uload(&pcb[1], "/bin/pal");
   
   switch_boot_pcb();
 

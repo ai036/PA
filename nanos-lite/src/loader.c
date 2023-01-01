@@ -52,3 +52,17 @@ int execve(const char *filename,char* const argv[],char* const envp[])
   naive_uload(NULL,filename);
   return -1;
 }
+
+void context_uload(PCB* p,const char* filename)
+{
+  printf("context_uload: %s\n", filename);
+  Area kstack;
+  kstack.start=&p->cp;
+  kstack.end=&p->cp+STACK_SIZE;
+
+  uintptr_t entry = loader(p, filename);
+  Context* c=ucontext(NULL,kstack,(void*)entry);
+  p->cp=c;
+
+  c->GPRx=(uintptr_t)heap.end;
+}
