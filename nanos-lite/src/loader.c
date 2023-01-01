@@ -63,11 +63,11 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   uintptr_t entry = loader(pcb, filename);
   Context* c=ucontext(NULL,kstack,(void*)entry);
   pcb->cp=c;
-printf("HHHHHH\n");
+
   int envc=0,argc=0;
   char* brk=(char*)heap.end;
   for(;argv[argc]!=NULL;argc++)
-  {
+  {printf("HHHHHH\n");
     int len=strlen(argv[argc]);
     brk-=(len+2);
    }
