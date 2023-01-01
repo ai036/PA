@@ -76,12 +76,38 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
     int len=strlen(envp[envc]);
     brk-=(len+2);
   }
-
-
+printf("HHHHHH\n");
+  char* str=brk;
   char** ptr=(char**)brk;
   ptr-=1;
   *ptr=NULL;
+  
+  ptr-=1;
+  for(int i=envc-1;i>=0;i--)
+  {
+    strcpy(str,envp[i]);
+    int len=strlen(envp[i]);
+    *ptr=str;
+    ptr-=1;
+    str[len]='\0';
+    str+=(len+2);
+  }
 
+  *ptr=NULL;
+  ptr-=1;
+
+  for(int i=argc-1;i>=0;i--)
+  {
+    strcpy(str,argv[i]);
+    int len=strlen(envp[i]);
+    *ptr=str;
+    ptr-=1;
+    str[len]='\0';
+    str+=(len+2);
+  }
+  
+  *ptr=(char*)argc;
+  ptr-=1;
   printf("123412\n");
 
   c->GPRx=(uintptr_t)ptr;
