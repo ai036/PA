@@ -97,7 +97,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
 
   *ptr=NULL;  
   ptr-=1;
-
+  printf("HHHHHH\n");
   for(int i=argc-1;i>=0;i--)
   {
     strcpy(str,argv[i]);
@@ -107,7 +107,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
     str[len]='\0';
     str+=(len+2);
   }
-  printf("HHHHHH\n");
+
   *ptr=(char*)argc;
   ptr-=1;
 
