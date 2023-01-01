@@ -38,7 +38,7 @@ static void sh_handle_cmd(const char *cmd) {
       argv[argc++]=token;
    }
     
-  execvp(file,argv);
+  execvp(file,0);
 }
 
 void builtin_sh_run() {
