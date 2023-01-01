@@ -63,7 +63,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
 
 int execve(const char *filename,char* const argv[],char* const envp[])
 {
-  printf("execvehhr %s\n",filename);
+
   context_uload(&pcb[1],filename,argv,envp);
   switch_boot_pcb();
   yield();
