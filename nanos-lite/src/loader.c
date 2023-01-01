@@ -69,8 +69,8 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   if(argv)
   for(;argv[argc]!=NULL;argc++)
   {
-    int len=strlen(argv[argc]);
-    brk-=(len+2);
+
+    brk-=(2);
    }printf("HHHHHH\n");
   if(envp)
   for(;envp[envc]!=NULL;envc++)
