@@ -110,7 +110,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
     str[len]='\0';
     str+=(len+2);
   }
-
+  argc+=10;
   *ptr=(char*)argc;
 
   printf("HHHHHH%p\n",ptr);
