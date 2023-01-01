@@ -28,7 +28,7 @@ void context_kload(PCB* p,void (*entry)(void *), void *arg)
   printf("context_kload: %p\n", entry);
   Area kstack;
   kstack.start=&p->cp;
-  kstack.end=&p->cp+STACK_SIZE;//这里好像出现了点问题 不-4参数会错误
+  kstack.end=&p->cp+STACK_SIZE-4;//这里好像出现了点问题 不-4参数会错误
 
   p->cp=kcontext(kstack,entry,arg);
 }
@@ -36,7 +36,7 @@ void context_kload(PCB* p,void (*entry)(void *), void *arg)
 
 
 void init_proc() {
-  context_kload(&pcb[0], hello_fun, "hhr");
+context_uload(&pcb[0], "/bin/hello");
   context_uload(&pcb[1], "/bin/pal");
   
   switch_boot_pcb();
