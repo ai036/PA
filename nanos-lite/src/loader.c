@@ -107,10 +107,9 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
     str[len]='\0';
     str+=(len+2);
   }
-  
+  printf("HHHHHH\n");
   *ptr=(char*)argc;
   ptr-=1;
-  printf("123412\n");
-printf("HHHHHH\n");
+
   c->GPRx=(uintptr_t)ptr;
 }
