@@ -68,7 +68,7 @@ void do_syscall(Context *c) {
       break;
     case SYS_execve:
       char* filename=(char*)c->GPR2;
-      ret=execve(filename,0,0);
+      ret=execve(filename,(char**)c->GPR3,0);
       c->GPRx=ret;
       break;
     default: panic("Unhandled syscall ID = %d", a[0]);
