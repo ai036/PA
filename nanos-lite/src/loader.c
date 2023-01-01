@@ -68,7 +68,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   char* brk=(char*)heap.end;
   if(argv)
   for(;argv[argc]!=NULL;argc++)
-  { 
+  { printf("%s: \n", argv[argc]);
 ;
    }printf("HHHHHH%d\n",argc);
   if(envp)
