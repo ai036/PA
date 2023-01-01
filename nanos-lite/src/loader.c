@@ -64,38 +64,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   Context* c=ucontext(NULL,kstack,(void*)entry);
   pcb->cp=c;
 
-  int envc=0,argc=0;
-  char* brk=(char*)heap.end;
-  for(;argv[argc]!=NULL;argc++)
-  {
-    int len=strlen(argv[argc]);
-    brk-=(len+2);
-   }
-  for(;envp[envc]!=NULL;envc++)
-  {
-    int len=strlen(envp[envc]);
-    brk-=(len+2);
-  }
-
-  char* str=brk;
-  char** ptr=(char**)brk;
-  ptr-=1;
-  *ptr=NULL;
-  
-  ptr-=1;
-  for(int i=envc-1;i>=0;i--)
-  {
-    strcpy(str,envp[i]);
-    int len=strlen(envp[i]);
-    *ptr=str;
-    ptr-=1;
-    str[len]='\0';
-    str+=(len+2);
-  }
-
-  *ptr=NULL;
-  ptr-=1;
 
 
-  c->GPRx=(uintptr_t)ptr;
+  c->GPRx=(uintptr_t)heap.end;
 }
