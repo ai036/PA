@@ -37,8 +37,8 @@ void context_kload(PCB* p,void (*entry)(void *), void *arg)
 
 void init_proc() {
   context_kload(&pcb[0], hello_fun, "hhr");
-  char *v[]={"/bin/exec-test",NULL};
-  context_uload(&pcb[1], "/bin/exec-test",v,NULL);
+  char *v[]={NULL};
+  context_uload(&pcb[1], "/bin/menu",v,NULL);
   
   switch_boot_pcb();
 
@@ -68,4 +68,4 @@ int execve(const char *filename,char* const argv[],char* const envp[])
   switch_boot_pcb();
   yield();
   return -1;
-}
+}//出现了PC与diff不同的问题
