@@ -6,7 +6,7 @@
 int main(int argc, char *argv[], char *envp[]);
 extern char **environ;
 void call_main(uintptr_t *args) {
-  printf("args:%d\n",*args);
+  printf("argc=%d\n",*args);
   int argc=*args;
   args+=1;
   char* argv[argc];
@@ -16,10 +16,9 @@ void call_main(uintptr_t *args) {
       printf("%s\n",argv[i]);
       args++;
     }
-  
-  
+
   char *empty[] =  {NULL };
   environ = empty;
-  exit(main(0, empty, empty));
+  exit(main(0, argv, empty));
   assert(0);
 }
