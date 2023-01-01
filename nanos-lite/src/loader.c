@@ -101,11 +101,10 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   ptr-=1;
   printf("HHHHHH%p\n",ptr);
 
-
   for(int i=argc-1;i>=0;i--)
   {
     strcpy(str,argv[i]);
-    int len=strlen(envp[i]);
+    int len=strlen(argv[i]);
     *ptr=str;
     ptr-=1;
     str[len]='\0';
