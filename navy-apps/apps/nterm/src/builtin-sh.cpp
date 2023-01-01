@@ -31,7 +31,7 @@ static void sh_handle_cmd(const char *cmd) {
 
 
     
-  execvp(file,argv);
+  execvp(file,0);
 }
 
 void builtin_sh_run() {
