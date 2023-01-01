@@ -67,18 +67,20 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   int envc=0,argc=0;
   char* brk=(char*)heap.end;
   if(argv)
-  for(;argv[argc]!=NULL;argc++)
-  { 
-    int len=strlen(argv[argc]);
-    brk-=(len+2);
-   }
-  if(envp)
-  for(;envp[envc]!=NULL;envc++)
-  {
-    int len=strlen(envp[envc]);
-    brk-=(len+2);
-  }
+    for(;argv[argc]!=NULL;argc++)
+    { 
+      int len=strlen(argv[argc]);
+      brk-=(len+2);
+    }
 
+  if(envp)
+    for(;envp[envc]!=NULL;envc++)
+    {
+      int len=strlen(envp[envc]);
+      brk-=(len+2);
+    }
+
+  printf("argc:%d  envc:%d\n",argc,envc);
   char* str=brk;
   char** ptr=(char**)brk;
   ptr-=1;
@@ -98,6 +100,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   *ptr=NULL;  
   ptr-=1;
   printf("HHHHHH\n");
+
   for(int i=argc-1;i>=0;i--)
   {
     strcpy(str,argv[i]);
