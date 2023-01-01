@@ -71,14 +71,14 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   { 
     int len=strlen(argv[argc]);
     brk-=(len+2);
-   }printf("HHHHHH\n");
+   }
   if(envp)
   for(;envp[envc]!=NULL;envc++)
   {
     int len=strlen(envp[envc]);
     brk-=(len+2);
   }
-
+printf("HHHHHH\n");
   char* str=brk;
   char** ptr=(char**)brk;
   ptr-=1;
