@@ -37,7 +37,7 @@ void context_kload(PCB* p,void (*entry)(void *), void *arg)
 
 void init_proc() {
   context_kload(&pcb[0], hello_fun, "hhr");
-  char *v[]={"/bin/exec-test","1",NULL};
+  char *v[]={"/bin/exec-test",NULL};
   context_uload(&pcb[1], "/bin/exec-test",v,NULL);
   
   switch_boot_pcb();
