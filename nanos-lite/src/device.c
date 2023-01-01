@@ -17,6 +17,7 @@ static const char *keyname[256] __attribute__((used)) = {
 static int width,height,size;
 
 size_t serial_write(const void *buf, size_t offset, size_t len) {
+  yield();
   int ret=0;
   char* start=(char*)buf;
   for(int i = 0; i < len; i++)
@@ -27,6 +28,7 @@ size_t serial_write(const void *buf, size_t offset, size_t len) {
 }
 
 size_t events_read(void *buf, size_t offset, size_t len) {
+  yield();
   AM_INPUT_KEYBRD_T ev = io_read(AM_INPUT_KEYBRD);
   char *k;
   if (ev.keycode == AM_KEY_NONE) return 0;
@@ -49,7 +51,7 @@ size_t dispinfo_read(void *buf, size_t offset, size_t len) {
 }
 
 size_t fb_write(const void *buf, size_t offset, size_t len) {
-  
+  yield();
   size_t real_len=len;
   if(len+offset>size)
     real_len=size-offset;
