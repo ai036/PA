@@ -53,6 +53,8 @@ int execve(const char *filename,char* const argv[],char* const envp[])
   return -1;
 }
 
+void* new_page(size_t nr_page);
+
 void context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[])
 {
   printf("context_uload: %s\n", filename);
@@ -64,8 +66,11 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   Context* c=ucontext(NULL,kstack,(void*)entry);
   pcb->cp=c;
 
+  void* npage=new_page(8) + (8 << 12); //分到的页面栈顶
+  
   int envc=0,argc=0;
-  char* brk=(char*)heap.end;
+  char* brk=(char*)npage;
+  
   if(argv)
     for(;argv[argc]!=NULL;argc++)
     { 
