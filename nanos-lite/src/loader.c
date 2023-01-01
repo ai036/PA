@@ -66,11 +66,13 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
 
   int envc=0,argc=0;
   char* brk=(char*)heap.end;
+  if(argv)
   for(;argv[argc]!=NULL;argc++)
   {
     int len=strlen(argv[argc]);
     brk-=(len+2);
    }printf("HHHHHH\n");
+  if(envp)
   for(;envp[envc]!=NULL;envc++)
   {
     int len=strlen(envp[envc]);
