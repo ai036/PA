@@ -99,7 +99,8 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
 
   *ptr=NULL;  
   ptr-=1;
-  printf("HHHHHH\n");
+  printf("HHHHHH%p\n",ptr);
+
 
   for(int i=argc-1;i>=0;i--)
   {
