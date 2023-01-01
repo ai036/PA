@@ -7,7 +7,7 @@ static PCB pcb_boot = {};
 PCB *current = NULL;
 
 void naive_uload(PCB *pcb, const char *filename);
-void context_uload(PCB* p,const char* filename);
+void context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]);
 
 void switch_boot_pcb() {
   current = &pcb_boot;
@@ -36,8 +36,9 @@ void context_kload(PCB* p,void (*entry)(void *), void *arg)
 
 
 void init_proc() {
-context_uload(&pcb[0], "/bin/hello");
-  context_uload(&pcb[1], "/bin/pal");
+  context_kload(&pcb[0], hello_fun, "hhr");
+  char *v="--skip";
+  context_uload(&pcb[1], "/bin/pal",&v,NULL);
   
   switch_boot_pcb();
 
