@@ -63,7 +63,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   uintptr_t entry = loader(pcb, filename);
   Context* c=ucontext(NULL,kstack,(void*)entry);
   pcb->cp=c;
-
+printf("HHHHHH\n");
   int envc=0,argc=0;
   char* brk=(char*)heap.end;
   for(;argv[argc]!=NULL;argc++)
@@ -76,7 +76,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
     int len=strlen(envp[envc]);
     brk-=(len+2);
   }
-printf("HHHHHH\n");
+
   char* str=brk;
   char** ptr=(char**)brk;
   ptr-=1;
