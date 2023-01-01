@@ -60,7 +60,9 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   kstack.start=&pcb->cp;
   kstack.end=&pcb->cp+STACK_SIZE;
 
-
+  uintptr_t entry = loader(pcb, filename);
+  Context* c=ucontext(NULL,kstack,(void*)entry);
+  pcb->cp=c;
 
   int envc=0,argc=0;
   char* brk=(char*)heap.end;
@@ -105,9 +107,6 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   }
   
   *ptr=(char*)argc;
-    uintptr_t entry = loader(pcb, filename);
-  Context* c=ucontext(NULL,kstack,(void*)entry);
-  pcb->cp=c;
 
   c->GPRx=(uintptr_t)ptr;
 }
