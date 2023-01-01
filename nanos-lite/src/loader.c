@@ -46,14 +46,7 @@ void naive_uload(PCB *pcb, const char *filename) {
   ((void(*)())entry) ();
 }
 
-int execve(const char *filename,char* const argv[],char* const envp[])
-{
-  printf("execve %s\n",filename);
-  naive_uload(NULL,filename);
-  return -1;
-}
-
-void* new_page(size_t nr_page);
+void* new_page(size_t nr_page);//定义在mm.c中
 
 void context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[])
 {
@@ -122,3 +115,4 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
 
   c->GPRx=(uintptr_t)ptr;
 }
+

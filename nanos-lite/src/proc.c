@@ -38,7 +38,7 @@ void context_kload(PCB* p,void (*entry)(void *), void *arg)
 void init_proc() {
   context_kload(&pcb[0], hello_fun, "hhr");
   char *v[]={"--skip",NULL};
-  context_uload(&pcb[1], "/bin/pal",v,NULL);
+  context_uload(&pcb[1], "/bin/nterm",v,NULL);
   
   switch_boot_pcb();
 
@@ -57,4 +57,13 @@ Context* schedule(Context *prev) {
 
   // then return the new context
   return current->cp;
+}
+
+void context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]);
+
+int execve(const char *filename,char* const argv[],char* const envp[])
+{
+  printf("execve %s\n",filename);
+  context_uload(&pcb[1],filename,argv,envp);
+  return -1;
 }
