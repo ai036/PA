@@ -48,6 +48,15 @@ void naive_uload(PCB *pcb, const char *filename) {
 
 void* new_page(size_t nr_page);//定义在mm.c中
 
+static int str_byte(int len)
+{
+  int bytes=len+1;
+  if(bytes%4==0)
+    return bytes;
+  else
+    return ((bytes>>2)<<2)+4;
+}
+
 void context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[])
 {
   printf("context_uload: %s\n", filename);
@@ -67,15 +76,15 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   if(argv)
     for(;argv[argc]!=NULL;argc++)
     { 
-      int len=strlen(argv[argc]);
-      brk-=(len+2);
+      int len=str_byte(strlen(argv[argc]));
+      brk-=len;
     }
 
   if(envp)
     for(;envp[envc]!=NULL;envc++)
     {
-      int len=strlen(envp[envc]);
-      brk-=(len+2);
+      int len=str_byte(strlen(envp[envc]));
+      brk-=len;
     }
 
   printf("argc:%d  envc:%d\n",argc,envc);
@@ -83,8 +92,6 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   char** ptr=(char**)brk;
 
   ptr-=1;
-  printf("HHHHHH%p\n",ptr);
-
   *ptr=NULL;
   printf("HHHHHH%p\n",ptr);
 
@@ -96,7 +103,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
     *ptr=str;
     ptr-=1;
     str[len]='\0';
-    str+=(len+2);
+    str+=str_byte(len);
   }
 
   *ptr=NULL;  
@@ -110,7 +117,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
     *ptr=str;
     ptr-=1;
     str[len]='\0';
-    str+=(len+2);
+    str+=str_byte(len);
   }
 
   *ptr=(char*)argc;
