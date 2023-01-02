@@ -29,9 +29,9 @@ static void sh_handle_cmd(const char *cmd) {
   char*file=strtok(command, " ");
 
 
-  char* argv[10];
+  char* argv[15];
   int argc=0;
-  char*token=strtok(NULL, " ");
+  char* token=strtok(NULL, " ");
   
    /* 读取参数列表argv[] */
   while( token != NULL ) {
