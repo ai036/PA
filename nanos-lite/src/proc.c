@@ -37,7 +37,7 @@ void context_kload(PCB* p,void (*entry)(void *), void *arg)
 
 void init_proc() {
   context_kload(&pcb[0], hello_fun, "hhr");
-  char *v[]={NULL};
+  char *v[]={"123",NULL};
   context_uload(&pcb[1], "/bin/nterm",v,NULL);
   
   switch_boot_pcb();
@@ -64,14 +64,8 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
 int execve(const char *filename,char* const argv[],char* const envp[])
 {
 
-  printf("Loading from %s ...\n", filename);
-  context_uload(&pcb[1], filename, argv, envp);
+  context_uload(&pcb[1],filename,argv,envp);
   switch_boot_pcb();
-  
-  pcb[0].cp->pdir = NULL;
-  //TODO: 这是一种trade-off
-  //set_satp(pcb[1].cp->pdir);
-
   yield();
-  return 0;
+  return -1;
 }//出现了PC与diff不同的问题
