@@ -63,6 +63,7 @@ int fs_open(const char *pathname, int flags, int mode)
         file_table[i].open_offset =0;
         return i;
       }
+  return -1;
   assert(0);//这里直接采用assert(0)，因此execve的返回值不符合要求
 }
 

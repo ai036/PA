@@ -68,7 +68,11 @@ void do_syscall(Context *c) {
       break;
     case SYS_execve:
       char* filename=(char*)c->GPR2;
-      fs_open(filename,0,0);
+      if(fs_open(filename,0,0)==-1)
+        {
+          c->GPRx=-2;
+          break;
+        };
       ret=execve(filename,(char**)c->GPR3,NULL);
       c->GPRx=ret;
       break;
