@@ -37,7 +37,7 @@ static void sh_handle_cmd(const char *cmd) {
       token = strtok(NULL, " ");
       argv[argc++]=token;
    }//BUGY
-    
+  printf("sh_handle_cmd\n");
   execvp(file,argv);
 }
 
