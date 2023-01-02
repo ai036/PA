@@ -37,8 +37,8 @@ void context_kload(PCB* p,void (*entry)(void *), void *arg)
 
 void init_proc() {
   context_kload(&pcb[0], hello_fun, "hhr");
-  char *v[]={"141",NULL};
-  context_uload(&pcb[1], "/bin/nterm",v,NULL);
+  char *v[]={NULL};
+  context_uload(&pcb[1], "/bin/menu",v,NULL);
   
   switch_boot_pcb();
 
@@ -63,7 +63,6 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
 
 int execve(const char *filename,char* const argv[],char* const envp[])
 {
-
   context_uload(&pcb[1],filename,argv,envp);
   switch_boot_pcb();
   yield();

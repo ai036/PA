@@ -48,7 +48,7 @@ void naive_uload(PCB *pcb, const char *filename) {
 
 void* new_page(size_t nr_page);//定义在mm.c中
 
-static int str_byte(int len)
+static int str_byte(int len)//根据字符串长度进行四字节对齐，不然会出BUG
 {
   int bytes=len+1;
   if(bytes%4==0)
