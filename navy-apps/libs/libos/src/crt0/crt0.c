@@ -13,7 +13,7 @@ void call_main(uintptr_t *args) {
   for(int i=0; i<argc; i++)
     {
       argv[i]=(char*)*args;
-
+      printf("%s\n",argv[i]);
       args++;
     }
 
