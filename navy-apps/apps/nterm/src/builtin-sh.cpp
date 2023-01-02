@@ -29,7 +29,7 @@ static void sh_handle_cmd(const char *cmd) {
   char* filename=strtok(command, " ");
 
   char* argv[10];
-  int argc=0;
+  int argc=1;
   char*arg=strtok(NULL, " ");
   
    /* 读取参数列表argv[] */
