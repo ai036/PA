@@ -35,10 +35,11 @@ static void sh_handle_cmd(const char *cmd) {
   
    /* 读取参数列表argv[] */
   while( token != NULL ) {
-      printf( "%s\n", token);
+      
       argv[argc++]=token;
       token = strtok(NULL, " ");
-   }//BUGY    
+   }//BUGY 
+  argv[argc]=NULL;
   execvp(file,argv);
 }
 
