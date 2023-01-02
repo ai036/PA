@@ -29,7 +29,17 @@ static void sh_handle_cmd(const char *cmd) {
   char*file=strtok(command, " ");
   printf("sh_handle_cmd\n");
 
-  execvp(file,0);
+  char* argv[10];
+  int argc=0;
+  char*token=strtok(NULL, " ");
+  
+   /* 读取参数列表argv[] */
+  while( token != NULL ) {
+      printf( "%s\n", token );
+      token = strtok(NULL, " ");
+      argv[argc++]=token;
+   }//BUGY
+  execvp(file,argv);
 }
 
 void builtin_sh_run() {
