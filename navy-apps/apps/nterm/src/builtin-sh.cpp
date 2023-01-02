@@ -30,6 +30,7 @@ static void sh_handle_cmd(const char *cmd) {
   char* argv[10];
   int argc=0;
   char*token=strtok(NULL, " ");
+  printf("sh_handle_cmd\n");
   
    /* 读取参数列表argv[] */
   while( token != NULL ) {
@@ -37,7 +38,6 @@ static void sh_handle_cmd(const char *cmd) {
       token = strtok(NULL, " ");
       argv[argc++]=token;
    }//BUGY
-  printf("sh_handle_cmd\n");
   execvp(file,argv);
 }
 
