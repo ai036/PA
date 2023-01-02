@@ -83,8 +83,9 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   char** ptr=(char**)brk;
 
   ptr-=1;
-  *ptr=NULL;
   printf("HHHHHH%p\n",ptr);
+
+  *ptr=NULL;
 
   ptr-=1;
   for(int i=envc-1;i>=0;i--)
