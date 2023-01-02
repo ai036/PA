@@ -39,7 +39,7 @@ static void sh_handle_cmd(const char *cmd) {
       arg = strtok(NULL, " ");
    }//已经修复BUG 
   argv[argc]=NULL;
-  execvp(argv[0],argv);
+  execvp(filename,argv);
 }
 
 void builtin_sh_run() {
