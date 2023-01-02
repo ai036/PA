@@ -59,10 +59,9 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   pcb->cp=c;
 
 
-  void* npage=new_page(8) + (8 << 12); //分到的页面栈顶
   
   int envc=0,argc=0;
-  char* brk=(char*)npage;
+  char* brk=(char*)heap.end;
   
   if(argv)
     for(;argv[argc]!=NULL;argc++)
