@@ -23,38 +23,33 @@ static void sh_prompt() {
 }
 
 static void sh_handle_cmd(const char *cmd) {
-  char command[128];
+  char command[100];
   strcpy(command, cmd);
-  command[strlen(command) - 1] = '\0';//把'\n'搞掉
-  
-  const char split[2] = " ";
-  char *token;
-  char *argv[16];
-  int argc = 0;
+  command[strlen(cmd)-1] = '\0';
+  char* filename=strtok(command, " ");
+  char* argv[10];
+  argv[0]=filename;
 
-  /* 获取第一个子字符串 */
-  token = strtok(command, split);
+  int argc=1;
+  char*arg=strtok(NULL, " ");
   
-  /* 继续获取其他的子字符串 */
-  while( token != NULL ) {
-    argv[argc++] = token;
-    token = strtok(NULL, split);
-  }
-  argv[argc] = NULL;
-
-  execvp(argv[0], argv);
+   /* 读取参数列表argv[] */
+  while(arg != NULL) {
+      argv[argc++]=arg;
+      arg = strtok(NULL, " ");
+   }//已经修复BUG 
+  argv[argc]=NULL;
+  execvp(argv[0],argv);
 }
 
 void builtin_sh_run() {
   sh_banner();
   sh_prompt();
-
   setenv("PATH", "/bin:/usr/bin", 0);
+
   while (1) {
     SDL_Event ev;
-    int ret = SDL_PollEvent(&ev);
-    
-    if (ret) {
+    if (SDL_PollEvent(&ev)) {
       if (ev.type == SDL_KEYUP || ev.type == SDL_KEYDOWN) {
         const char *res = term->keypress(handle_key(&ev));
         if (res) {
