@@ -28,7 +28,7 @@ static void sh_handle_cmd(const char *cmd) {
   command[strlen(cmd)-1] = '\0';
   char*file=strtok(command, " ");
 
-  execvp(file,0);
+  execvp(file,0);//参数解析有问题
 }
 
 void builtin_sh_run() {
