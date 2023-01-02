@@ -67,4 +67,4 @@ int execve(const char *filename,char* const argv[],char* const envp[])
   switch_boot_pcb();
   yield();
   return -1;
-}//出现了PC与diff不同的问题
+}//出现了PC与diff不同的问题 4字节对齐后修复

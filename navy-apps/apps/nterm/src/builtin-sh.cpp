@@ -26,21 +26,19 @@ static void sh_handle_cmd(const char *cmd) {
   char command[100];
   strcpy(command, cmd);
   command[strlen(cmd)-1] = '\0';
-  char*file=strtok(command, " ");
-
+  char* filename=strtok(command, " ");
 
   char* argv[10];
   int argc=0;
-  char*token=strtok(NULL, " ");
+  char*arg=strtok(NULL, " ");
   
    /* 读取参数列表argv[] */
-  while( token != NULL ) {
-      
-      argv[argc++]=token;
-      token = strtok(NULL, " ");
-   }//BUGY 
+  while(arg != NULL) {
+      argv[argc++]=arg;
+      arg = strtok(NULL, " ");
+   }//已经修复BUG 
   argv[argc]=NULL;
-  execvp(file,argv);
+  execvp(filename,argv);
 }
 
 void builtin_sh_run() {
