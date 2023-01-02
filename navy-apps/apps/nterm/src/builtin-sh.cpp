@@ -27,10 +27,8 @@ static void sh_handle_cmd(const char *cmd) {
   strcpy(command, cmd);
   command[strlen(cmd)-1] = '\0';
   char*file=strtok(command, " ");
-  printf("sh_handle_cmd\n");
 
-
-  execvp(file,NULL);
+  execvp(file,0);
 }
 
 void builtin_sh_run() {
