@@ -35,7 +35,6 @@ static void sh_handle_cmd(const char *cmd) {
   
    /* 读取参数列表argv[] */
   while( token != NULL ) {
-      printf( "%s\n", token );
       token = strtok(NULL, " ");
       argv[argc++]=token;
    }//BUGY    
