@@ -17,7 +17,8 @@ void hello_fun(void *arg) {
   int j = 1;
   
   while (1) {
-    Log("Hello World from Nanos-lite with arg '%s' for the %dth time!", (char*)arg, j);
+    if(j%100==0)
+      Log("Hello World from Nanos-lite with arg '%s' for the %dth time!", (char*)arg, j);
     j ++;
     yield();
   }
@@ -37,7 +38,7 @@ void context_kload(PCB* p,void (*entry)(void *), void *arg)
 
 void init_proc() {
   context_kload(&pcb[0], hello_fun, "hhr");
-  char *v[]={"1231",NULL};
+  char *v[]={"1234",NULL};
   context_uload(&pcb[1], "/bin/nterm",v,NULL);
   
   switch_boot_pcb();
