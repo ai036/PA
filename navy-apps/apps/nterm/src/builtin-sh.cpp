@@ -39,7 +39,7 @@ static void sh_handle_cmd(const char *cmd) {
       token = strtok(NULL, " ");
       argv[argc++]=token;
    }//BUGY    
-  execvp(file,argv);
+  execvp(file,0);
 }
 
 void builtin_sh_run() {
