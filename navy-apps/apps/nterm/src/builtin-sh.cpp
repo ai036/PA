@@ -28,7 +28,7 @@ static void sh_handle_cmd(const char *cmd) {
   command[strlen(cmd)-1] = '\0';
   char* filename=strtok(command, " ");
   char* argv[10];
-  argv[0]=filename;
+  argv[0]=filename;  //参数列表第一个是文件名
 
   int argc=1;
   char*arg=strtok(NULL, " ");
