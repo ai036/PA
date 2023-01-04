@@ -35,7 +35,7 @@ void context_kload(PCB* p,void (*entry)(void *), void *arg)
 }
 
 void init_proc() {
-  naive_uload(NULL,"/bin/dummy");
+  naive_uload(NULL,"/bin/nterm");
 
   Log("Initializing processes...");
 
