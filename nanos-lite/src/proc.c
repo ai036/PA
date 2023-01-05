@@ -29,7 +29,7 @@ void context_kload(PCB* p,void (*entry)(void *), void *arg)
   printf("context_kload: %p\n", entry);
   Area kstack;
   kstack.start=&p->cp;
-  kstack.end=(&p->cp)+STACK_SIZE;//这里好像出现了点问题 native上会提示下标越界
+  kstack.end=(&p)+STACK_SIZE;//这里好像出现了点问题 native上会提示下标越界
 
   p->cp=kcontext(kstack,entry,arg);
 }
