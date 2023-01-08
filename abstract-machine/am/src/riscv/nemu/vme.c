@@ -93,10 +93,11 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
     *pte=(((uintptr_t)page_table >> 2) & PPN) | (*pte & PTE_SIGN);
     *pte+=1;//将V位置为1
   }
-  printf("vme_init\n");
 
   PTE* leaf_pte=(PTE*)(((*pte & PPN)<<12) + VPN0(vaddr)*4);//找到叶节点页表项
   uintptr_t paddr=(uintptr_t)pa;
+  printf("vme_init\n");
+
   *leaf_pte=((paddr >> 2) & PPN) | 0xf;
 }
 
