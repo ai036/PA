@@ -95,10 +95,9 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   }
 
   PTE* leaf_pte=(PTE*)(((*pte & PPN)<<12) + VPN0(vaddr)*4);//找到叶节点页表项
+  printf("leaf_pte: %p\n", leaf_pte);
   uintptr_t paddr=(uintptr_t)pa;
   *leaf_pte=((paddr >> 2) & PPN) | 0xf;
-  printf("vme_init\n");
-
 }
 
 Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
