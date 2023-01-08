@@ -61,6 +61,8 @@ word_t* CSD;
   CSD=&csr.mepc;break;\
   case 0x342:\
   CSD=&csr.mcause;break;\
+  case 0x180:\
+  CSD=&csr.satp;break;\
 }}while (0)
 
 
