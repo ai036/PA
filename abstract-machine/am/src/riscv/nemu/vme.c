@@ -1,6 +1,7 @@
 #include <am.h>
 #include <nemu.h>
 #include <klib.h>
+#include <riscv/riscv.h>
 
 static AddrSpace kas = {};
 static void* (*pgalloc_usr)(int) = NULL;
@@ -21,7 +22,7 @@ static inline void set_satp(void *pdir) {
 static inline uintptr_t get_satp() {
   uintptr_t satp;
   asm volatile("csrr %0, satp" : "=r"(satp));
-  return satp << 12;
+  return satp << 12;    //读取PTE的基地址
 }
 
 bool vme_init(void* (*pgalloc_f)(int), void (*pgfree_f)(void*)) {
@@ -66,15 +67,44 @@ void __am_switch(Context *c) {
   }
 }
 
+static inline uintptr_t VPN1(uintptr_t addr)
+{
+  return (addr & 0xffc00000u)>>22;
+}
+
+static inline uintptr_t VPN0(uintptr_t addr)
+{
+  return (addr & 0x003ff000u)>>12;
+}
+
+#define OFFSET 0x00000fffu
+#define PPN 0xfffffc00u
+#define PTE_SIGN 0x000003ffu
+
+//TODO: 实现map 将地址空间as中虚拟地址va所在的虚拟页,映射到pa所在的物理页
 void map(AddrSpace *as, void *va, void *pa, int prot) {
+  uintptr_t vaddr=(uintptr_t)va;
+  PTE* pte=(PTE*)(as->ptr+ VPN1(vaddr)*4); //找到二级页表项 page_table_entry
+
+  if((*pte & PTE_V)==0) //V位为0说明页表项无效
+  {
+    void* page_table=pgalloc_usr(PGSIZE);
+    *pte=(((uintptr_t)page_table >> 2) & PPN) | (*pte & PTE_SIGN);
+    *pte+=1;//将V位置为1
+  }
+
+  PTE* leaf_pte=(PTE*)(((*pte & PPN)<<12) + VPN0(vaddr)*4);//找到叶节点页表项
+  uintptr_t paddr=(uintptr_t)pa;
+  *leaf_pte=((paddr >> 2) & PPN) | 0xf;
 }
 
 Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
   Context *c =kstack.end-sizeof(Context);
   
+  c->pdir=NULL;
   c->mstatus=0x1800;
   c->mepc=(uintptr_t)entry;
-  c->pdir=NULL;
+
 
   return c;
 }

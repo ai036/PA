@@ -30,6 +30,7 @@ typedef struct
     word_t mstatus;
     word_t mcause;
     word_t mtvec;
+    word_t satp;
 }CSR_state;
 
 // monitor
