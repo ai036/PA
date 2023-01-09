@@ -37,7 +37,8 @@ typedef uintptr_t PTE;
 
 //TODO: 实现地址翻译
 paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
-  PTE* pte=(PTE*)((csr.satp << 12)+ VPN1(vaddr)*4);
-  assert(*pte & PTE_V);
+  paddr_t pte_addr=(csr.satp << 12)+ VPN1(vaddr)*4;
+  PTE pte=paddr_read(pte_addr,4);
+  assert(pte & PTE_V);
   return vaddr;
 }
