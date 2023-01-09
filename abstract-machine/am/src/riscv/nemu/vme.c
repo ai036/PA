@@ -94,7 +94,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
     *pte+=1;//将V位置为1
   }
   printf("pte_addr: %p\n",pte);
-  PTE* leaf_pte=(PTE*)(((*pte & PPN)<<12) + VPN0(vaddr)*4);//找到叶节点页表项
+  PTE* leaf_pte=(PTE*)(((*pte & PPN)<<2) + VPN0(vaddr)*4);//找到叶节点页表项
   uintptr_t paddr=(uintptr_t)pa;
   *leaf_pte=((paddr >> 2) & PPN) | 0xf;
 }
