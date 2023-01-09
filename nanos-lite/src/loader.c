@@ -82,7 +82,6 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
 
 
   void* npage=new_page(8) + (8 << 12); //分到的页面栈顶
-  printf("dummy!!!\n");
 
   for(int i=1;i<=8;i++)
   {
@@ -146,5 +145,8 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   Context* c=ucontext(&pcb->as,kstack,(void*)entry);
   pcb->cp=c;
   c->GPRx=(uintptr_t)ptr;
+
+  printf("dummy!!!\n");
+
 }
 
