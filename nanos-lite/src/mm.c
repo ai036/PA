@@ -3,17 +3,17 @@
 static void *pf = NULL;
 
 void* new_page(size_t nr_page) {
-  pf+=(nr_page<<12);
-  return pf-(nr_page<<12);
+  //nr_page * 4KB
+  pf += nr_page * 4 * 1024;
+  return pf - nr_page * 4 * 1024;
 }
 
 #ifdef HAS_VME
 static void* pg_alloc(int n) {
-  assert(n%4096==0);
-  int page_num=n/4096;
-  void* ptr=new_page(page_num);
-  memset(ptr,0,n);
-  return ptr;
+  assert(n % (4096) == 0);
+  void *ret = new_page(n / (4096));
+  memset(ret, 0, n);
+  return ret;
 }
 #endif
 
