@@ -41,7 +41,6 @@ bool vme_init(void* (*pgalloc_f)(int), void (*pgfree_f)(void*)) {
 
   set_satp(kas.ptr);
   vme_enable = 1;
-  printf("vme_init\n");
 
   return true;
 }
@@ -106,6 +105,8 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   // }
   // 设置PPN
   *leaf_page_table_entry = (PTE_PPN_MASK & ((uintptr_t)pa >> 2)) | (PTE_V | PTE_R | PTE_W | PTE_X) | (prot ? PTE_U : 0);
+  printf("vme_init\n");
+
   //assert(PTE_PPN(*leaf_page_table_entry) * 4096 + VA_OFFSET(va) == (uintptr_t)pa);
 }
 
