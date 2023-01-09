@@ -19,5 +19,5 @@
 
 paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
   //TODO: 实现地址翻译
-  return MEM_RET_FAIL;
+  return vaddr;
 }
