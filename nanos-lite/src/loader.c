@@ -10,6 +10,10 @@
 # define Elf_Phdr Elf32_Phdr
 #endif
 
+void* new_page(size_t nr_page);//定义在mm.c中
+#define PAGESIZE 4096
+#define OFFSET 0x00000fffu
+
 Elf_Ehdr elf_head;
 
 static uintptr_t loader(PCB *pcb, const char *filename) {
@@ -27,8 +31,20 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
     if(phdr[i].p_type==PT_LOAD)
     { 
       fs_lseek(fd,phdr[i].p_offset,SEEK_SET);
-      fs_read(fd,(void*)phdr[i].p_vaddr,phdr[i].p_memsz);
-      memset((void*)(phdr[i].p_vaddr+phdr[i].p_filesz),0,phdr[i].p_memsz-phdr[i].p_filesz);
+      
+      int page_num;
+      page_num=phdr[i].p_memsz / 4096;
+      if(phdr[i].p_memsz % 4096 != 0)
+        page_num+=1;
+      void* npage=new_page(page_num);
+
+      for(int j=0;j<page_num;j++)
+      {
+        map(&pcb->as,(void*)(phdr[i].p_vaddr+j*PAGESIZE),npage+j*PAGESIZE,1);
+      }
+      
+      fs_read(fd,npage + (phdr[i].p_vaddr & OFFSET),phdr[i].p_filesz);
+      memset(npage + (phdr[i].p_vaddr & OFFSET)+phdr[i].p_filesz,0,phdr[i].p_memsz-phdr[i].p_filesz);
     }
   fs_close(fd);
   printf("load %s\n",filename);
@@ -46,8 +62,6 @@ void naive_uload(PCB *pcb, const char *filename) {
   ((void(*)())entry) ();
 }
 
-void* new_page(size_t nr_page);//定义在mm.c中
-
 static int str_byte(int len)//根据字符串长度进行四字节对齐，不然会出BUG
 {
   int bytes=len+1;
@@ -60,6 +74,8 @@ static int str_byte(int len)//根据字符串长度进行四字节对齐，不�
 void context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[])
 {
   printf("context_uload: %s\n", filename);
+  protect(&pcb->as);
+
   Area kstack;
   kstack.start=&pcb->cp;
   kstack.end=&pcb->cp+STACK_SIZE;
@@ -68,7 +84,12 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   pcb->cp=c;
 
   void* npage=new_page(8) + (8 << 12); //分到的页面栈顶
-  
+
+  for(int i=1;i<=8;i++)
+  {
+    map(&pcb->as, pcb->as.area.end - i*PAGESIZE, npage - i*PAGESIZE,1);
+  }
+
   int envc=0,argc=0;
   char* brk=(char*)npage;
   
