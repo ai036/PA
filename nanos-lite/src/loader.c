@@ -89,7 +89,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   {
     map(&pcb->as, pcb->as.area.end - i*PAGESIZE, npage - i*PAGESIZE,1);
   }
-
+  printf("dummy!!!\n");
   int envc=0,argc=0;
   char* brk=(char*)npage;
   
