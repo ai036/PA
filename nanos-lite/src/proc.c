@@ -36,7 +36,8 @@ void context_kload(PCB* p,void (*entry)(void *), void *arg)
 
 void init_proc() {
   context_kload(&pcb[0], hello_fun, "hhr");
-
+  char *v[]={"1234",NULL};
+  context_uload(&pcb[1], "/bin/nterm",v,NULL);
   
   switch_boot_pcb();
 
@@ -51,7 +52,7 @@ Context* schedule(Context *prev) {
   current->cp = prev;
 
   // 在两个进程之间切换
-  current = (&pcb[0]);
+  current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
 
   // then return the new context
   return current->cp;
