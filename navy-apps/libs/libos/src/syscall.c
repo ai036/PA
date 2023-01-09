@@ -50,9 +50,9 @@ intptr_t _syscall_(intptr_t type, intptr_t a0, intptr_t a1, intptr_t a2) {
   asm volatile (SYSCALL : "=r" (ret) : "r"(_gpr1), "r"(_gpr2), "r"(_gpr3), "r"(_gpr4));
   return ret;
 }
-
+void halt(int code);
 void _exit(int status) {
-  halt();
+  halt(0);
   _syscall_(SYS_exit, status, 0, 0);
   while (1);
 }
