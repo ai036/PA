@@ -17,7 +17,8 @@
 #include <memory/paddr.h>
 #include <memory/vaddr.h>
 
+//TODO: 实现地址翻译
 paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
-  //TODO: 实现地址翻译
+
   return vaddr;
 }
