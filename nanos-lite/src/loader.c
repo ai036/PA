@@ -79,9 +79,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   Area kstack;
   kstack.start=&pcb->cp;
   kstack.end=&pcb->cp+STACK_SIZE;
-  uintptr_t entry = loader(pcb, filename);
-  Context* c=ucontext(NULL,kstack,(void*)entry);
-  pcb->cp=c;
+
 
   void* npage=new_page(8) + (8 << 12); //分到的页面栈顶
   printf("dummy!!!\n");
@@ -144,7 +142,9 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   int* iptr=(int*)ptr;
   *iptr=argc;
 
-
+  uintptr_t entry = loader(pcb, filename);
+  Context* c=ucontext(&pcb->as,kstack,(void*)entry);
+  pcb->cp=c;
   c->GPRx=(uintptr_t)ptr;
 }
 
