@@ -46,11 +46,8 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
   PTE leaf_pte=paddr_read(leaf_pte_addr,4);//叶节点页表项
   assert(leaf_pte & PTE_V);//检查页表项的valid位
 
-  paddr_t paddr=((leaf_pte & PPN) << 2) | (vaddr & OFFSET);
-
+  paddr_t paddr=((leaf_pte & PPN) << 2) | (vaddr & OFFSET);//物理地址
   assert(paddr==vaddr);
 
-  
-  
   return paddr;
 }
