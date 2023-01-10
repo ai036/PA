@@ -52,7 +52,7 @@ Context* schedule(Context *prev) {
   current->cp = prev;
 
   // 在两个进程之间切换
-  current = (&pcb[0]);
+  current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
 
   // then return the new context
   return current->cp;
