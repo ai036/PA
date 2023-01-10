@@ -2,8 +2,6 @@
 #include "syscall.h"
 #include <fs.h>
 #include <sys/time.h>
-#include <stdint.h>
-
 
 struct SYS_TRACE{
     char *name;
@@ -18,7 +16,6 @@ struct SYS_TRACE{
 static int fd,ret;
 
 int execve(const char *filename,char* const argv[],char* const envp[]);
-int mm_brk(uintptr_t brk);
 
 void do_syscall(Context *c) {
   uintptr_t a[4];
@@ -60,8 +57,7 @@ void do_syscall(Context *c) {
       c->GPRx=ret;
       break;
     case SYS_brk:   //简易版，直接返回0
-      uintptr_t addr = (uintptr_t)(c->GPR2);
-      c->GPRx = mm_brk(addr);
+      c->GPRx=0;
       break;
     case SYS_gettimeofday:
       struct timeval* tv=(struct timeval*)c->GPR2;

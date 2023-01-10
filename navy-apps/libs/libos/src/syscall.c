@@ -68,20 +68,17 @@ int _write(int fd, void *buf, size_t count) {
 
 extern char end;  //链接时自动加的符号，直接声明
 void* program_break=NULL;
+
 void *_sbrk(intptr_t increment) {
-  if (program_break == NULL){// 初始化
-    program_break = &end;
-  }
-  void *old_program_break = program_break;
-  
-  int ret = _syscall_(SYS_brk, (intptr_t)(program_break + increment), 0, 0);
-  if (ret == 0){
-    program_break = program_break + increment;
-  }else {
-    assert(0);
-  }
-  
-  return old_program_break;
+  if(program_break==NULL) 
+    program_break=&end;
+  int ret=_syscall_(SYS_brk, (intptr_t)(program_break+increment),0,0);
+  void* old=program_break;
+  if(ret==0)
+    {program_break+=increment;
+     return old;
+     }
+  return (void *)-1;
 }
 
 int _read(int fd, void *buf, size_t count) {
