@@ -6,7 +6,6 @@
 int main(int argc, char *argv[], char *envp[]);
 extern char **environ;
 void call_main(uintptr_t *args) {
-  printf("call_main\n");
   printf("argc=%d\n",*args);
   int argc=*args;
   args+=1;
