@@ -36,6 +36,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
       page_num=phdr[i].p_memsz / 4096;
       if(phdr[i].p_memsz % 4096 != 0)
         page_num+=1;
+      printf("page_num: %d\n",page_num);
       void* npage=new_page(page_num);//物理页面起始地址
                 //p_vaddr是虚拟页起始地址
       for(int j=0;j<page_num;j++)
