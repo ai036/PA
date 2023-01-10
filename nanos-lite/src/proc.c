@@ -37,7 +37,7 @@ void context_kload(PCB* p,void (*entry)(void *), void *arg)
 void init_proc() {
 
   char *v[]={"1234",NULL};
-  context_uload(&pcb[0], "/bin/menu",v,NULL);
+  context_uload(&pcb[0], "/bin/nslider",v,NULL);
   
   switch_boot_pcb();
 
