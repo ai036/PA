@@ -144,6 +144,6 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   Context* c=ucontext(&pcb->as,kstack,(void*)entry);
   pcb->cp=c;
   c->GPRx=(uintptr_t)ptr;
-
+printf("dsasdwq\n");
 }
 
