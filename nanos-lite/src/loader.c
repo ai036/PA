@@ -36,8 +36,8 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
       page_num=phdr[i].p_memsz / 4096;
       if(phdr[i].p_memsz % 4096 != 0)
         page_num+=1;
-      void* npage=new_page(page_num);
-
+      void* npage=new_page(page_num);//物理页面起始地址
+                //p_vaddr是虚拟页起始地址
       for(int j=0;j<page_num;j++)
       {
         map(&pcb->as,(void*)(phdr[i].p_vaddr+j*PAGESIZE),npage+j*PAGESIZE,1);
@@ -79,7 +79,6 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   Area kstack;
   kstack.start=&pcb->cp;
   kstack.end=&pcb->cp+STACK_SIZE;
-
 
   void* npage=new_page(8) + (8 << 12); //分到的页面栈顶
 
@@ -145,8 +144,6 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[], char *con
   Context* c=ucontext(&pcb->as,kstack,(void*)entry);
   pcb->cp=c;
   c->GPRx=(uintptr_t)ptr;
-
-  printf("dummy!!!\n");
 
 }
 
