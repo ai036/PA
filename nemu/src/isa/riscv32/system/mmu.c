@@ -14,6 +14,8 @@
 ***************************************************************************************/
 
 #include <isa.h>
+#include <isa-def.h>
+
 #include <memory/paddr.h>
 #include <memory/vaddr.h>
 
@@ -44,9 +46,8 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
 
   paddr_t leaf_pte_addr= ((pte & PPN) << 2) + VPN0(vaddr)*4;
   PTE leaf_pte=paddr_read(leaf_pte_addr,4);//叶节点页表项
-  if((leaf_pte & PTE_V)==0)
-    printf("non valid leaf_pte=%lx, leaf_pte_addr=%x\n",leaf_pte,leaf_pte_addr);
-  assert(leaf_pte & PTE_V);//检查页表项的valid位
+  Assert(leaf_pte & PTE_V, "leaf_page_table_entry not valid, vaddr: %#x, pte_entry: %#x", vaddr, leaf_pte_addr);
+
   if (type == 0){//读
     paddr_write(leaf_pte_addr, 4, leaf_pte | 0x40);
   }else if (type == 1){//写
