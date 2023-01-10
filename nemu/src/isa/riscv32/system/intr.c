@@ -32,7 +32,7 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
    */
   csr.mcause=NO;
   csr.mepc=epc;
-csr.mstatus.status_bit.MPP = 3;
+
 #ifdef CONFIG_ETRACE   //etrace
   if(exception_idx<10)
     {exception_buf[exception_idx].cause=NO;
