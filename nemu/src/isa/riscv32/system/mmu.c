@@ -52,6 +52,6 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
   }
   paddr_t paddr=((leaf_pte & PPN) << 2) | (vaddr & OFFSET);//物理地址
 
-
+  assert(paddr==vaddr);
   return paddr;
 }
