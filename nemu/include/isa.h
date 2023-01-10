@@ -31,27 +31,27 @@ typedef struct
     {
         struct 
         {
-            size_t SD : 1;
-            size_t WPRI_23 : 8;
-            size_t TSR : 1;
-            size_t TW : 1;
-            size_t TVM : 1;
-            size_t MXR : 1;
-            size_t SUM : 1;
-            size_t MPRV : 1;
-            size_t XS : 2;
-            size_t FS : 2;
-            size_t MPP : 2;
-            size_t VS : 2;
-            size_t SPP : 1;
-            size_t MPIE : 1;
-            size_t UBE : 1;
-            size_t SPIE : 1;
-            size_t WRPI_4 : 1;
-            size_t MIE : 1;
-            size_t WPRI_2 : 1;
-            size_t SIE : 1;
-            size_t WPRI_0 : 1;
+                  uint32_t UIE    : 1;
+      uint32_t SIE    : 1;
+      uint32_t WPRI_0 : 1;
+      uint32_t MIE    : 1;
+      uint32_t UPIE   : 1;
+      uint32_t SPIE   : 1;
+      uint32_t WPRI   : 1;
+      uint32_t MPIE   : 1;
+      uint32_t SPP    : 1;
+      uint32_t WPRI_1_2 : 2;
+      uint32_t MPP    : 2;
+      uint32_t FS     : 2;
+      uint32_t XS     : 2;
+      uint32_t MPRV   : 1;
+      uint32_t SUM    : 1;
+      uint32_t MXR    : 1;
+      uint32_t TVM    : 1;
+      uint32_t TW     : 1;
+      uint32_t TSR    : 1;
+      uint32_t WPRI_3_10 : 8;
+      uint32_t SD     : 1;
         } status_bit;
         word_t all;
     } mstatus;
