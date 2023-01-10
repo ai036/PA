@@ -79,36 +79,26 @@ static inline uintptr_t VPN0(uintptr_t addr)
   return (addr & 0x003ff000u)>>12;
 }
 
+#define OFFSET 0x00000fffu
+#define PPN 0xfffffc00u
+#define PTE_SIGN 0x000003ffu
 
-#define VA_VPN_0(x) (((uintptr_t)x & 0x003FF000u) >> 12)
-#define VA_VPN_1(x) (((uintptr_t)x & 0xFFC00000u) >> 22)
-#define VA_OFFSET(x) ((uintptr_t)x & 0x00000FFFu)
-
-#define PTE_PPN_MASK (0xFFFFFC00u)
-#define PTE_PPN(x) (((uintptr_t)x & PTE_PPN_MASK) >> 10)
-
+//TODO: 实现map 将地址空间as中虚拟地址va所在的虚拟页,映射到pa所在的物理页
+//目前有点bug
 void map(AddrSpace *as, void *va, void *pa, int prot) {
-  va = (void *)(((uintptr_t)va) & (~0xfff));
-  pa = (void *)(((uintptr_t)pa) & (~0xfff));
+  uintptr_t vaddr=(uintptr_t)va;
+  PTE* pte=(PTE*)(as->ptr+ VPN1(vaddr)*4); //找到二级页表项 page_table_entry
 
-  PTE *page_table_entry = as->ptr + VA_VPN_1(va) * 4;
-  // assert((uintptr_t)as->ptr + VA_VPN_1(va) * 4 == get_satp() + VA_VPN_1(va) * 4);
-
-  if (!(*page_table_entry & PTE_V)){ // 说明二级表未分配
-    void *alloced_page = pgalloc_usr(PGSIZE);
-    *page_table_entry = (*page_table_entry & ~PTE_PPN_MASK) | (PTE_PPN_MASK & ((uintptr_t)alloced_page >> 2));
-    *page_table_entry = (*page_table_entry | PTE_V);
-    // printf("二级表未分配\t二级表项地址:%p\t虚拟地址:%p\n", page_table_entry, va);
-    //assert(((PTE_PPN(*page_table_entry) * 4096 + VA_VPN_0(va) * 4) & ~0xFFFFFF) == ((uintptr_t)alloced_page& ~0xFFFFFF));
+  if((*pte & PTE_V)==0) //V位为0说明页表项无效
+  {
+    void* page_table=pgalloc_usr(PGSIZE);
+    *pte=(((uintptr_t)page_table >> 2) & PPN) | (*pte & PTE_SIGN);
+    *pte+=1;//将V位置为1
   }
-  // 找到二级表中的表项
-  PTE *leaf_page_table_entry = (PTE *)(PTE_PPN(*page_table_entry) * 4096 + VA_VPN_0(va) * 4);
-  // if ((uintptr_t)va <= 0x40100000){
-  //   printf("设置二级表项\t虚拟地址:%p\t实际地址:%p\t表项:%p\n", va, pa, leaf_page_table_entry);
-  // }
-  // 设置PPN
-  *leaf_page_table_entry = (PTE_PPN_MASK & ((uintptr_t)pa >> 2)) | (PTE_V | PTE_R | PTE_W | PTE_X) | (prot ? PTE_U : 0);
-  //assert(PTE_PPN(*leaf_page_table_entry) * 4096 + VA_OFFSET(va) == (uintptr_t)pa);
+
+  PTE* leaf_pte=(PTE*)(((*pte & PPN)<<2) + VPN0(vaddr)*4);//找到叶节点页表项
+  uintptr_t paddr=(uintptr_t)pa;
+  *leaf_pte=((paddr >> 2) & PPN) | 0x1f;
 }
 
 Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
