@@ -117,88 +117,101 @@ void naive_uload(PCB *pcb, const char *filename) {
   ((void(*)())entry) ();
 }
 
-static int str_byte(int len)//根据字符串长度进行四字节对齐，不然会出BUG
-{
-  int bytes=len+1;
-  if(bytes%4==0)
-    return bytes;
-  else
-    return ((bytes>>2)<<2)+4;
+static size_t ceil_4_bytes(size_t size){
+  if (size & 0x3)
+    return (size & (~0x3)) + 0x4;
+  return size;
 }
 
-void context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[])
-{
-  printf("context_uload: %s\n", filename);
-  protect(&pcb->as);
 
-  Area kstack;
-  kstack.start=&pcb->cp;
-  kstack.end=&pcb->cp+STACK_SIZE;
-
-  void* npage=new_page(8) + (8 << 12); //分到的页面栈顶
-
-  for(int i=1;i<=8;i++)
-  {
-    map(&pcb->as, pcb->as.area.end - i*PAGESIZE, npage - i*PAGESIZE,1);
-  }
-  int envc=0,argc=0;
-  char* brk=(char*)npage;
+void context_uload(PCB *pcb, const char *filename, char *const argv[], char *const envp[]){
+  int envc = 0, argc = 0;
+  AddrSpace *as = &pcb->as;
+  protect(as);
   
-  if(argv)
-    for(;argv[argc]!=NULL;argc++)
-    { 
-      int len=str_byte(strlen(argv[argc]));
-      brk-=len;
-    }
-
-  if(envp)
-    for(;envp[envc]!=NULL;envc++)
-    {
-      int len=str_byte(strlen(envp[envc]));
-      brk-=len;
-    }
-
-  printf("argc:%d  envc:%d\n",argc,envc);
-  char* str=brk;
-  char** ptr=(char**)brk;
-
-  ptr-=1;
-  *ptr=NULL;
-  printf("HHHHHH%p\n",ptr);
-
-  ptr-=1;
-  for(int i=envc-1;i>=0;i--)
-  {
-    strcpy(str,envp[i]);
-    int len=strlen(envp[i]);
-    *ptr=str;
-    ptr-=1;
-    str[len]='\0';
-    str+=str_byte(len);
+  if (envp){
+    for (; envp[envc]; ++envc){}
   }
-
-  *ptr=NULL;  
-  ptr-=1;
-
-
-  for(int i=argc-1;i>=0;i--)
-  {
-    strcpy(str,argv[i]);
-    int len=strlen(argv[i]);
-    *ptr=str;
-    ptr-=1;
-    str[len]='\0';
-    str+=str_byte(len);
+  if (argv){
+    for (; argv[argc]; ++argc){}
   }
+  char *envp_ustack[envc];
 
+  void *alloced_page = new_page(NR_PAGE) + NR_PAGE * 4096; //得到栈顶
+
+  //这段代码有古怪，一动就会出问题，莫动
+  //这个问题确实已经被修正了，TMD，真cao dan
+  // 2021/12/16
   
-  int* iptr=(int*)ptr;
-  *iptr=argc;
+  map(as, as->area.end - 8 * PAGESIZE, alloced_page - 8 * PAGESIZE, 1); 
+  map(as, as->area.end - 7 * PAGESIZE, alloced_page - 7 * PAGESIZE, 1);
+  map(as, as->area.end - 6 * PAGESIZE, alloced_page - 6 * PAGESIZE, 1); 
+  map(as, as->area.end - 5 * PAGESIZE, alloced_page - 5 * PAGESIZE, 1);
+  map(as, as->area.end - 4 * PAGESIZE, alloced_page - 4 * PAGESIZE, 1); 
+  map(as, as->area.end - 3 * PAGESIZE, alloced_page - 3 * PAGESIZE, 1);
+  map(as, as->area.end - 2 * PAGESIZE, alloced_page - 2 * PAGESIZE, 1); 
+  map(as, as->area.end - 1 * PAGESIZE, alloced_page - 1 * PAGESIZE, 1); 
+  
+  char *brk = (char *)(alloced_page - 4);
+  // 拷贝字符区
+  for (int i = 0; i < envc; ++i){
+    brk -= (ceil_4_bytes(strlen(envp[i]) + 1)); // 分配大小
+    envp_ustack[i] = brk;
+    strcpy(brk, envp[i]);
+  }
 
+  char *argv_ustack[envc];
+  for (int i = 0; i < argc; ++i){
+    brk -= (ceil_4_bytes(strlen(argv[i]) + 1)); // 分配大小
+    argv_ustack[i] = brk;
+    strcpy(brk, argv[i]);
+  }
+  
+  intptr_t *ptr_brk = (intptr_t *)(brk);
+
+  // 分配envp空间
+  ptr_brk -= 1;
+  *ptr_brk = 0;
+  ptr_brk -= envc;
+  for (int i = 0; i < envc; ++i){
+    ptr_brk[i] = (intptr_t)(envp_ustack[i]);
+  }
+
+  // 分配argv空间
+  ptr_brk -= 1;
+  *ptr_brk = 0;
+  ptr_brk = ptr_brk - argc;
+  
+  // printf("%p\n", ptr_brk);
+  printf("%p\t%p\n", alloced_page, ptr_brk);
+  //printf("%x\n", ptr_brk);
+  //assert((intptr_t)ptr_brk == 0xDD5FDC);
+  for (int i = 0; i < argc; ++i){
+    ptr_brk[i] = (intptr_t)(argv_ustack[i]);
+  }
+
+  ptr_brk -= 1;
+  *ptr_brk = argc;
+  
+  //这条操作会把参数的内存空间扬了，要放在最后
   uintptr_t entry = loader(pcb, filename);
-  Context* c=ucontext(&pcb->as,kstack,(void*)entry);
-  pcb->cp=c;
-  c->GPRx=(uintptr_t)ptr;
+  Area karea;
+  karea.start = &pcb->cp;
+  karea.end = &pcb->cp + STACK_SIZE;
 
+  Context* context = ucontext(as, karea, (void *)entry);
+  pcb->cp = context;
+
+  printf("新分配ptr=%p\n", as->ptr);
+  printf("UContext Allocted at %p\n", context);
+  printf("Alloced Page Addr: %p\t PTR_BRK_ADDR: %p\n", alloced_page, ptr_brk);
+
+  ptr_brk -= 1;
+  *ptr_brk = 0;//为了t0_buffer
+  //设置了sp
+  context->gpr[2]  = (uintptr_t)ptr_brk - (uintptr_t)alloced_page + (uintptr_t)as->area.end;
+
+  //似乎不需要这个了，但我还不想动
+  context->GPRx = (uintptr_t)ptr_brk - (uintptr_t)alloced_page + (uintptr_t)as->area.end + 4;
+  //context->GPRx = (intptr_t)(ptr_brk);
 }
-
