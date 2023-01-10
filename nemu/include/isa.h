@@ -27,7 +27,34 @@ typedef concat(__GUEST_ISA__, _ISADecodeInfo) ISADecodeInfo;
 typedef struct 
 {
     word_t mepc;
-    word_t mstatus;
+    union 
+    {
+        struct 
+        {
+            size_t SD : 1;
+            size_t WPRI_23 : 8;
+            size_t TSR : 1;
+            size_t TW : 1;
+            size_t TVM : 1;
+            size_t MXR : 1;
+            size_t SUM : 1;
+            size_t MPRV : 1;
+            size_t XS : 2;
+            size_t FS : 2;
+            size_t MPP : 2;
+            size_t VS : 2;
+            size_t SPP : 1;
+            size_t MPIE : 1;
+            size_t UBE : 1;
+            size_t SPIE : 1;
+            size_t WRPI_4 : 1;
+            size_t MIE : 1;
+            size_t WPRI_2 : 1;
+            size_t SIE : 1;
+            size_t WPRI_0 : 1;
+        } status_bit;
+        word_t all;
+    } mstatus;
     word_t mcause;
     word_t mtvec;
     word_t satp;
