@@ -98,7 +98,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
 
   PTE* leaf_pte=(PTE*)(((*pte & PPN)<<2) + VPN0(vaddr)*4);//找到叶节点页表项
   uintptr_t paddr=(uintptr_t)pa;
-  *leaf_pte=((paddr >> 2) & PPN) | 0x1f;
+  *leaf_pte=((paddr >> 2) & PPN) | 0xf;
 }
 
 Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
