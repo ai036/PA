@@ -52,7 +52,7 @@ Context *kcontext(Area kstack, void (*entry)(void *), void *arg) {
   //TODO: 实现kcontext
   Context *c=kstack.end-sizeof(Context);
 
-  c->mstatus=0x1800 | 0x80;
+  c->mstatus=0x1800;
   c->mepc=(uintptr_t)entry;
   c->pdir=NULL;
 
